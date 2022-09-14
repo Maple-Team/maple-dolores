@@ -1,7 +1,5 @@
 import { createApp, h } from "vue";
 import "./style.css";
-import "virtual:windi.css";
-import "virtual:windi-devtools";
 import App from "./App.vue";
 import {routes} from "./router";
 import Antd, { message } from "ant-design-vue";

@@ -3,7 +3,6 @@ import vue from "@vitejs/plugin-vue";
 import legacy from '@vitejs/plugin-legacy'
 import path from "path";
 import Inspect from "vite-plugin-inspect";
-import WindiCSS from "vite-plugin-windicss";
 
 const { getPort } = require('../../util')
 const appName = 'vue3-taste'
@@ -19,7 +18,6 @@ export default defineConfig({
     legacy({
         targets: ['defaults', 'not IE 11'],
     }),
-    WindiCSS(),
   ],
   resolve: {
     alias: [

@@ -1,6 +1,6 @@
 <template>
   <div class="bg-cyan-300">
-    <span class="text-lg">
+    <span class="text-lg bg-red-500">
       {{ msg }}
     </span>
   </div>
