@@ -9,11 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^6.1.0",
+    "@garfish/bridge-vue-v3": "1.11.0",
     "@vueuse/components": "^9.1.0",
     "@vueuse/core": "^9.1.0",
     "ant-design-vue": "^3.2.11",
     "vue": "^3.2.37",
-    "@garfish/bridge-vue-v3": "1.11.0",
     "vue-router": "4"
   },
   "devDependencies": {
