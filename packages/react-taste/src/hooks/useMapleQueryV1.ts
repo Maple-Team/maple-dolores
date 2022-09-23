@@ -6,9 +6,9 @@ export const useMapleQueryV1 = (): Product[] => {
 
   useEffect(() => {
     fetch('http://localhost:3090/api/products', {
-      headers:{
-        'X-API-VERSION': 'v1'
-      }
+      headers: {
+        'X-API-VERSION': 'v1',
+      },
     })
       .then((res) => res.json())
       .then((res: BaseListResponse<Product>) => {

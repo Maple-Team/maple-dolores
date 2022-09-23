@@ -6,6 +6,6 @@ const isContentShown = ref(false)
 const open = () => (isContentShown.value = true)
 
 defineExpose({
-    open,
+  open,
 })
 </script>

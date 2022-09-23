@@ -1,7 +1,3 @@
 {
-  "recommendations": [
-    "vue.volar",
-    "snovakovic.vtpw",
-    "octref.vetur"
-  ]
+  "recommendations": ["vue.volar", "snovakovic.vtpw", "octref.vetur"]
 }

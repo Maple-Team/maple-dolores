@@ -2,9 +2,9 @@
   <span>parent</span>
 </template>
 <script lang="ts" setup>
-import { onMounted } from "vue";
+import { onMounted } from 'vue'
 
 onMounted(() => {
-  console.log("parent mounted!");
-});
+  console.log('parent mounted!')
+})
 </script>

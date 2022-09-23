@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 const { getPort } = require('../../util')
 const appName = 'react-taste'
-const port = getPort(appName);
+const port = getPort(appName)
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +12,6 @@ export default defineConfig({
   server: {
     port,
     cors: true,
-    origin:`http://localhost:${port}`,
+    origin: `http://localhost:${port}`,
   },
 })

@@ -30,11 +30,7 @@
     ]
   },
   "exclude": ["node_modules"],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "./typings.d.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "./typings.d.ts"],
   "paths": {
     "@/*": ["src/*"]
   }

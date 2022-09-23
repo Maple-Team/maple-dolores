@@ -19,9 +19,8 @@ export interface Product {
   images: string
 }
 
-
 declare global {
   interface Window {
-      __GARFISH__: boolean;
+    __GARFISH__: boolean
   }
 }

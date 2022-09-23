@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
-import solidPlugin from 'vite-plugin-solid';
+import { defineConfig } from 'vite'
+import solidPlugin from 'vite-plugin-solid'
 
 const { getPort } = require('../../util')
 const appName = 'solidjs-taste'
@@ -10,10 +10,10 @@ export default defineConfig({
   server: {
     port,
     cors: true,
-    origin:`http://localhost:${port}`,
+    origin: `http://localhost:${port}`,
   },
   base: `http://localhost:${port}`,
   build: {
     target: 'esnext',
   },
-});
+})

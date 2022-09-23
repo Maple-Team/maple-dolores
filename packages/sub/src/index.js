@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import { reactBridge } from '@garfish/bridge';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import { reactBridge } from '@garfish/bridge'
 
 if (!window.__GARFISH__) {
-  ReactDOM.render(<App />, document.getElementById('root'));
+  ReactDOM.render(<App />, document.getElementById('root'))
 }
 
 export const provider = reactBridge({
@@ -12,4 +12,4 @@ export const provider = reactBridge({
   ReactDOM,
   el: '#root',
   rootComponent: App,
-});
+})

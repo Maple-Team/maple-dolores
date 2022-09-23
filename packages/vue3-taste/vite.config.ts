@@ -1,13 +1,13 @@
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
-import path from "path";
-import Inspect from "vite-plugin-inspect";
+import path from 'path'
+import Inspect from 'vite-plugin-inspect'
 
 const { getPort } = require('../../util')
 const appName = 'vue3-taste'
 
-const port = getPort(appName);
+const port = getPort(appName)
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -16,15 +16,15 @@ export default defineConfig({
       reactivityTransform: true, // ->  支持属性默认值选项
     }),
     legacy({
-        targets: ['defaults', 'not IE 11'],
+      targets: ['defaults', 'not IE 11'],
     }),
   ],
   resolve: {
     alias: [
       {
         // find: /@\//,
-        find: "@/",
-        replacement: path.resolve(__dirname, "src") + "/",
+        find: '@/',
+        replacement: path.resolve(__dirname, 'src') + '/',
       },
     ],
   },
@@ -32,6 +32,6 @@ export default defineConfig({
   server: {
     port,
     cors: true,
-    origin:`http://localhost:${port}`,
+    origin: `http://localhost:${port}`,
   },
-});
+})

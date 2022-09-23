@@ -1,10 +1,10 @@
-import { DefinePlugin } from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { DefinePlugin } from 'webpack'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 const { getPort, getPublicPath, isDevelopment } = require('../../util')
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
-const appName = 'count-down';
+const appName = 'count-down'
 
 const webpackConfig = {
   devtool: isDevelopment ? 'source-map' : false,
@@ -37,11 +37,7 @@ const webpackConfig = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
-          presets: [
-            '@babel/preset-typescript',
-            '@babel/preset-react',
-            '@babel/preset-env',
-          ],
+          presets: ['@babel/preset-typescript', '@babel/preset-react', '@babel/preset-env'],
         },
       },
       {
@@ -97,5 +93,5 @@ const webpackConfig = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     }),
   ].concat(isDevelopment ? [new ReactRefreshWebpackPlugin()] : []),
-};
-export default webpackConfig;
+}
+export default webpackConfig

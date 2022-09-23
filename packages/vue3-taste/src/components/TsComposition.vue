@@ -1,27 +1,18 @@
 <template>
-    <button @click="test">{{ name }}</button>
-    <span>{{ obj.abbr }}{{ obj.age }}</span>
-    <input ref="el" />
+  <button @click="test">{{ name }}</button>
+  <span>{{ obj.abbr }}{{ obj.age }}</span>
+  <input ref="el" />
 </template>
 <script lang="ts" setup>
 import Modal from './modal.vue'
-import {
-    ref,
-    type Ref,
-    reactive,
-    computed,
-    provide,
-    inject,
-    type InjectionKey,
-    onMounted,
-} from 'vue'
+import { ref, type Ref, reactive, computed, provide, inject, type InjectionKey, onMounted } from 'vue'
 // import type { A } from './a'
 interface A {
-    name?: string
-    obj: {
-        age: number
-        abbr: string
-    }
+  name?: string
+  obj: {
+    age: number
+    abbr: string
+  }
 }
 const { name = '1234' } = defineProps<A>()
 
@@ -29,9 +20,9 @@ const { name = '1234' } = defineProps<A>()
 // const emit1 = defineEmits(['change', 'update'])
 // type-based
 const emit2 = defineEmits<{
-    (e: 'change', id: number): void
-    (e: 'update', value: string): void
-    (e: 'test', obj: { str: string }): void
+  (e: 'change', id: number): void
+  (e: 'update', value: string): void
+  (e: 'test', obj: { str: string }): void
 }>()
 
 // ref
@@ -57,7 +48,7 @@ console.log(computed1.value)
 
 // 事件处理函数标注类型
 function test(e: MouseEvent) {
-    console.log(e.target, '=====')
+  console.log(e.target, '=====')
 }
 
 // 为 provide / inject 标注类型
@@ -69,12 +60,12 @@ const foo1 = inject<string>('23')
 // 为模板引用标注类型
 const el = ref<HTMLInputElement | null>(null)
 onMounted(() => {
-    el.value?.focus()
+  el.value?.focus()
 })
 
 // 为组件模板引用标注类型
 const modal = ref<InstanceType<typeof Modal> | null>(null)
 const openModal = () => {
-    modal.value?.open()
+  modal.value?.open()
 }
 </script>

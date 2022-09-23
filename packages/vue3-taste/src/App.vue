@@ -2,8 +2,11 @@
   <aside class="aside">
     <nav class="nav">
       <RouterLink to="/">home</RouterLink>
-      <template v-for="link in links" :key="link">
-        <RouterLink :to="link">{{ link.replace(/\//, "") }}</RouterLink>
+      <template
+        v-for="link in links"
+        :key="link"
+      >
+        <RouterLink :to="link">{{ link.replace(/\//, '') }}</RouterLink>
       </template>
     </nav>
   </aside>
@@ -15,19 +18,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { links as _links } from "@/utils";
+import { defineComponent, ref } from 'vue'
+import { links as _links } from '@/utils'
 export default defineComponent({
   setup() {
-    const links = ref<string[]>(_links);
+    const links = ref<string[]>(_links)
     return {
       links,
-    };
+    }
   },
   mounted() {
-    this.$message.info("Antd Setup Success");
+    this.$message.info('Antd Setup Success')
   },
-});
+})
 </script>
 <style scoped lang="less">
 .aside {
@@ -43,7 +46,7 @@ export default defineComponent({
   display: flex;
   flex: 1;
   height: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-direction: column;
   padding: 0 20px;
   header,

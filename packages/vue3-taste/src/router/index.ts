@@ -1,12 +1,12 @@
-import { h } from "vue";
-import { dynamicRoutes } from "@/utils";
+import { h } from 'vue'
+import { dynamicRoutes } from '@/utils'
 
 export const routes = [
   {
-    path: "/",
+    path: '/',
     component: {
-      render: () => h("div", ["home"]),
+      render: () => h('div', ['home']),
     },
   },
   ...dynamicRoutes,
-];
+]

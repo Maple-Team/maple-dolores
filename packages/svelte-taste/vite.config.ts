@@ -11,7 +11,7 @@ export default defineConfig({
   server: {
     port,
     cors: true,
-    origin:`http://localhost:${port}`,
+    origin: `http://localhost:${port}`,
   },
   base: `http://localhost:${port}/`,
 })

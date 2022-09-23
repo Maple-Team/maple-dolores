@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { onClickOutside } from "@vueuse/core";
-import { OnLongPress } from "@vueuse/components";
-const el = ref();
+import { ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+import { OnLongPress } from '@vueuse/components'
+const el = ref()
 
 function close(e: any) {
   /* ... */
-  console.log(e);
+  console.log(e)
 }
 
-onClickOutside(el, close);
+onClickOutside(el, close)
 
-const longPressedComponent = ref(false);
+const longPressedComponent = ref(false)
 
 const onLongPressCallbackComponent = (e: PointerEvent) => {
-  longPressedComponent.value = true;
-};
+  longPressedComponent.value = true
+}
 const resetComponent = () => {
-  longPressedComponent.value = false;
-};
+  longPressedComponent.value = false
+}
 </script>
 
 <template>
@@ -34,5 +34,10 @@ const resetComponent = () => {
     Press long
   </OnLongPress>
 
-  <button class="ml-2 button small" @click="resetComponent">Reset</button>
+  <button
+    class="ml-2 button small"
+    @click="resetComponent"
+  >
+    Reset
+  </button>
 </template>

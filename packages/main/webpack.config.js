@@ -1,7 +1,7 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { ModuleFederationPlugin } = require('webpack').container;
-const ExternalTemplateRemotesPlugin = require('external-remotes-plugin');
-const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { ModuleFederationPlugin } = require('webpack').container
+const ExternalTemplateRemotesPlugin = require('external-remotes-plugin')
+const path = require('path')
 
 const { getPort, getPublicPath } = require('../../util')
 const appName = 'main'
@@ -29,8 +29,8 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader:'css-loader'
-      }
+        loader: 'css-loader',
+      },
     ],
   },
   plugins: [
@@ -46,4 +46,4 @@ module.exports = {
       template: './public/index.html',
     }),
   ],
-};
+}

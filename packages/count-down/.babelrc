@@ -3,10 +3,11 @@
     "@babel/preset-env",
     "@babel/preset-typescript",
     [
-      "@babel/preset-react", {
-      "runtime": "automatic"
-    }
-  ]
+      "@babel/preset-react",
+      {
+        "runtime": "automatic"
+      }
+    ]
   ],
   "plugins": [
     "@babel/plugin-syntax-dynamic-import",
@@ -19,7 +20,7 @@
     [
       "@babel/plugin-proposal-decorators",
       {
-          "legacy": true
+        "legacy": true
       }
     ],
     "@babel/plugin-proposal-class-properties",

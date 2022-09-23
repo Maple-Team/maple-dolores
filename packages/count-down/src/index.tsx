@@ -1,13 +1,13 @@
-import { createRoot } from 'react-dom/client';
-import { reactBridge } from '@garfish/bridge-react-v18';
-import RootComponent from './root';
-import ErrorBoundary from './ErrorBoundary';
+import { createRoot } from 'react-dom/client'
+import { reactBridge } from '@garfish/bridge-react-v18'
+import RootComponent from './root'
+import ErrorBoundary from './ErrorBoundary'
 
 export const provider = reactBridge({
   el: '#root', //mount node
   rootComponent: RootComponent, // a class or stateless function component
   errorBoundary: (e: any) => <ErrorBoundary />,
-});
+})
 
 // 在首次加载和执行时会触发该函数
 // export const provider = () => {
@@ -26,13 +26,7 @@ export const provider = reactBridge({
 
 // 这能够让子应用独立运行起来，以保证后续子应用能脱离主应用独立运行，方便调试、开发
 if (!window.__GARFISH__) {
-  const container = document.getElementById('root');
-  const root = createRoot(container!);
-  root.render(
-    <RootComponent
-      basename={
-        process.env.NODE_ENV === 'production' ? '/examples/subapp/react18' : '/'
-      }
-    />,
-  );
+  const container = document.getElementById('root')
+  const root = createRoot(container!)
+  root.render(<RootComponent basename={process.env.NODE_ENV === 'production' ? '/examples/subapp/react18' : '/'} />)
 }

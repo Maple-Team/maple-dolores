@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted } from 'vue'
 
 export function useEventListener(
   target: HTMLElement | Window,
@@ -6,9 +6,9 @@ export function useEventListener(
   handler: EventListener
 ) {
   onMounted(() => {
-    target.addEventListener(event, handler);
-  });
+    target.addEventListener(event, handler)
+  })
   onUnmounted(() => {
-    target.removeEventListener(event, handler);
-  });
+    target.removeEventListener(event, handler)
+  })
 }

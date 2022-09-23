@@ -1,4 +1,4 @@
-import { Result } from '@arco-design/web-react';
+import { Result } from '@arco-design/web-react'
 
 const Error = () => {
   return (
@@ -7,7 +7,7 @@ const Error = () => {
       title="Error message"
       subTitle="Something went wrong. Please try again. "
     ></Result>
-  );
-};
+  )
+}
 
-export default Error;
+export default Error

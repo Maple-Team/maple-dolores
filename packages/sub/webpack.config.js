@@ -1,6 +1,6 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { ModuleFederationPlugin } = require('webpack').container;
-const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { ModuleFederationPlugin } = require('webpack').container
+const path = require('path')
 
 const { getPort, getPublicPath } = require('../../util')
 const appName = 'sub'
@@ -47,4 +47,4 @@ module.exports = {
       template: './public/index.html',
     }),
   ],
-};
+}
