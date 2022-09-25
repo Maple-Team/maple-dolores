@@ -1,6 +1,6 @@
 <template>
-  <aside class="aside">
-    <nav class="nav">
+  <aside class="aside w-[140px]">
+    <nav class="flex p-3 flex-col">
       <RouterLink to="/">home</RouterLink>
       <template
         v-for="link in links"
@@ -11,9 +11,9 @@
     </nav>
   </aside>
   <main class="main">
-    <header>Vue3 + TS</header>
+    <header>🍁枫叶映像🍁</header>
     <RouterView class="content" />
-    <footer>powered by vscode</footer>
+    <footer>powered by Vue + Typescript + Vite + Antd</footer>
   </main>
 </template>
 
@@ -23,6 +23,7 @@ import { links as _links } from '@/utils'
 export default defineComponent({
   setup() {
     const links = ref<string[]>(_links)
+
     return {
       links,
     }
@@ -34,13 +35,8 @@ export default defineComponent({
 </script>
 <style scoped lang="less">
 .aside {
-  width: 240px;
   box-shadow: 0 0 5px #eee;
-  .nav {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-  }
+
 }
 .main {
   display: flex;

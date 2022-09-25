@@ -1,5 +1,3 @@
-import { link } from 'fs'
-
 const modules = import.meta.glob('@/views/**/index.vue')
 
 let _links: string[] = []
