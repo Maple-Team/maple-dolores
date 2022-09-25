@@ -1,0 +1,337 @@
+:root {
+  --bg-color: #ffffff;
+  --box-color: #f7fff4;
+  --border-color: #c3e2bb;
+  --text-color: #333333;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #191919;
+    --box-color: #202020;
+    --border-color: #292929;
+    --text-color: #a3a3a3;
+  }
+}
+body {
+  font-size: 1em;
+  margin: 0;
+  text-align: center;
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+div,
+form,
+img,
+ul,
+li,
+h2,
+h3 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+a {
+  color: var(--text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+a:hover {
+  background-color: #390;
+  color: #fff;
+  text-decoration: none;
+}
+ul {
+  list-style-type: none;
+}
+#web {
+  margin-left: auto;
+  margin-right: auto;
+  width: 938px;
+  text-align: left;
+  margin: 0 auto;
+  text-align: center;
+}
+#web .list {
+  float: left;
+  width: 100%;
+}
+#web .list h2 {
+  width: 930px;
+  color: #390;
+  font-size: 18px;
+  background: #f1faed;
+  padding-top: 8px;
+  height: 26px;
+  border: 1px solid #aad69e;
+  margin: 2px;
+}
+#web .index {
+  float: left;
+  width: 100%;
+  margin-bottom: 5px;
+}
+#web .index .dex {
+  float: left;
+  width: 212px;
+  margin: 6px 2px 0;
+  padding: 6px 8px 0;
+  height: 160px;
+  border: 1px solid var(--border-color);
+  background: var(--box-color);
+  overflow: hidden;
+  text-align: left;
+}
+#web .index .dex h3 {
+  font-size: 14px;
+  border-bottom: #ddd 1px solid;
+  line-height: 26px;
+  text-align: center;
+}
+#web .index .dex h3 a {
+  color: #390;
+  text-decoration: none;
+  padding: 1px;
+}
+#web .index .dex h3 a:hover {
+  text-decoration: none;
+  background: #390;
+  color: #fff;
+}
+#web .index .dex li {
+  padding-top: 10px;
+}
+#web .centent {
+  float: left;
+  width: 100%;
+}
+#web .centent ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+#web .centent li {
+  float: left;
+  width: 212px;
+  margin: 2px;
+  padding: 6px 8px 0;
+  height: 32px;
+  line-height: 26px;
+  text-align: left;
+  border: var(--border-color) 1px solid;
+  background: var(--box-color);
+  overflow: hidden;
+}
+#web .content {
+  padding-right: 3%;
+  padding-left: 3%;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  text-align: left;
+}
+#web .tags {
+  float: left;
+  width: 100%;
+}
+#web .tags ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+#web .tags li {
+  float: left;
+  width: 110px;
+  color: #666;
+  margin: 2px;
+  padding: 6px 8px 0;
+  height: 32px;
+  line-height: 26px;
+  border: var(--border-color) 1px solid;
+  background: var(--box-color);
+  overflow: hidden;
+}
+#web .nr {
+  float: left;
+  margin: 2px;
+  padding: 10px 15px;
+  text-align: left;
+  border: var(--border-color) 1px solid;
+  background: var(--box-color);
+  font-size: 1em;
+  margin-bottom: 10px;
+  word-break: break-word;
+}
+#web .nr p {
+  line-height: 150%;
+}
+#web .nr li {
+  line-height: 150%;
+}
+#web .next {
+  font-size: 1em;
+}
+#web .head {
+  float: left;
+  width: 100%;
+  padding-bottom: 5px;
+}
+#web .head .head-l {
+  float: left;
+  font-size: 2em;
+  margin-top: 8px;
+}
+#web .head .head-r2 {
+  float: right;
+  width: 468px;
+  margin-top: 10px;
+  margin-right: 120px;
+}
+#web .intro {
+  float: left;
+  width: 932px;
+  margin-bottom: 5px;
+}
+#web .intro {
+  text-align: left;
+  border: 1px solid #aad69e;
+  background: #fff;
+  line-height: 26px;
+}
+#web .intro #jianjie {
+  margin: 10px;
+  color: #666;
+}
+#web .foot {
+  float: left;
+  width: 100%;
+  text-align: center;
+  margin-top: 18px;
+  padding-bottom: 20px;
+}
+#web .foot .top {
+  padding-bottom: 10px;
+}
+#web .ads {
+  float: left;
+  width: 100%;
+  padding-bottom: 5px;
+}
+#web .ads ul {
+  list-style-type: none;
+}
+#web .ads li {
+  float: left;
+  margin-left: 2px;
+  font-size: 13px;
+}
+#web .ads li.l {
+  padding-top: 2px;
+}
+.page {
+  float: left;
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+  line-height: 23px;
+}
+.page a {
+  margin: 5px 3px;
+  color: #666;
+  border: 1px solid #ccc;
+  padding: 3px 5px 1px;
+  font-size: 1em;
+}
+.page a:hover {
+  margin: 5px 3px;
+  color: orange;
+  border: 1px solid orange;
+  padding: 3px 5px 1px;
+  font-size: 1em;
+}
+.page strong {
+  margin: 5px 3px;
+  font-weight: 400;
+  padding: 3px 5px 1px;
+  color: #333;
+  border: 1px solid #ffa501;
+  background: #ffa502;
+  font-size: 1em;
+}
+#web .link {
+  float: left;
+  width: 100%;
+  margin-top: 6px;
+}
+#web .link ul {
+  float: left;
+  width: 933px;
+  border-top: solid 1px #ccc;
+  padding-top: 5px;
+  margin-top: 15px;
+  list-style-type: none;
+}
+#web .link li {
+  float: left;
+  padding: 0 3px;
+  line-height: 20px;
+  text-align: center;
+}
+#setting {
+  float: left;
+  margin: 5px;
+}
+#fontColor,
+#fontSize {
+  float: left;
+  margin-left: 10px;
+  display: inline;
+}
+#fontColor strong,
+#fontSize strong {
+  float: left;
+  margin: 0 5px 0 0;
+}
+#fontColor {
+  background: url(/xiaoshuo/template/default/images/fontColor.gif) no-repeat 96px 0;
+}
+#fontColor span {
+  float: left;
+  margin-right: 3px;
+  padding-top: 15px;
+  width: 15px;
+  height: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+#fontSize span {
+  float: left;
+  margin-right: 5px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 1em;
+  }
+  #web {
+    width: 100%;
+  }
+  #web .intro {
+    width: 99%;
+  }
+  #web .centent li {
+    width: 95%;
+  }
+  #web .link ul {
+    width: 100%;
+  }
+  #web .index .dex {
+    width: 95%;
+    height: 100%;
+  }
+  #web .nr table {
+    width: 95%;
+  }
+  page a {
+    font-size: 1em;
+  }
+}
