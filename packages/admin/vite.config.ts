@@ -3,8 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
 import path from 'path'
 import Inspect from 'vite-plugin-inspect'
+import { getPort } from '../../util'
 
-const { getPort } = require('../../util')
 const appName = 'vue3-taste'
 
 const port = getPort(appName)
@@ -28,7 +28,8 @@ export default defineConfig({
       },
     ],
   },
-  base: `http://localhost:${port}`,
+  // base: '/',
+  base: import.meta.env.DEV ? `http://localhost:${port}` : '/', // https://iendeavor.github.io/import-meta-env/guide.html
   server: {
     port,
     cors: true,

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "deploy": "docker build . -t liutsing/admin:latest",
+    "deploy": "docker build -f ../../Dockerfile . -t liutsing/admin:latest",
     "preview": "vite preview"
   },
   "dependencies": {

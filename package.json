@@ -6,7 +6,8 @@
     "dev2": "tsx ./scripts/dev.ts",
     "dev": "nx run-many --target=dev --all",
     "prettier": "prettier --write --ignore-unknown '**/*'",
-    "lint": "eslint --ext .js,.ts,.tsx,.vue --fix ./packages/*/src"
+    "lint": "eslint --ext .js,.ts,.tsx,.vue --fix ./packages/*/src",
+    "deploy":"docker build . -t liutsing/admin:lastest"
   },
   "prettier": "@liutsing/prettier-config",
   "dependencies": {

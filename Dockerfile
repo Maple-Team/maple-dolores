@@ -10,9 +10,9 @@ RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
 WORKDIR /app
 
-COPY ../../dokcer/default.conf /etc/nginx/conf.d/
-COPY ../../dokcer/nginx.conf /etc/nginx/
-COPY ./dist/ /app/
+COPY default.conf /etc/nginx/conf.d/
+COPY nginx.conf /etc/nginx/
+COPY ./dist /app/
 
 #容器内暴露端口
 EXPOSE 80
