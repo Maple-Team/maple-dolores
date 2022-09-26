@@ -17,7 +17,6 @@ export default defineComponent({
       this.$emit('addBook', {
         bookName: '222',
       })
-      this.$http.get({})
       this.$translate('a')
     },
   },

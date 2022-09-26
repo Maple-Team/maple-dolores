@@ -1,10 +1,11 @@
 {
   "name": "@liutsing/vue3-taste",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "deploy": "docker build . -t liutsing/admin:latest",
     "preview": "vite preview"
   },
   "dependencies": {

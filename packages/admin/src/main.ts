@@ -18,7 +18,7 @@ function newRouter(basename: string) {
 
 export const provider = vueBridge({
   rootComponent: App,
-  handleInstance: (vueInstance, { basename, dom, appName, props, _appInfo }) => {
+  handleInstance: (vueInstance, { basename }) => {
     vueInstance.use(newRouter(basename)).use(Antd).use(VueQueryPlugin)
     vueInstance.config.globalProperties.$message = message
   },
