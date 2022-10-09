@@ -3,11 +3,9 @@
   "private": true,
   "scripts": {
     "bootstrap": "pnpm i",
-    "dev2": "tsx ./scripts/dev.ts",
-    "dev": "nx run-many --target=dev --all",
-    "prettier": "prettier --write --ignore-unknown '**/*'",
-    "lint": "eslint --ext .js,.ts,.tsx,.vue --fix ./packages/*/src",
-    "deploy":"docker build . -t liutsing/admin:lastest"
+    "script:dev": "tsx ./scripts/dev.ts",
+    "dev": "nx run-many --target=dev --all --parallel=10",
+    "deploy": "docker build . -t liutsing/admin:lastest"
   },
   "prettier": "@liutsing/prettier-config",
   "dependencies": {
@@ -28,9 +26,11 @@
     "cross-env": "^7.0.3",
     "execa": "^6.1.0",
     "minimist": "^1.2.6",
-    "nx": "^14.7.11",
+    "nx": "14.8.3",
     "picocolors": "^1.0.0",
+    "terser": "5",
     "tsx": "^3.9.0",
-    "typescript": "^4.8.3"
+    "typescript": "^4.8.3",
+    "@nrwl/nx-cloud": "latest"
   }
 }

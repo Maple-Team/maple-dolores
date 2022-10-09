@@ -11,8 +11,8 @@
     "pkgName": "@liutsing/count-down",
     "port": 5050
   },
-  "vue3-taste": {
-    "pkgName": "@liutsing/vue3-taste",
+  "admin": {
+    "pkgName": "@liutsing/admin",
     "port": 5055
   },
   "svelte-taste": {

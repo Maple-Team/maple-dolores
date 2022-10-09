@@ -6,7 +6,7 @@ import configs from '../../../config.json'
 // import './index.css'
 
 ReactDOM.render(<App />, document.getElementById('root'))
-const escapedApps = ['react-taste', 'vue3-taste', 'solidjs-taste', 'svelte-taste']
+const escapedApps = ['react-taste', 'admin', 'solidjs-taste', 'svelte-taste']
 
 const apps = Object.keys(configs)
   .filter((k) => k !== 'main')

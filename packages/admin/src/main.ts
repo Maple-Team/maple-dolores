@@ -8,6 +8,8 @@ import { vueBridge } from '@garfish/bridge-vue-v3'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from 'vue-query'
 
+console.log(import.meta, '====')
+
 function newRouter(basename: string) {
   const router = createRouter({
     history: createWebHistory(basename),
