@@ -6,9 +6,10 @@ importers:
     specifiers:
       '@babel/core': ^7.14.3
       '@babel/preset-typescript': ^7.18.6
-      '@garfish/bridge': ^1.5.2
+      '@garfish/bridge': ^1.6.0
       '@liutsing/eslint-config-typescript': ^0.0.1
       '@liutsing/prettier-config': ^0.0.1
+      '@liutsing/utils': ^0.0.3
       '@nrwl/nx-cloud': latest
       '@types/jest': ^29.0.3
       '@types/node': ^18.6.5
@@ -16,7 +17,7 @@ importers:
       antd: ^4.23.1
       cross-env: ^7.0.3
       execa: ^6.1.0
-      garfish: ^1.5.2
+      garfish: ^1.11.3
       minimist: ^1.2.6
       mitt: ^3.0.0
       nx: 14.8.3
@@ -27,8 +28,9 @@ importers:
       vue: ^3.2.39
     dependencies:
       '@garfish/bridge': 1.6.0_biqbaboplfbrettd7655fr4n2y
+      '@liutsing/utils': 0.0.3
       antd: 4.23.1_biqbaboplfbrettd7655fr4n2y
-      garfish: 1.11.0
+      garfish: 1.11.3
       mitt: 3.0.0
       vue: 3.2.39
     devDependencies:
@@ -116,7 +118,6 @@ importers:
       '@babel/register': ^7.13.14
       '@babel/runtime': ^7.14.6
       '@garfish/bridge-react-v18': ^1.11.0
-      '@liutsing/utils': 0.0.1
       '@pmmmwh/react-refresh-webpack-plugin': ^0.5.4
       '@uiw/react-md-editor': 3.9.0
       babel-loader: ^8.1.0
@@ -145,7 +146,6 @@ importers:
       webpack-dev-server: ^4.2.1
     dependencies:
       '@arco-design/web-react': 2.39.3_63ih5mrzzihnscmyqc3iskpq3q
-      '@liutsing/utils': 0.0.1
       babel-runtime: 6.26.0
       history: 5.3.0
       mobx: 6.6.2
@@ -1876,6 +1876,15 @@ packages:
       - supports-color
     dev: false
 
+  /@garfish/browser-snapshot/1.11.3:
+    resolution: {integrity: sha512-+mcXT6RD+MJM1tDWUCq7Q0S+9c28jBQWeLnf4Zm1gDUKDPPnjBFiFLnoCN9ipO2q+h3GAj0NOKUTfTFyQoK6qQ==}
+    dependencies:
+      '@garfish/core': 1.11.3
+      '@garfish/utils': 1.11.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@garfish/browser-snapshot/1.6.0:
     resolution: {integrity: sha512-G8nKPi88b79s7xO78xE8MDIRxFAtbLvLyaf+Zh1GfXAd0FIOcLHSfVWm24lQMcXsZ0nc4HY0EUhFZtbu2fk8rg==}
     dependencies:
@@ -1892,6 +1901,17 @@ packages:
       '@garfish/hooks': 1.11.0
       '@garfish/loader': 1.11.0
       '@garfish/utils': 1.11.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@garfish/browser-vm/1.11.3:
+    resolution: {integrity: sha512-rPO3osereQTU03RNFUEMAiDPQB0kqto54KielsF1hd/5OZkygKff1exb+QV6WFQ4FQC6BU9imJcCBromekOr5Q==}
+    dependencies:
+      '@garfish/core': 1.11.3
+      '@garfish/hooks': 1.11.3
+      '@garfish/loader': 1.11.3
+      '@garfish/utils': 1.11.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1919,6 +1939,18 @@ packages:
       - supports-color
     dev: false
 
+  /@garfish/core/1.11.3:
+    resolution: {integrity: sha512-X0QGqhzNA6YswT/lvUqP2heuh5SLEPSbsfwvxf42ZYsGNNysdNu812lBdQwP1Nptn7iT+ytGXkxUiDF/D0IX2Q==}
+    dependencies:
+      '@garfish/hooks': 1.11.3
+      '@garfish/loader': 1.11.3
+      '@garfish/utils': 1.11.3
+      es-module-lexer: 0.10.5
+      eventemitter2: 6.4.8
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@garfish/core/1.6.0:
     resolution: {integrity: sha512-EMJrMYuheAt3EcsCO47KeMJVobGKpgqcZXx07QHhYqtrSlhpr5AOoKsLh7kwkTPz9/tcpDSVIi/XulZXo2Z86A==}
     dependencies:
@@ -1938,6 +1970,14 @@ packages:
       - supports-color
     dev: false
 
+  /@garfish/hooks/1.11.3:
+    resolution: {integrity: sha512-Tweb78LmpLh4aKBanK60UsBS6YAg10fFSFSCUKR0fKH4udYF2l1L2aKuDz+OWzkMNx+bGqZ0Hge1w6uLbGWirQ==}
+    dependencies:
+      '@garfish/utils': 1.11.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@garfish/hooks/1.6.0:
     resolution: {integrity: sha512-taa+rL8IZ7W+Io5KCpwH5Tywh34tvwX2wv0Kbwk5Vv9R7gb/YQiAxExVKB15fUFX8hdGZpbJMeFZawl6nTK9yg==}
     dependencies:
@@ -1951,6 +1991,15 @@ packages:
     dependencies:
       '@garfish/hooks': 1.11.0
       '@garfish/utils': 1.11.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@garfish/loader/1.11.3:
+    resolution: {integrity: sha512-pBHMIGsQBst2e8oEmeu1rf2Lpen/rrxQVVzOd2K4OeILLkvWn6QjIrnFBWdsjETjk/X/9qj18RJkPKwFSUUQaw==}
+    dependencies:
+      '@garfish/hooks': 1.11.3
+      '@garfish/utils': 1.11.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1973,6 +2022,15 @@ packages:
       - supports-color
     dev: false
 
+  /@garfish/router/1.11.3:
+    resolution: {integrity: sha512-18bHfOWoSlzVFFVZRF9fl54XC4+PogNUERY4ex+UprY3R8DO3QsnunEaKMPBNZt1he6V5doHt35n8Uld/RFUEg==}
+    dependencies:
+      '@garfish/core': 1.11.3
+      '@garfish/utils': 1.11.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@garfish/router/1.6.0:
     resolution: {integrity: sha512-qgCNnsAGJqVbp/XetMliUOWiZKdxUmdSiBR2Dk1qHdHk4PH9mR85exeqnlb1yrGE1DmuAPo4X8rDrXSyL/++7Q==}
     dependencies:
@@ -1988,6 +2046,14 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
+
+  /@garfish/utils/1.11.3:
+    resolution: {integrity: sha512-0s25fQO4tYivL5EwqxWqOmRp3d2iZcj5bAzJc/5Rk5354+v6daQguXx3Ozivprpv24pGsB5LKSlHwP8BlG4L1Q==}
+    dependencies:
+      debug: 4.3.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@garfish/utils/1.6.0:
     resolution: {integrity: sha512-ij4Hv5xHYJWtu41oWGmR5k9K/4iAhzGM/2oEZNu23WkfCODkrr9fewJXIcfeppP+bqDBWyPTzQq/Ce2iZz4UwA==}
@@ -2082,8 +2148,8 @@ packages:
     resolution: {integrity: sha512-dQmgAFj2uAzs9vlwst5JboHuNZjXxU0Obc/H4xUcpAJ7mM0wlsQ6STj2vOjtGnOSsap7X/E0w2i49N6kTWJLGw==}
     dev: true
 
-  /@liutsing/utils/0.0.1:
-    resolution: {integrity: sha512-sBD31n8RazhzyhpTvPa3GRGBamBdSGY4pOhRJf9F8e/mnSHakdtsS6VyNCjRUgbcd4y4WNVkLgCUEFqlPiWKCA==}
+  /@liutsing/utils/0.0.3:
+    resolution: {integrity: sha512-+pVtdNrioO8s2DsD91NRbl0KhIYXT/91TIuXeCR9WL1h885MCct+6O2raoySbN6nGX73wrqbUlrAe9vTHrjBmQ==}
     dev: false
 
   /@mapbox/rehype-prism/0.8.0:
@@ -5272,6 +5338,18 @@ packages:
       '@garfish/core': 1.11.0
       '@garfish/router': 1.11.0
       '@garfish/utils': 1.11.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /garfish/1.11.3:
+    resolution: {integrity: sha512-A298TAtGje85DDKaQX2wcsS9ZM5jwH8hBHNLsebLrxgQnwndY77TVMmFvOcytbv/7ZAwxLaQyRuOrKealtFeeA==}
+    dependencies:
+      '@garfish/browser-snapshot': 1.11.3
+      '@garfish/browser-vm': 1.11.3
+      '@garfish/core': 1.11.3
+      '@garfish/router': 1.11.3
+      '@garfish/utils': 1.11.3
     transitivePeerDependencies:
       - supports-color
     dev: false

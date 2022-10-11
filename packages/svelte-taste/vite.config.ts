@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 
-const { getPort } = require('../../util')
+const { getPort } = require('../../build/util')
 const appName = 'svelte-taste'
 const port = getPort(appName)
 

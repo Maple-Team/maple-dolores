@@ -3,7 +3,7 @@ const { ModuleFederationPlugin } = require('webpack').container
 const ExternalTemplateRemotesPlugin = require('external-remotes-plugin')
 const path = require('path')
 
-const { getPort, getPublicPath } = require('../../util')
+const { getPort, getPublicPath } = require('../../build/util')
 const appName = 'main'
 
 module.exports = {

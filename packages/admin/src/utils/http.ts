@@ -3,9 +3,11 @@ import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { API_TIMEOUT } from '@/utils/constant'
 import emitter from '@/utils/emitter'
 
+const isDEV = import.meta.env.DEV
+
 const api = axios.create({
   timeout: API_TIMEOUT,
-  baseURL: 'http://localhost:3090/api', // FIXME depends on env
+  baseURL: isDEV ? 'http://localhost:3090/api' : '/api', // FIXME depends on env
   validateStatus: (status) => status >= 200 && status < 300,
 })
 

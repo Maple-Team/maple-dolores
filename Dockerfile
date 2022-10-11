@@ -10,8 +10,8 @@ RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
 WORKDIR /app
 
-COPY default.conf /etc/nginx/conf.d/
-COPY nginx.conf /etc/nginx/
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY ./dist /app/
 
 #容器内暴露端口

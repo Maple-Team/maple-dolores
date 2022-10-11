@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
 import path from 'path'
 import Inspect from 'vite-plugin-inspect'
-import { getPort } from '../../util'
+import { getPort } from '../../build/util'
 
 const appName = 'admin'
 const port = getPort(appName)

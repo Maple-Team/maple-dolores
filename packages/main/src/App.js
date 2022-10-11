@@ -1,5 +1,5 @@
 import React from 'react'
-import apps from '../../../config.json'
+import apps from '../../../build/config.json'
 
 const App = () => {
   const keys = Object.keys(apps).filter((k) => k !== 'main')

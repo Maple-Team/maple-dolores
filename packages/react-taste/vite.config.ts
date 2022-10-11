@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const { getPort } = require('../../util')
+const { getPort } = require('../../build/util')
 const appName = 'react-taste'
 const port = getPort(appName)
 

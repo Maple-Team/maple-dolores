@@ -1,5 +1,5 @@
 import { useEffect, useState, createContext } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { Layout } from '@arco-design/web-react'
 import './App.less'
 import { getWeekNumber } from '@liutsing/utils'
@@ -11,7 +11,7 @@ export const prefixCls = 'sub-app-react18'
 
 const App = () => {
   const location = useLocation()
-  const [isActive, setIsActive] = useState('home')
+  const [_isActive, setIsActive] = useState('home')
 
   useEffect(() => {
     setIsActive(location.pathname.includes('about') ? 'about' : 'home')
@@ -24,25 +24,9 @@ const App = () => {
           <Content>
             <div className="App">
               <header className="App-header">
-                <p>Current Week No.{getWeekNumber()}</p>
-                <ul>
-                  <li onClick={() => setIsActive('home')}>
-                    <NavLink
-                      to="/home"
-                      className={isActive === 'home' ? 'tabActive' : ''}
-                    >
-                      Home
-                    </NavLink>
-                  </li>
-                  <li onClick={() => setIsActive('about')}>
-                    <NavLink
-                      to="/about"
-                      className={isActive === 'home' ? 'tabActive' : ''}
-                    >
-                      About
-                    </NavLink>
-                  </li>
-                </ul>
+                <p>
+                  Current Week of {new Date().getFullYear()} is No.{getWeekNumber()}
+                </p>
               </header>
               <Outlet />
             </div>

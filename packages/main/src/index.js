@@ -2,7 +2,7 @@ import App from './App'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Garfish from 'garfish'
-import configs from '../../../config.json'
+import configs from '../../../build/config.json'
 // import './index.css'
 
 ReactDOM.render(<App />, document.getElementById('root'))

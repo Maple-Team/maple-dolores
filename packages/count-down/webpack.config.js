@@ -1,7 +1,7 @@
 import { DefinePlugin } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
-const { getPort, getPublicPath, isDevelopment } = require('../../util')
+const { getPort, getPublicPath, isDevelopment } = require('../../build/util')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 const appName = 'count-down'

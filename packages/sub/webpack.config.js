@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { ModuleFederationPlugin } = require('webpack').container
 const path = require('path')
 
-const { getPort, getPublicPath } = require('../../util')
+const { getPort, getPublicPath } = require('../../build/util')
 const appName = 'sub'
 
 module.exports = {

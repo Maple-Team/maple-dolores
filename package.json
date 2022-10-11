@@ -5,13 +5,14 @@
     "bootstrap": "pnpm i",
     "script:dev": "tsx ./scripts/dev.ts",
     "dev": "nx run-many --target=dev --all --parallel=10",
-    "deploy": "docker build . -t liutsing/admin:lastest"
+    "deploy": "nx run-many --target=deploy --all"
   },
   "prettier": "@liutsing/prettier-config",
   "dependencies": {
-    "@garfish/bridge": "^1.5.2",
+    "@garfish/bridge": "^1.6.0",
     "antd": "^4.23.1",
-    "garfish": "^1.5.2",
+    "garfish": "^1.11.3",
+    "@liutsing/utils": "^0.0.3",
     "mitt": "^3.0.0",
     "vue": "^3.2.39"
   },
