@@ -13,26 +13,24 @@ importers:
       '@nrwl/nx-cloud': latest
       '@types/jest': ^29.0.3
       '@types/node': ^18.6.5
-      '@types/react': ^18.0.19
       antd: ^4.23.1
       cross-env: ^7.0.3
       execa: ^6.1.0
-      garfish: ^1.11.3
+      garfish: ^1.11.2
       minimist: ^1.2.6
       mitt: ^3.0.0
       nx: 14.8.3
       picocolors: ^1.0.0
+      rimraf: ^3.0.2
       terser: '5'
       tsx: ^3.9.0
       typescript: ^4.8.3
-      vue: ^3.2.39
     dependencies:
       '@garfish/bridge': 1.6.0_biqbaboplfbrettd7655fr4n2y
       '@liutsing/utils': 0.0.3
       antd: 4.23.1_biqbaboplfbrettd7655fr4n2y
-      garfish: 1.11.3
+      garfish: 1.11.2
       mitt: 3.0.0
-      vue: 3.2.39
     devDependencies:
       '@babel/core': 7.19.0
       '@babel/preset-typescript': 7.18.6_@babel+core@7.19.0
@@ -41,12 +39,12 @@ importers:
       '@nrwl/nx-cloud': 14.7.0
       '@types/jest': 29.0.3
       '@types/node': 18.7.16
-      '@types/react': 18.0.19
       cross-env: 7.0.3
       execa: 6.1.0
       minimist: 1.2.6
       nx: 14.8.3
       picocolors: 1.0.0
+      rimraf: 3.0.2
       terser: 5.15.0
       tsx: 3.9.0
       typescript: 4.8.3
@@ -95,7 +93,7 @@ importers:
       axios: 0.27.2
       less: 4.1.3
       postcss: 8.4.16
-      tailwindcss: 3.1.8_postcss@8.4.16
+      tailwindcss: 3.1.8
       terser: 5.15.1
       typescript: 4.8.3
       vite: 3.1.0_less@4.1.3+terser@5.15.1
@@ -258,7 +256,8 @@ importers:
     specifiers:
       '@babel/core': ^7.14.3
       '@babel/preset-react': ^7.13.13
-      '@garfish/bridge': ^1.5.2
+      '@garfish/bridge': ^1.6.0
+      '@types/react': '17'
       babel-loader: ^8.2.2
       html-webpack-plugin: ^5.3.1
       react: ^17.0.2
@@ -275,6 +274,7 @@ importers:
     devDependencies:
       '@babel/core': 7.19.0
       '@babel/preset-react': 7.18.6_@babel+core@7.19.0
+      '@types/react': 17.0.49
       babel-loader: 8.2.5_z22tmofudeh3tyeifpjvwjl5ei
       html-webpack-plugin: 5.5.0_webpack@5.74.0
       webpack: 5.74.0_webpack-cli@4.10.0
@@ -1865,6 +1865,7 @@ packages:
       vue3: /vue/3.2.39
     transitivePeerDependencies:
       - supports-color
+      - vue
     dev: false
 
   /@garfish/browser-snapshot/1.11.0:
@@ -1876,11 +1877,11 @@ packages:
       - supports-color
     dev: false
 
-  /@garfish/browser-snapshot/1.11.3:
-    resolution: {integrity: sha512-+mcXT6RD+MJM1tDWUCq7Q0S+9c28jBQWeLnf4Zm1gDUKDPPnjBFiFLnoCN9ipO2q+h3GAj0NOKUTfTFyQoK6qQ==}
+  /@garfish/browser-snapshot/1.11.2:
+    resolution: {integrity: sha512-Xdu4AjkqI0Ebs3qppVDo1CP+jSZTKmFHh8Cd8HY8qKWx44zzPS3h+qfYeVRnZaJaajfnCfCZFMMxWqnXtcn1Mw==}
     dependencies:
-      '@garfish/core': 1.11.3
-      '@garfish/utils': 1.11.3
+      '@garfish/core': 1.11.2
+      '@garfish/utils': 1.11.2
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1905,13 +1906,13 @@ packages:
       - supports-color
     dev: false
 
-  /@garfish/browser-vm/1.11.3:
-    resolution: {integrity: sha512-rPO3osereQTU03RNFUEMAiDPQB0kqto54KielsF1hd/5OZkygKff1exb+QV6WFQ4FQC6BU9imJcCBromekOr5Q==}
+  /@garfish/browser-vm/1.11.2:
+    resolution: {integrity: sha512-y0TnZWskQSESCjO+LFLVGJqqfEhy5xkzVComf/W+QlrzQkv+NQqf+v7gvinQZimkQIY+YPgsQr7JDwJkCjnbZA==}
     dependencies:
-      '@garfish/core': 1.11.3
-      '@garfish/hooks': 1.11.3
-      '@garfish/loader': 1.11.3
-      '@garfish/utils': 1.11.3
+      '@garfish/core': 1.11.2
+      '@garfish/hooks': 1.11.2
+      '@garfish/loader': 1.11.2
+      '@garfish/utils': 1.11.2
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1939,12 +1940,12 @@ packages:
       - supports-color
     dev: false
 
-  /@garfish/core/1.11.3:
-    resolution: {integrity: sha512-X0QGqhzNA6YswT/lvUqP2heuh5SLEPSbsfwvxf42ZYsGNNysdNu812lBdQwP1Nptn7iT+ytGXkxUiDF/D0IX2Q==}
+  /@garfish/core/1.11.2:
+    resolution: {integrity: sha512-iBAYxo/HNITbBRPY1rZOJKvzWT02eta+yx1jce76NQAHaUaynIsoKzLmqY5R923pAxTE0ng/U7Kul2vKSV50jA==}
     dependencies:
-      '@garfish/hooks': 1.11.3
-      '@garfish/loader': 1.11.3
-      '@garfish/utils': 1.11.3
+      '@garfish/hooks': 1.11.2
+      '@garfish/loader': 1.11.2
+      '@garfish/utils': 1.11.2
       es-module-lexer: 0.10.5
       eventemitter2: 6.4.8
     transitivePeerDependencies:
@@ -1970,10 +1971,10 @@ packages:
       - supports-color
     dev: false
 
-  /@garfish/hooks/1.11.3:
-    resolution: {integrity: sha512-Tweb78LmpLh4aKBanK60UsBS6YAg10fFSFSCUKR0fKH4udYF2l1L2aKuDz+OWzkMNx+bGqZ0Hge1w6uLbGWirQ==}
+  /@garfish/hooks/1.11.2:
+    resolution: {integrity: sha512-ed3nYlXnTc0+tYNVmx4XEiVC3T8/rf5QK9H/fF7jaQXUq9z10UibmvZLDIpIHjZz5+O3qVkwdXVMgvXukPRMhw==}
     dependencies:
-      '@garfish/utils': 1.11.3
+      '@garfish/utils': 1.11.2
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -1995,11 +1996,11 @@ packages:
       - supports-color
     dev: false
 
-  /@garfish/loader/1.11.3:
-    resolution: {integrity: sha512-pBHMIGsQBst2e8oEmeu1rf2Lpen/rrxQVVzOd2K4OeILLkvWn6QjIrnFBWdsjETjk/X/9qj18RJkPKwFSUUQaw==}
+  /@garfish/loader/1.11.2:
+    resolution: {integrity: sha512-DZTfuScSfBTOLimG2sJBk/Im85cZ5p94EUhK8gjN0cZ/fGWTl0kKaJlKhoyNa6nMbUfz9r//wfDjGs/sx/asog==}
     dependencies:
-      '@garfish/hooks': 1.11.3
-      '@garfish/utils': 1.11.3
+      '@garfish/hooks': 1.11.2
+      '@garfish/utils': 1.11.2
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -2022,11 +2023,11 @@ packages:
       - supports-color
     dev: false
 
-  /@garfish/router/1.11.3:
-    resolution: {integrity: sha512-18bHfOWoSlzVFFVZRF9fl54XC4+PogNUERY4ex+UprY3R8DO3QsnunEaKMPBNZt1he6V5doHt35n8Uld/RFUEg==}
+  /@garfish/router/1.11.2:
+    resolution: {integrity: sha512-j4RBSuG1ipWmsyRgPX8UC0FQlKJCevBq/qJpe411/ynB9QBfvZGmz9qGoaKItheo9QBH/5IdqDxOR/z4XUseQQ==}
     dependencies:
-      '@garfish/core': 1.11.3
-      '@garfish/utils': 1.11.3
+      '@garfish/core': 1.11.2
+      '@garfish/utils': 1.11.2
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -2047,8 +2048,8 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@garfish/utils/1.11.3:
-    resolution: {integrity: sha512-0s25fQO4tYivL5EwqxWqOmRp3d2iZcj5bAzJc/5Rk5354+v6daQguXx3Ozivprpv24pGsB5LKSlHwP8BlG4L1Q==}
+  /@garfish/utils/1.11.2:
+    resolution: {integrity: sha512-QFhGEEr0bjYQvRefij4XEoQnnMDdolPU1tzl8+3wcVFukB8FMUoRLvxFVq6Zi/Kiw110cYRjGrk4Ov51oaPYSQ==}
     dependencies:
       debug: 4.3.4
     transitivePeerDependencies:
@@ -2528,7 +2529,6 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.0
-    dev: false
 
   /@types/react/18.0.19:
     resolution: {integrity: sha512-BDc3Q+4Q3zsn7k9xZrKfjWyJsSlEDMs38gD1qp2eDazLCdcPqAT+vq1ND+Z8AGel/UiwzNUk8ptpywgNQcJ1MQ==}
@@ -3084,10 +3084,8 @@ packages:
     hasBin: true
     dev: true
 
-  /ajv-formats/2.1.1_ajv@8.11.0:
+  /ajv-formats/2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependencies:
-      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -5342,14 +5340,14 @@ packages:
       - supports-color
     dev: false
 
-  /garfish/1.11.3:
-    resolution: {integrity: sha512-A298TAtGje85DDKaQX2wcsS9ZM5jwH8hBHNLsebLrxgQnwndY77TVMmFvOcytbv/7ZAwxLaQyRuOrKealtFeeA==}
+  /garfish/1.11.2:
+    resolution: {integrity: sha512-RgXZPkPeESb/jkdKZlDguDhstOq9duQa21ddaSW6jbZmhXLn3UqSEafCAa3/O+7k/gKC3OHpjqVUTBkjP/6HlQ==}
     dependencies:
-      '@garfish/browser-snapshot': 1.11.3
-      '@garfish/browser-vm': 1.11.3
-      '@garfish/core': 1.11.3
-      '@garfish/router': 1.11.3
-      '@garfish/utils': 1.11.3
+      '@garfish/browser-snapshot': 1.11.2
+      '@garfish/browser-vm': 1.11.2
+      '@garfish/core': 1.11.2
+      '@garfish/router': 1.11.2
+      '@garfish/utils': 1.11.2
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -9284,7 +9282,7 @@ packages:
     dependencies:
       '@types/json-schema': 7.0.11
       ajv: 8.11.0
-      ajv-formats: 2.1.1_ajv@8.11.0
+      ajv-formats: 2.1.1
       ajv-keywords: 5.1.0_ajv@8.11.0
     dev: true
 
@@ -9941,12 +9939,10 @@ packages:
     resolution: {integrity: sha512-SawLiWya8/uNR4p12OggSYZ35tP4U4QTpfV57DdZEOPr6+J6zlLSeeEpMmzYTEoBAsMhctdEE+SWJUDYX4EaKw==}
     dev: true
 
-  /tailwindcss/3.1.8_postcss@8.4.16:
+  /tailwindcss/3.1.8:
     resolution: {integrity: sha512-YSneUCZSFDYMwk+TGq8qYFdCA3yfBRdBlS7txSq0LUmzyeqRe3a8fBQzbz9M3WS/iFT4BNf/nmw9mEzrnSaC0g==}
     engines: {node: '>=12.13.0'}
     hasBin: true
-    peerDependencies:
-      postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
       chokidar: 3.5.3

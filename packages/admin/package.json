@@ -4,9 +4,11 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build && mv dist/ ../../",
-    "deploy": "docker build ../../  -t liutsing/admin:latest",
-    "docker:run": "docker run --name liutsing-admin --network maple-network -p 6090:80 -itd liutsing/admin:latest",
+    "build": "vue-tsc --noEmit && vite build",
+    "postbuild": "rimraf ../../dist && mv dist/ ../../",
+    "predeploy": "pnpm run build",
+    "deploy": "node scripts/deploy.js",
+    "postdeploy": "rimraf ../../dist",
     "preview": "vite preview"
   },
   "dependencies": {

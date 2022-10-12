@@ -5,7 +5,7 @@ export const useMapleQueryV1 = (): Product[] => {
   const [products, setProduct] = useState<Product[]>([])
 
   useEffect(() => {
-    fetch('http://localhost:3090/api/products', {
+    fetch('http://localhost:3000/api/products', {
       headers: {
         'X-API-VERSION': 'v1',
       },

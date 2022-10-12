@@ -7,7 +7,6 @@ const isDEV = import.meta.env.DEV
 
 const api = axios.create({
   timeout: API_TIMEOUT,
-  baseURL: isDEV ? 'http://localhost:3090/api' : '/api', // FIXME depends on env
   validateStatus: (status) => status >= 200 && status < 300,
 })
 
