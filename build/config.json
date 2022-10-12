@@ -1,30 +1,30 @@
 {
   "main": {
     "pkgName": "@liutsing/main",
-    "port": 5090
+    "port": 5040
   },
   "sub": {
     "pkgName": "@liutsing/sub",
-    "port": 5040
+    "port": 5041
   },
   "count-down": {
     "pkgName": "@liutsing/count-down",
-    "port": 5050
+    "port": 5042
   },
   "admin": {
     "pkgName": "@liutsing/admin",
-    "port": 5055
+    "port": 5043
   },
   "svelte-taste": {
     "pkgName": "@liutsing/svelte-taste",
-    "port": 5065
+    "port": 5044
   },
   "solidjs-taste": {
     "pkgName": "@liutsing/solidjs-taste",
-    "port": 5070
+    "port": 5045
   },
   "react-taste": {
     "pkgName": "@liutsing/react-taste",
-    "port": 5080
+    "port": 5046
   }
 }
