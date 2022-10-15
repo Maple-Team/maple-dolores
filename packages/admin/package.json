@@ -1,14 +1,16 @@
 {
   "name": "@liutsing/admin",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "postbuild": "rimraf ../../dist && mv dist/ ../../",
+    "docker:build": "node scripts/docker-build.js",
+    "docker:build:only": "node scripts/docker-build.js",
     "predeploy": "pnpm run build",
+    "predocker:build": "pnpm run build",
     "deploy": "node scripts/deploy.js",
-    "postdeploy": "rimraf ../../dist",
     "preview": "vite preview"
   },
   "dependencies": {
