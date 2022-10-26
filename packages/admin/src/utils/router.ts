@@ -10,4 +10,10 @@ export const dynamicRoutes = Object.keys(modules).map((module) => {
   }
 })
 
-export const links = _links
+export const links = [..._links]
+
+export const routerMap: {
+  [key: string]: any
+} = {
+  'zyc-blog': { name: '曾咏春博文' },
+}
