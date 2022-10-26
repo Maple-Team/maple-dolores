@@ -6,9 +6,7 @@ import Antd, { message } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import { vueBridge } from '@garfish/bridge-vue-v3'
 import { createRouter, createWebHistory } from 'vue-router'
-import { VueQueryPlugin } from 'vue-query'
-
-console.log(import.meta, '====')
+import { VueQueryPlugin } from "@tanstack/vue-query";
 
 function newRouter(basename: string) {
   const router = createRouter({

@@ -9,4 +9,11 @@ export const routes = [
     },
   },
   ...dynamicRoutes,
+  {
+    path: '/zyc-blog/:id',
+    component: () => import('@/views/zyc-blog/detail.vue'),
+    meta: {
+      hidden: true,
+    },
+  },
 ]
