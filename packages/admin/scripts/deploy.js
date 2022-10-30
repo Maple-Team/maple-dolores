@@ -15,26 +15,26 @@ dockerProcss.stderr.on('data', (data) => {
   console.error(data)
 })
 
-dockerProcss.stdout.on('end', () => {
-  try {
-    execSync(
-      `docker ps -q --filter "name=${containName}" | grep -q . && docker stop ${containName} && docker rm -fv ${containName}`
-    )
-  } catch (error) {
-    // 无docker运行会报错
-  }
-  exec(
-    `docker run -itd -p ${port}:80 --name ${containName} --link maple-mysql --link maple-mongodb --net maple-network ${name}:latest`,
-    (e, stdout, stderr) => {
-      if (e) {
-        throw e
-      } else {
-        if (stderr) {
-          console.error(stderr)
-        } else {
-          console.log('docker run success!')
-        }
-      }
-    }
-  )
-})
+// dockerProcss.stdout.on('end', () => {
+//   try {
+//     execSync(
+//       `docker ps -q --filter "name=${containName}" | grep -q . && docker stop ${containName} && docker rm ${containName}`
+//     )
+//   } catch (error) {
+//     // 无docker运行会报错
+//   }
+//   exec(
+//     `docker run -itd -p ${port}:80 --name ${containName} --link maple-mysql --link maple-mongodb --net maple-network ${name}:latest`,
+//     (e, stdout, stderr) => {
+//       if (e) {
+//         throw e
+//       } else {
+//         if (stderr) {
+//           console.error(stderr)
+//         } else {
+//           console.log('docker run success!')
+//         }
+//       }
+//     }
+//   )
+// })
