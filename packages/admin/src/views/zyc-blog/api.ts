@@ -1,8 +1,10 @@
 import { request } from '@/utils'
 import type { Blog } from './type'
 
-export const fetchList = async (params?: Params<Blog>) => {
-  return request<BaseList<Blog>>({ url: '/zyc-blog', params })
+//@ts-ignore
+export const fetchList = async ({ queryKey }) => {
+  console.log(queryKey[1], '==queryKey==')
+  return request<BaseList<Blog>>({ url: '/zyc-blog', params: queryKey[1] })
 }
 
 export const fetchDetail = async (id: string) => {

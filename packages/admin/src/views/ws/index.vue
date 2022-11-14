@@ -18,54 +18,51 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
-import { io, Socket } from 'socket.io-client'
+
 import { message } from 'ant-design-vue'
 
 const messages = ref<string[]>([])
-let socket: Socket
+let socket: WebSocket
 
 const id = ref<string>('')
 
 const sendMsg = () => {
-  socket?.emit('broadcast', 'hello server')
+  socket?.send('hello')
 }
 
 onMounted(() => {
-  socket = io('http://localhost:3090/events')
-  socket.on('connect', () => {
-    message.success('ws connected')
-    id.value = socket!.id
-    socket.on(id.value, (e) => {
-      console.log('收到专属信息', e)
-      // messages.value.push(e)
-    })
-    socket.emit('register', id.value)
-  })
+  const host = location.host
+  socket = new WebSocket(`ws://${host}/aws`)
 
-  socket.on('onRegister', (e) => {
-    console.log(e)
-    messages.value.push(e)
-  })
+  socket.onopen = function (e) {
+    console.log('[open] Connection established')
+    console.log('Sending to server')
+    socket.send('My name is John')
+  }
 
-  socket.on('broadcast', (e) => {
-    console.log('broadcast', e)
-  })
+  socket.onmessage = function (event) {
+    console.log(`[message] Data received from server: ${event.data}`)
+  }
 
-  socket.on('error', (e) => {
-    message.error(JSON.stringify(e))
-  })
+  socket.onclose = function (event) {
+    if (event.wasClean) {
+      console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`)
+    } else {
+      // e.g. server process killed or network down
+      // event.code is usually 1006 in this case
+      console.log('[close] Connection died')
+    }
+  }
+
+  socket.onerror = function (error) {
+    console.log(`[error]`)
+  }
 })
 
-onBeforeUnmount(() => {
-  socket.emit('unRegister', id.value)
-})
+onBeforeUnmount(() => {})
 
 onUnmounted(() => {
   if (socket) {
-    socket?.off('*')
-    socket?.disconnect()
-    //@ts-ignore
-    socket = null
   }
 })
 </script>

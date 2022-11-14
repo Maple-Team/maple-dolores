@@ -40,7 +40,12 @@ export default ({ mode }) => {
       cors: true,
       origin: !isProd ? '' : `http://localhost:${port}`,
       proxy: {
-        '/api': 'http://localhost:3000/',
+        '/api': { target: 'http://localhost:3000/' },
+        '/ws': {
+          ws: true,
+          target: 'ws://localhost:9010/',
+          // changeOrigin: true,
+        },
       },
     },
     build: {

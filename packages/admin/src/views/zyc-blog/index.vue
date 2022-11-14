@@ -35,7 +35,7 @@
           </a-button>
           <a-button
             style="margin-left: 10px"
-            @click="handleReset"
+            @click.prevent="handleReset"
             >重置</a-button
           >
         </a-form-item>
@@ -43,46 +43,61 @@
     </a-row>
   </a-form>
   <a-table
-    :dataSource="blogs"
+    :dataSource="data?.records"
     :columns="columns"
-    :pagination="pagination"
+    :pagination="{ ...data?.pagination, onChange, onShowSizeChange }"
+    :loading="isLoading"
     rowKey="_id"
   />
 </template>
 <script setup lang="ts">
-import { h, computed, ComputedRef, ref, onMounted, reactive, toRaw } from 'vue'
+import { h, ref, onMounted, reactive, toRaw, unref, computed } from 'vue'
 import { Tag, Form } from 'ant-design-vue'
-import type { TablePaginationConfig, TableColumnProps } from 'ant-design-vue'
+import type { TableColumnProps } from 'ant-design-vue'
 import { Blog } from './type'
 import { RouterLink } from 'vue-router'
-import { useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { fetchCategory, fetchList } from './api'
 
+const searchKey = 'zyc-blog-list'
+
+const queryClient = useQueryClient()
 const useForm = Form.useForm
+
 const modelRef = reactive<Partial<Blog>>({
   content: '',
   title: '',
   category: '',
 })
+const current = ref<number>(1)
+const pageSize = ref<number>(10)
+const hasKeywords = computed(() => {
+  const blog = unref(modelRef)
+  return Object.keys(blog).some((k) => !!blog[k as keyof Blog])
+})
+const { isLoading, data, error, isPreviousData, refetch } = useQuery<BaseList<Blog>>(
+  [searchKey, { current: toRaw(current), pageSize: toRaw(pageSize) }],
+  fetchList,
+  {
+    enabled: hasKeywords,
+    keepPreviousData: true,
+  }
+)
 
 const { resetFields } = useForm(modelRef)
 
 const onSubmit = () => {
   const data = toRaw(modelRef)
-  fetchList({ current: current.value, pageSize: pageSize.value, ...data }).then(({ records, pagination }) => {
-    blogs.value = records
-    pageSize.value = pagination.pageSize
-    current.value = pagination.current
-    total.value = pagination.total
-  })
+  // refetch()
+  // queryClient.invalidateQueries({
+  //   queryKey: [searchKey, { current: toRaw(current), pageSize: toRaw(pageSize), ...data }],
+  // })
 }
 const columns: TableColumnProps<Blog>[] = [
   {
     title: '题目',
     dataIndex: 'title',
-    customRender: ({ text, record }) => {
-      return h(RouterLink, { to: `/zyc-blog/${record._id}` }, () => [text])
-    },
+    customRender: ({ text, record }) => h(RouterLink, { to: `/zyc-blog/${record._id}` }, () => [text]),
   },
   { title: '字数', dataIndex: 'reads' },
   {
@@ -97,69 +112,18 @@ const columns: TableColumnProps<Blog>[] = [
   { title: '发表日期', dataIndex: 'date' },
   { title: '类型', dataIndex: 'category' },
 ]
-const current = ref<number>(1)
-const pageSize = ref<number>(10)
-const total = ref<number>(0)
-const blogs = ref<Blog[]>([])
 
-// const { isLoading, data, error } = useQuery<BaseList<Blog>>(
-//   [
-//     'zyc-blog-list',
-//     {
-//       current: current.value,
-//       pageSize: pageSize.value,
-//     },
-//   ],
-//   () => fetchList({ current: current.value, pageSize: pageSize.value })
-//   // { refetchInterval: 30 * 1000 }
-// )
-const pagination: ComputedRef<TablePaginationConfig> = computed(() => {
-  return {
-    total: total.value,
-    current: current.value,
-    pageSize: pageSize.value,
-    onChange: (page) => {
-      console.log(page, 'onChange')
-      current.value = page
-      fetchList({ current: current.value, pageSize: pageSize.value }).then(({ records, pagination }) => {
-        blogs.value = records
-        pageSize.value = pagination.pageSize
-        current.value = pagination.current
-        total.value = pagination.total
-      })
-    },
-    onShowSizeChange: (_page, size) => {
-      console.log(_page, size, 'onShowSizeChange')
-      pageSize.value = size
-      fetchList({ current: current.value, pageSize: pageSize.value }).then(({ records, pagination }) => {
-        blogs.value = records
-        pageSize.value = pagination.pageSize
-        current.value = pagination.current
-        total.value = pagination.total
-      })
-    },
-  }
-})
+const onChange = (page: number) => {
+  current.value = page
+}
+const onShowSizeChange = (_page: number, size: number) => {
+  pageSize.value = size
+}
 
-const categories = ref<string[]>()
-onMounted(() => {
-  fetchCategory().then((d) => {
-    categories.value = d
-  })
-  fetchList({ current: current.value, pageSize: pageSize.value }).then(({ records, pagination }) => {
-    blogs.value = records
-    pageSize.value = pagination.pageSize
-    current.value = pagination.current
-    total.value = pagination.total
-  })
-})
 const handleReset = () => {
-  fetchList().then(({ records, pagination }) => {
-    blogs.value = records
-    pageSize.value = pagination.pageSize
-    current.value = pagination.current
-    total.value = pagination.total
-  })
+  queryClient.invalidateQueries({ queryKey: [searchKey, { current: toRaw(current), pageSize: toRaw(pageSize) }] })
   resetFields()
 }
+
+const { data: categories } = useQuery<string[]>(['zyc-blog-category'], fetchCategory)
 </script>
