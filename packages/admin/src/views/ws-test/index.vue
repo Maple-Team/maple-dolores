@@ -23,7 +23,7 @@ import { message } from 'ant-design-vue'
 
 const messages = ref<string[]>([])
 let socket: Socket
-
+let socket2: WebSocket
 const id = ref<string>('')
 
 const sendMsg = () => {
@@ -54,6 +54,33 @@ onMounted(() => {
   socket.on('error', (e) => {
     message.error(JSON.stringify(e))
   })
+
+  const host = location.host
+  socket2 = new WebSocket(`ws://${host}/aws/ws/a/b`)
+
+  socket2.onopen = function (e) {
+    console.log('[open] Connection established')
+    console.log('Sending to server')
+    socket2.send('My name is John')
+  }
+
+  socket2.onmessage = function (event) {
+    console.log(`[message] Data received from server: ${event.data}`)
+  }
+
+  socket2.onclose = function (event) {
+    if (event.wasClean) {
+      console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`)
+    } else {
+      // e.g. server process killed or network down
+      // event.code is usually 1006 in this case
+      console.log('[close] Connection died')
+    }
+  }
+
+  socket2.onerror = function (error) {
+    console.log(`[error]`, error)
+  }
 })
 
 onBeforeUnmount(() => {
