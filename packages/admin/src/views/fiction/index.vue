@@ -64,6 +64,7 @@
       </a-tab-pane>
     </a-tabs>
     <!-- <a-form-item label="labels">
+    <a-form-item label="labels">
       <a-select
         v-model:value="modelRef.labels"
         mode="tags"
@@ -176,6 +177,11 @@ const onSubmit = () => {
     })
 }
 
+<<<<<<< HEAD
 // const labelsQuery = useQuery<Label>(['labels'], fetchLabels)
 // const labels = labelsQuery.data
+=======
+const labelsQuery = useQuery('labels', fetchLabels)
+const labels = labelsQuery.data
+>>>>>>> c2696c3c3071f2e95310fd2a0d9f53fd0b0c59de
 </script>
