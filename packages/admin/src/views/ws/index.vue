@@ -32,7 +32,9 @@ const sendMsg = () => {
 
 onMounted(() => {
   const host = location.host
-  socket = new WebSocket(`ws://${host}/aws`)
+  socket = new WebSocket(
+    `ws://${host}/aws/ws/patrol/vehicles?_t=&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyLXR5cGUiOjEsInVzZXItbmFtZSI6ImFkbWluIiwidXNlci1pZCI6IjEiLCJleHAiOjE2Njg1MzEyNTF9.JmJtWs9Ol2UYOsE7XUdREgH7vo8i71vpIWK5zRmPisk`
+  )
 
   socket.onopen = function (e) {
     console.log('[open] Connection established')

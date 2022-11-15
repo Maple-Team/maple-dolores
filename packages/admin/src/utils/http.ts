@@ -15,7 +15,8 @@ api.interceptors.request.use(
     if (config.headers) {
       config.headers['X-API-VERSION'] = 'v1'
     }
-    config.url = `/api${config.url}`
+    // @ts-ignore
+    if (!config.noPrex) config.url = `/api${config.url}`
     return config
   },
   function (error: AxiosError) {
