@@ -42,27 +42,27 @@
       </a-col>
     </a-row>
   </a-form>
-  <a-table
-    :dataSource="data?.records"
-    :columns="columns"
-    :pagination="{ ...data?.pagination, onChange, onShowSizeChange }"
-    :loading="isLoading"
-    rowKey="_id"
-  />
+  <template v-if="error"> {{ JSON.stringify(error) }}</template>
+  <template v-else>
+    <a-table
+      :dataSource="data?.records"
+      :columns="columns"
+      :pagination="{ ...data?.pagination, onChange, onShowSizeChange }"
+      :loading="isLoading"
+      rowKey="_id"
+    />
+  </template>
 </template>
 <script setup lang="ts">
-import { h, ref, onMounted, reactive, toRaw, unref, computed } from 'vue'
-import { Tag, Form } from 'ant-design-vue'
+import { h, ref, reactive, toRaw } from 'vue'
+import { Tag } from 'ant-design-vue'
 import type { TableColumnProps } from 'ant-design-vue'
 import { Blog } from './type'
 import { RouterLink } from 'vue-router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { useQuery } from '@tanstack/vue-query'
 import { fetchCategory, fetchList } from './api'
 
 const searchKey = 'zyc-blog-list'
-
-const queryClient = useQueryClient()
-const useForm = Form.useForm
 
 const modelRef = reactive<Partial<Blog>>({
   content: '',
@@ -71,27 +71,33 @@ const modelRef = reactive<Partial<Blog>>({
 })
 const current = ref<number>(1)
 const pageSize = ref<number>(10)
-const hasKeywords = computed(() => {
-  const blog = unref(modelRef)
-  return Object.keys(blog).some((k) => !!blog[k as keyof Blog])
-})
-const { isLoading, data, error, isPreviousData, refetch } = useQuery<BaseList<Blog>>(
-  [searchKey, { current: toRaw(current), pageSize: toRaw(pageSize) }],
+const content = ref<string>()
+const title = ref<string>()
+const category = ref<string>()
+
+const { isLoading, data, error } = useQuery<BaseList<Blog>>(
+  [
+    searchKey,
+    {
+      current: toRaw(current),
+      pageSize: toRaw(pageSize),
+      content: toRaw(content),
+      title: toRaw(title),
+      category: toRaw(category),
+    },
+  ],
   fetchList,
   {
-    enabled: hasKeywords,
     keepPreviousData: true,
+    refetchOnWindowFocus: true,
   }
 )
 
-const { resetFields } = useForm(modelRef)
-
 const onSubmit = () => {
   const data = toRaw(modelRef)
-  // refetch()
-  // queryClient.invalidateQueries({
-  //   queryKey: [searchKey, { current: toRaw(current), pageSize: toRaw(pageSize), ...data }],
-  // })
+  content.value = data.content
+  title.value = data.title
+  category.value = data.category
 }
 const columns: TableColumnProps<Blog>[] = [
   {
@@ -121,9 +127,13 @@ const onShowSizeChange = (_page: number, size: number) => {
 }
 
 const handleReset = () => {
-  queryClient.invalidateQueries({ queryKey: [searchKey, { current: toRaw(current), pageSize: toRaw(pageSize) }] })
-  resetFields()
+  content.value = undefined
+  title.value = undefined
+  category.value = undefined
 }
 
-const { data: categories } = useQuery<string[]>(['zyc-blog-category'], fetchCategory)
+const { data: categories } = useQuery<string[]>(['zyc-blog-category'], fetchCategory, {
+  keepPreviousData: true,
+  refetchOnWindowFocus: true,
+})
 </script>

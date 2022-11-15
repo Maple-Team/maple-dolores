@@ -1,6 +1,9 @@
 <template>
   <template v-if="id">
-    <div v-if="!isLoading">
+    <a-spin
+      :spinning="isLoading"
+      :delay="500"
+    >
       <h1 class="p-2">
         {{ record?.title }}
         <template v-if="record?.isRecommend">
@@ -11,17 +14,27 @@
       <article
         class="overflow-auto max-h-[calc(100vh-150px)]"
         v-html="record?.content?.replace(/转载本文请联.*\n*.*/gm, '')"
-      />
-      <ul>
-        <li v-if="prev">
-          <span @click="onPrev">上一篇: {{ prev.title }}</span>
-        </li>
-        <li v-if="next">
-          <span @click="onNext">下一篇: {{ next.title }}</span>
-        </li>
-      </ul>
-    </div>
-    <a-skeleton v-else />
+      ></article>
+      <a-spin
+        :spinning="navLoading"
+        delay="500"
+      >
+        <ul>
+          <li
+            v-if="navRecord?.prev"
+            class="cursor-pointer"
+          >
+            <span @click="onPrev(navRecord?.prev?._id)">上一篇: {{ navRecord?.prev.title }}</span>
+          </li>
+          <li
+            v-if="navRecord?.next"
+            class="cursor-pointer"
+          >
+            <span @click="onNext(navRecord?.next?._id)">下一篇: {{ navRecord?.next.title }}</span>
+          </li>
+        </ul>
+      </a-spin>
+    </a-spin>
   </template>
   <a-result
     status="404"
@@ -40,118 +53,68 @@
   </a-result>
 </template>
 <script setup lang="ts">
-import { useQuery } from '@tanstack/vue-query'
 import { fetchDetail, fetchPrevAndNext } from '../zyc-blog/api'
 import { useRoute, useRouter } from 'vue-router'
-import { onMounted, onUnmounted, onUpdated, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, toRaw, unref } from 'vue'
 import { Blog } from './type'
+import { useQuery } from '@tanstack/vue-query'
 
 const route = useRoute()
 const router = useRouter()
-const isLoading = ref<boolean>(false)
+
 const params = route.params
-const id = params.id as string
 
-console.log(id, params, '==params==')
+const id = ref<string>()
 
-// watch(
-//   () => route,
-//   (n) => {
-//     console.log(n, '==route==')
-//   },
-//   { deep: true, immediate: true }
-// )
-// watch(
-//   () => router,
-//   (n) => {
-//     console.log(n, '==router==')
-//   }
-// )
-// const instance = getCurrentInstance()
+id.value = params.id as string
 
-// const { isLoading, data: record } = useQuery(['zyc-blog-detail'], () => fetchDetail(id.value))
+// key值关键
+const { isLoading, data: record } = useQuery<Blog>(['zyc-blog-detail', toRaw(id)], () => fetchDetail(unref(id)), {
+  enabled: !!unref(id),
+})
+// key值关键
+const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Blog; next?: Blog }>(
+  ['zyc-blog-nav', toRaw(id)],
+  () => fetchPrevAndNext(unref(id)),
+  {
+    enabled: !!unref(id),
+  }
+)
 
-const record = ref<Blog>()
-const prev = ref<Blog>()
-const next = ref<Blog>()
 onMounted(() => {
-  console.log('mounted')
-  window.addEventListener(
-    'error',
-    (e) => {
-      const image = e.target as HTMLImageElement | null
-      if (image) {
-        const src = image.getAttribute('original')
-        if (src) {
-          image.setAttribute('src', src.replace('http://image.sciencenet.cn', 'http://localhost:4091/zyc-images'))
-        }
-      }
-    },
-    true
-  )
-  fetchPrevAndNext(id).then((res) => {
-    prev.value = res?.prev
-    next.value = res?.next
-  })
-  onFetchInfo(id)
+  // window.addEventListener(
+  //   'error',
+  //   (e) => {
+  //     const image = e.target as HTMLImageElement | null
+  //     if (image) {
+  //       const src = image.getAttribute('original')
+  //       if (src) {
+  //         image.setAttribute('src', src.replace('http://image.sciencenet.cn', 'http://localhost:4091/zyc-images'))
+  //       }
+  //     }
+  //   },
+  //   true
+  // )
 })
-const onPrev = () => {
-  console.log(prev)
-  const _id = prev.value?._id
-  router
-    .push({
-      path: `/zyc-blog/${_id}`,
-    })
-    .then((e) => {
-      console.log(e, 'onPrev')
-      _id &&
-        fetchDetail(_id)
-          .then((res) => {
-            record.value = res
-          })
-          .finally(() => {
-            isLoading.value = false
-          })
-    })
-}
-const onNext = () => {
-  console.log(next)
-  const _id = next.value?._id
-  router
-    .push({
-      path: `/zyc-blog/${_id}`,
-    })
-    .then((e) => {
-      console.log(e, 'onNext')
-      _id &&
-        fetchDetail(_id)
-          .then((res) => {
-            record.value = res
-          })
-          .finally(() => {
-            isLoading.value = false
-          })
-    })
-}
 onUnmounted(() => {
-  window.removeEventListener('error', () => {})
+  //
 })
-
-const onFetchInfo = (id: string) => {
-  isLoading.value = true
-  fetchDetail(id)
-    .then((res) => {
-      record.value = res
+const onPrev = (pid?: string) => {
+  router
+    .push({
+      path: `/zyc-blog/${pid}`,
     })
-    .finally(() => {
-      isLoading.value = false
+    .then(() => {
+      id.value = pid
     })
 }
-onUpdated(() => {
-  console.log('updated')
-  fetchPrevAndNext(id).then((res) => {
-    prev.value = res?.prev
-    next.value = res?.next
-  })
-})
+const onNext = (nid?: string) => {
+  router
+    .push({
+      path: `/zyc-blog/${nid}`,
+    })
+    .then(() => {
+      id.value = nid
+    })
+}
 </script>
