@@ -31,7 +31,7 @@ const sendMsg = () => {
 }
 
 onMounted(() => {
-  socket = io('http://localhost:3000/events')
+  socket = io('/socket.io/events')
   socket.on('connect', () => {
     message.success('ws connected')
     id.value = socket!.id
@@ -56,7 +56,7 @@ onMounted(() => {
   })
 
   const host = location.host
-  socket2 = new WebSocket(`ws://${host}/aws/ws/a/b`)
+  socket2 = new WebSocket(`ws://${host}/ws/a/b`)
 
   socket2.onopen = function (e) {
     console.log('[open] Connection established')

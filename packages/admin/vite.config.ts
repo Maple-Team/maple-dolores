@@ -41,9 +41,14 @@ export default ({ mode }) => {
       origin: !isProd ? '' : `http://localhost:${port}`,
       proxy: {
         '/api': { target: 'http://localhost:3000/' },
-        '/aws': {
+        '/ws': {
           ws: true,
           target: 'ws://localhost:9010/',
+          changeOrigin: true,
+        },
+        '/socket.io': {
+          ws: true,
+          target: 'ws://localhost:3001/',
           changeOrigin: true,
         },
       },
