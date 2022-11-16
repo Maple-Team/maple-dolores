@@ -27,19 +27,29 @@ let socket2: WebSocket
 const id = ref<string>('')
 
 const sendMsg = () => {
-  socket?.emit('broadcast', 'hello server')
+  debugger
+  socket?.emit('broadcast', '[socket.io] hello server: ' + new Date().getTime())
+  socket2?.send('[ws] hello: ' + new Date().getTime())
 }
 
 onMounted(() => {
-  socket = io('/socket.io/events')
+  socket = io('http://localhost:3000/events')
+  // socket = io('/', { path: '/socket.io/events' })
   socket.on('connect', () => {
-    message.success('ws connected')
+    message.success('socket.io ws connected')
+
     id.value = socket!.id
-    socket.on(id.value, (e) => {
-      console.log('收到专属信息', e)
-      // messages.value.push(e)
-    })
-    socket.emit('register', id.value)
+
+    try {
+      socket.emit('register', socket!.id)
+    } catch (error) {
+      console.error(error, '==ermit register error==')
+    }
+  })
+
+  socket.on(id.value, (e) => {
+    console.log('收到专属信息', e)
+    // messages.value.push(e)
   })
 
   socket.on('onRegister', (e) => {
@@ -52,6 +62,7 @@ onMounted(() => {
   })
 
   socket.on('error', (e) => {
+    console.error(e)
     message.error(JSON.stringify(e))
   })
 
@@ -59,27 +70,28 @@ onMounted(() => {
   socket2 = new WebSocket(`ws://${host}/ws/a/b`)
 
   socket2.onopen = function (e) {
-    console.log('[open] Connection established')
-    console.log('Sending to server')
-    socket2.send('My name is John')
+    message.success('native websocket ws connected')
+    console.log('[ws open] Connection established')
+    console.log('[ws] Sending to server')
+    socket2.send('[ws] My name is John')
   }
 
   socket2.onmessage = function (event) {
-    console.log(`[message] Data received from server: ${event.data}`)
+    console.log(`[ws message] Data received from server: ${event.data}`)
   }
 
   socket2.onclose = function (event) {
     if (event.wasClean) {
-      console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`)
+      console.log(`[ws close] Connection closed cleanly, code=${event.code} reason=${event.reason}`)
     } else {
       // e.g. server process killed or network down
       // event.code is usually 1006 in this case
-      console.log('[close] Connection died')
+      console.log('[ws close] Connection died')
     }
   }
 
   socket2.onerror = function (error) {
-    console.log(`[error]`, error)
+    console.log(`[ws error]`, error)
   }
 })
 
@@ -93,6 +105,9 @@ onUnmounted(() => {
     socket?.disconnect()
     //@ts-ignore
     socket = null
+  }
+  if (socket2) {
+    socket2.close()
   }
 })
 </script>

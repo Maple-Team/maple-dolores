@@ -46,9 +46,9 @@ export default ({ mode }) => {
           target: 'ws://localhost:9010/',
           changeOrigin: true,
         },
-        '/socket.io': {
+        '/socket.io/': {
           ws: true,
-          target: 'ws://localhost:3001/',
+          target: 'ws://localhost:3000/',
           changeOrigin: true,
         },
       },
