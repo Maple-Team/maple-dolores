@@ -27,14 +27,13 @@ let socket2: WebSocket
 const id = ref<string>('')
 
 const sendMsg = () => {
-  debugger
   socket?.emit('broadcast', '[socket.io] hello server: ' + new Date().getTime())
   socket2?.send('[ws] hello: ' + new Date().getTime())
 }
 
 onMounted(() => {
-  socket = io('http://localhost:3000/events')
-  // socket = io('/', { path: '/socket.io/events' })
+  // socket = io('http://localhost:3000/events')
+  socket = io('/', { path: '/socket.io/events' })
   socket.on('connect', () => {
     message.success('socket.io ws connected')
 
