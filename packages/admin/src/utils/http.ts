@@ -48,8 +48,7 @@ api.interceptors.response.use(
  */
 export const request = async <T = any>(config: AxiosRequestConfig): Promise<T> => {
   try {
-    const res = api.request({ method: 'GET', ...config })
-    return res as unknown as Promise<T>
+    return api.request<AnyToFix, Promise<T>>({ method: 'GET', ...config })
   } catch (error) {
     return Promise.reject(error)
   }

@@ -16,4 +16,5 @@ export const routerMap: {
   [key: string]: any
 } = {
   'zyc-blog': { name: '曾咏春博文' },
+  sonyoonjoo: { name: 'SonYoonJoo' },
 }

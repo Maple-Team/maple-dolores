@@ -16,4 +16,11 @@ export const routes = [
       hidden: true,
     },
   },
+  {
+    path: '/sonyoonjoo/:id',
+    component: () => import('@/views/sonyoonjoo/detail.vue'),
+    meta: {
+      hidden: true,
+    },
+  },
 ]

@@ -38,7 +38,7 @@
     "vite": "^3.0.0",
     "vite-plugin-inspect": "^0.6.0",
     "vite-plugin-windicss": "^1.8.7",
-    "vue-tsc": "^1.0.9",
+    "vue-tsc": "^1.0.18",
     "@liutsing/prettier-config": "^0.0.4",
     "windicss": "^3.5.6"
   },
