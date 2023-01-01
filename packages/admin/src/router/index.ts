@@ -23,4 +23,11 @@ export const routes = [
       hidden: true,
     },
   },
+  {
+    path: '/xiuren/:id',
+    component: () => import('@/views/xiuren/detail.vue'),
+    meta: {
+      hidden: true,
+    },
+  },
 ]
