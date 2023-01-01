@@ -95,6 +95,7 @@ id.value = params.id as string
 // key值关键
 const { isLoading, data: record } = useQuery<Meitu>(['xiuren-detail', toRaw(id)], () => fetchDetail(unref(id)), {
   enabled: !!unref(id),
+  networkMode: 'offlineFirst',
 })
 // key值关键
 const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Meitu; next?: Meitu }>(
@@ -102,6 +103,7 @@ const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Meitu; next
   () => fetchPrevAndNext(unref(id)),
   {
     enabled: !!unref(id),
+    networkMode: 'offlineFirst',
   }
 )
 

@@ -99,6 +99,7 @@ const { isLoading, data, error } = useQuery<BaseList<SonYoonJoo>>(
         })),
       }
     },
+    networkMode: 'offlineFirst',
   }
 )
 
@@ -150,5 +151,6 @@ const handleReset = () => {
 
 const { data: categories } = useQuery<number[]>(['sonyoonjoo-category'], () => fetchCategory(), {
   refetchOnWindowFocus: true,
+  networkMode: 'offlineFirst',
 })
 </script>

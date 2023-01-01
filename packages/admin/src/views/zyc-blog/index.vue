@@ -88,8 +88,8 @@ const { isLoading, data, error } = useQuery<BaseList<Blog>>(
   ],
   fetchList,
   {
-    keepPreviousData: true,
     refetchOnWindowFocus: true,
+    networkMode: 'offlineFirst',
   }
 )
 
@@ -133,7 +133,7 @@ const handleReset = () => {
 }
 
 const { data: categories } = useQuery<string[]>(['zyc-blog-category'], fetchCategory, {
-  keepPreviousData: true,
   refetchOnWindowFocus: true,
+  networkMode: 'offlineFirst',
 })
 </script>

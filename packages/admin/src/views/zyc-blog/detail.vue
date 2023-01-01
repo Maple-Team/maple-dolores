@@ -71,6 +71,7 @@ id.value = params.id as string
 // key值关键
 const { isLoading, data: record } = useQuery<Blog>(['zyc-blog-detail', toRaw(id)], () => fetchDetail(unref(id)), {
   enabled: !!unref(id),
+  networkMode: 'offlineFirst',
 })
 // key值关键
 const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Blog; next?: Blog }>(
@@ -78,6 +79,7 @@ const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Blog; next?
   () => fetchPrevAndNext(unref(id)),
   {
     enabled: !!unref(id),
+    networkMode: 'offlineFirst',
   }
 )
 

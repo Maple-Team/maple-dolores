@@ -105,6 +105,7 @@ const { isLoading, data, error } = useQuery<BaseList<Meitu>>(
     }),
   {
     refetchOnWindowFocus: true,
+    networkMode: 'offlineFirst',
   }
 )
 
@@ -208,5 +209,6 @@ const handleReset = () => {
 
 // const { data: tags } = useQuery<string[]>(['xiuren-tags'], () => fetchTags(), {
 //   refetchOnWindowFocus: true,
+// networkMode: 'offlineFirst',
 // })
 </script>

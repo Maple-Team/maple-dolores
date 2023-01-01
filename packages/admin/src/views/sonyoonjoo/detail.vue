@@ -79,6 +79,7 @@ const { isLoading, data: record } = useQuery<SonYoonJoo>(
     select: (data) => {
       return { ...data, title: data.path.split('/').pop() }
     },
+    networkMode: 'offlineFirst',
   }
 )
 // key值关键
@@ -103,6 +104,7 @@ const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: SonYoonJoo;
           : undefined,
       }
     },
+    networkMode: 'offlineFirst',
   }
 )
 
