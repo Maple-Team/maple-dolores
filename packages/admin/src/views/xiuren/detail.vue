@@ -35,7 +35,7 @@
       </p>
       <div class="max-h-[640px] overflow-auto">
         <img
-          v-for="img in record?.images"
+          v-for="img in record?.images.filter((file) => !file.startsWith('.'))"
           :key="img"
           :src="`http://localhost:4091/ins/Meitulu/${record?.title}/${img}`"
         />

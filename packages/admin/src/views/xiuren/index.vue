@@ -178,7 +178,12 @@ const columns: TableColumnProps<Meitu>[] = [
       if (record?.images?.length) {
         return h(
           'img',
-          { src: `http://localhost:4091/ins/Meitulu/${record.title}/${record?.images[0]}`, width: 150 },
+          {
+            src: `http://localhost:4091/ins/Meitulu/${record.title}/${
+              record?.images.filter((file) => !file.startsWith('.'))[0]
+            }`,
+            width: 150,
+          },
           () => []
         )
       }
