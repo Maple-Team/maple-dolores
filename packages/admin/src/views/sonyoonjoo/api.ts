@@ -1,8 +1,8 @@
 import { request } from '@/utils'
 import type { SonYoonJoo } from './type'
 
-export const fetchList = async (params: AnyToFix) => {
-  return request<BaseList<SonYoonJoo>>({ url: '/sonyoonjoo', params })
+export const fetchList = async ({ queryKey }: AnyToFix) => {
+  return request<BaseList<SonYoonJoo>>({ url: '/sonyoonjoo', params: queryKey[1] })
 }
 
 export const fetchDetail = async (id?: string) => {

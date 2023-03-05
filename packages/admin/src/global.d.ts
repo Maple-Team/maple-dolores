@@ -22,7 +22,7 @@ declare type Params<T> = Partial<T> & {
   pageSize?: number
 }
 
-declare interface Bean{
+declare interface Bean {
   _id: string
   id: string
-}
+} 

@@ -62,7 +62,7 @@ const searchKey = 'Timeline-list'
 const { query } = useRoute()
 const { page } = query as { page?: number }
 const current = ref<number>(page || 1)
-const pageSize = ref<number>(10)
+const pageSize = ref<number>(10*100)
 //@ts-ignore
 const type = ref<Timeline['type'] | undefined>('')
 const handleChange = (e: Timeline['type']) => {
