@@ -18,4 +18,5 @@ export const routerMap: {
   'zyc-blog': { name: '曾咏春博文' },
   sonyoonjoo: { name: 'SonYoonJoo' },
   xiuren: { name: 'Xiuren' },
+  timeline: { name: 'TimeLine' },
 }

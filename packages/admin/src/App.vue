@@ -9,7 +9,9 @@
         :key="link"
       >
         <RouterLink :to="`/${link}`">{{
-          routerMap[link.replace(/\//, '')] ? routerMap[link.replace(/\//, '')].name : link.replace(/\//, '')
+          capitalize(
+            routerMap[link.replace(/\//, '')] ? routerMap[link.replace(/\//, '')].name : link.replace(/\//, '')
+          )
         }}</RouterLink>
       </a-menu-item>
     </a-menu>
@@ -23,6 +25,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { links as _links, routerMap } from '@/utils'
+import { capitalize } from '@liutsing/utils'
 
 const links = ref<string[]>(_links)
 </script>
@@ -30,18 +33,22 @@ const links = ref<string[]>(_links)
 .aside {
   box-shadow: 0 0 5px #eee;
 }
+
 .main {
   display: flex;
   flex: 1;
   height: 100%;
   justify-content: flex-start;
   flex-direction: column;
-  padding: 0 20px;
+  padding-left: 20px;
+  background: #eee;
+
   header,
   footer {
     text-align: center;
     padding: 10px 0;
   }
+
   .content {
     flex: 1;
   }
