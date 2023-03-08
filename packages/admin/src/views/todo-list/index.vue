@@ -52,6 +52,7 @@
               @blur="doneEdit(todo)"
               @keydown.enter="doneEdit(todo)"
               @keydown.esc="cancelEdit"
+              v-focus="todo === editedTodo"
             />
           </li>
         </ul>
@@ -87,12 +88,19 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, Ref } from 'vue'
+import { ref, computed, Ref, Directive } from 'vue'
 import MdiSync from './MdiSync.vue'
 import { uuid } from '@liutsing/utils'
 import type { Todo, FilterType } from './type'
 import FilterTab from './FilterTab.vue'
-
+type FocusableElement = HTMLInputElement | HTMLTextAreaElement
+const vFocus: Directive<FocusableElement, boolean> = {
+  updated: (el, binding) => {
+    if (binding.value) {
+      el.focus()
+    }
+  },
+}
 const todos: Ref<Todo[]> = ref<Todo[]>([])
 const newTodo = ref('')
 const editedTodo = ref<Todo | null>(null)
