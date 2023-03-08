@@ -1,21 +1,54 @@
 <template>
-  <li>
-    <a
-      :href="`#/${type}`"
-      :class="{ selected: visibility === type }"
+  <ul class="filters">
+    <li
+      v-for="item in filters"
+      :key="item"
+      v-LazyDirective="'123'"
     >
-      {{ capitalize(type) }}
-    </a>
-  </li>
+      <a
+        :href="`#/${item}`"
+        :class="{ selected: visibility === item }"
+      >
+        {{ capitalize(item) }}
+      </a>
+    </li>
+  </ul>
 </template>
 
 <script setup lang="ts">
-import { FilterType } from './type.d'
+import { FilterType } from './type'
 import { PropType } from 'vue'
 import { capitalize } from '@liutsing/utils'
+const filters: FilterType[] = ['all', 'active', 'completed']
 
 defineProps({
   visibility: { type: String as PropType<FilterType>, required: true },
-  type: { type: String as PropType<FilterType>, required: true },
 })
 </script>
+<style lang="less" scoped>
+.filters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  right: 0;
+  left: 0;
+  li {
+    display: inline;
+    a {
+      color: inherit;
+      margin: 3px;
+      padding: 3px 7px;
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      &:hover {
+        border-color: rgba(175, 47, 47, 0.1);
+      }
+      &.selected {
+        border-color: rgba(175, 47, 47, 0.2);
+      }
+    }
+  }
+}
+</style>

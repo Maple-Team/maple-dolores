@@ -2,8 +2,16 @@ import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { API_TIMEOUT } from '@/utils/constant'
 import emitter from '@/utils/emitter'
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    /**
+     * 是否有前缀
+     */
+    noPrefix?: boolean
+  }
+}
 
-const isDEV = import.meta.env.DEV
+// const isDEV = import.meta.env.DEV
 
 const api = axios.create({
   timeout: API_TIMEOUT,
@@ -15,8 +23,7 @@ api.interceptors.request.use(
     if (config.headers) {
       config.headers['X-API-VERSION'] = 'v1'
     }
-    // @ts-ignore
-    if (!config.noPrex) config.url = `/api${config.url}`
+    if (!config.noPrefix) config.url = `/api${config.url}`
     return config
   },
   function (error: AxiosError) {
@@ -27,7 +34,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-    const { status, data, message } = response.data as BaseResponse<AnyToFix>
+    const { status, data } = response.data as BaseResponse<AnyToFix>
     // TODO handle download data
     if (status !== 200) {
       // TODO handle business exception
@@ -46,7 +53,7 @@ api.interceptors.response.use(
  * @param config
  * @returns
  */
-export const request = async <T = any>(config: AxiosRequestConfig): Promise<T> => {
+export const request = async <T = AnyToFix>(config: AxiosRequestConfig): Promise<T> => {
   try {
     return api.request<AnyToFix, Promise<T>>({ method: 'GET', ...config })
   } catch (error) {

@@ -25,4 +25,4 @@ declare type Params<T> = Partial<T> & {
 declare interface Bean {
   _id: string
   id: string
-} 
+}

@@ -7,6 +7,7 @@ import 'ant-design-vue/dist/antd.css'
 import { vueBridge } from '@garfish/bridge-vue-v3'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
+import directives from './directives'
 
 function newRouter(basename: string) {
   const router = createRouter({
@@ -24,7 +25,7 @@ function newRouter(basename: string) {
 export const provider = vueBridge({
   rootComponent: App,
   handleInstance: (vueInstance, { basename }) => {
-    vueInstance.use(newRouter(basename)).use(Antd).use(VueQueryPlugin)
+    vueInstance.use(newRouter(basename)).use(Antd).use(VueQueryPlugin).use(directives)
     vueInstance.config.globalProperties.$message = message
   },
   appOptions: () => ({
@@ -37,6 +38,6 @@ if (!window.__GARFISH__) {
   // 非微前端环境直接运行
   const vueInstance = createApp(App)
   vueInstance.config.globalProperties.$message = message
-  vueInstance.use(newRouter('/')).use(Antd).use(VueQueryPlugin)
+  vueInstance.use(newRouter('/')).use(Antd).use(VueQueryPlugin).use(directives)
   vueInstance.mount(document.querySelector('#app')!)
 }
