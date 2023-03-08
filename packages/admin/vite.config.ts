@@ -40,7 +40,8 @@ export default ({ mode }) => {
       cors: true,
       origin: !isProd ? '' : `http://localhost:${port}`,
       proxy: {
-        '/api': { target: 'http://localhost:3001/' }, // dev: 3000, prod:3001
+        '/api': { target: `${process.env['VITE_API_URL']}:${process.env['VITE_API_PORT']}/` }, // dev: 3000, prod:3001
+        // '/api': { target: `${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/` }, // dev: 3000, prod:3001
         '/ws': {
           ws: true,
           target: 'ws://localhost:9010/',
