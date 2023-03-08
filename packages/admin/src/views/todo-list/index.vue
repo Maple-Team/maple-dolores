@@ -141,10 +141,6 @@ const pluralize = (word: string, count: number) => {
 
 <style>
 @import './index.css';
-.todoapp {
-  min-width: 230px;
-  max-width: 550px;
-}
 </style>
 <style lang="less">
 .filters {
@@ -265,6 +261,120 @@ const pluralize = (word: string, count: number) => {
     .edit {
       display: none;
     }
+  }
+}
+.footer {
+  color: #777;
+  padding: 10px 15px;
+  height: 20px;
+  text-align: center;
+  border-top: 1px solid #e6e6e6;
+  box-sizing: content-box;
+  &:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    overflow: hidden;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgba(0, 0, 0, 0.2),
+      0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgba(0, 0, 0, 0.2);
+  }
+
+  .todo-count {
+    float: left;
+    text-align: left;
+    & strong {
+      font-weight: 300;
+    }
+  }
+}
+.toggle-all {
+  text-align: center;
+  border: none; /* Mobile Safari */
+  opacity: 0;
+  position: absolute;
+  & + label {
+    width: 60px;
+    height: 34px;
+    font-size: 0;
+    position: absolute;
+    top: -52px;
+    left: -13px;
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    &:before {
+      content: '❯';
+      font-size: 22px;
+      color: #e6e6e6;
+      padding: 10px 27px 10px 27px;
+    }
+  }
+  &:checked + label:before {
+    color: #737373;
+  }
+}
+
+.edit-input {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  font-size: 24px;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: 1.4em;
+  border: 0;
+  color: inherit;
+  padding: 6px;
+  border: 1px solid #999;
+  box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.new-todo {
+  .edit-input();
+  padding: 16px 16px 16px 60px;
+  border: none;
+  background: rgba(0, 0, 0, 0.003);
+  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+}
+.edit {
+  .edit-input();
+}
+.placeholder {
+  font-style: italic;
+  font-weight: 300;
+  color: #e6e6e6;
+}
+.todoapp {
+  min-width: 230px;
+  max-width: 550px;
+  background: #fff;
+  margin: 130px 0 40px 0;
+  position: relative;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  input::-webkit-input-placeholder {
+    .placeholder();
+  }
+  input::-moz-placeholder {
+    .placeholder();
+  }
+  input::input-placeholder {
+    .placeholder();
+  }
+  h1 {
+    position: absolute;
+    top: -155px;
+    width: 100%;
+    font-size: 100px;
+    font-weight: 100;
+    text-align: center;
+    color: rgba(175, 47, 47, 0.15);
+    -webkit-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
   }
 }
 </style>
