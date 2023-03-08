@@ -7,7 +7,10 @@ const getPublicPath = (appName) => {
   return `//localhost:${port}/`
 }
 
-const getPort = (appName) => portMap[appName].port
+const getPort = (appName) => {
+  const name = appName.replace(/@liutsing\//, '')
+  return portMap[name].port
+}
 module.exports = {
   isDevelopment,
   getPublicPath,

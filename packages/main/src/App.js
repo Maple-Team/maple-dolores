@@ -10,7 +10,7 @@ const App = () => {
           <ul>
             {keys.map((k) => (
               <li key={k}>
-                <a href={`http://localhost:5090/${k}`}>{k}</a>
+                <a href={`http://localhost:${apps['main'].port}/${k}`}>{k}</a>
               </li>
             ))}
           </ul>

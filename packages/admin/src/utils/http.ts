@@ -7,7 +7,6 @@ const isDEV = import.meta.env.DEV
 
 const api = axios.create({
   timeout: API_TIMEOUT,
-  baseURL: isDEV ? 'http://localhost:3090/api' : '/api', // FIXME depends on env
   validateStatus: (status) => status >= 200 && status < 300,
 })
 
@@ -16,6 +15,8 @@ api.interceptors.request.use(
     if (config.headers) {
       config.headers['X-API-VERSION'] = 'v1'
     }
+    // @ts-ignore
+    if (!config.noPrex) config.url = `/api${config.url}`
     return config
   },
   function (error: AxiosError) {
@@ -47,8 +48,7 @@ api.interceptors.response.use(
  */
 export const request = async <T = any>(config: AxiosRequestConfig): Promise<T> => {
   try {
-    const res = api.request({ method: 'GET', ...config })
-    return res as unknown as Promise<T>
+    return api.request<AnyToFix, Promise<T>>({ method: 'GET', ...config })
   } catch (error) {
     return Promise.reject(error)
   }

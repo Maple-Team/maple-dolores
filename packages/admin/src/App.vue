@@ -1,55 +1,54 @@
 <template>
   <aside class="aside w-[140px]">
-    <nav class="flex p-3 flex-col">
-      <RouterLink to="/">home</RouterLink>
-      <template
+    <a-menu mode="vertical">
+      <a-menu-item>
+        <RouterLink to="/">首页</RouterLink>
+      </a-menu-item>
+      <a-menu-item
         v-for="link in links"
         :key="link"
       >
-        <RouterLink :to="link">{{ link.replace(/\//, '') }}</RouterLink>
-      </template>
-    </nav>
+        <RouterLink :to="`/${link}`">{{
+          capitalize(
+            routerMap[link.replace(/\//, '')] ? routerMap[link.replace(/\//, '')].name : link.replace(/\//, '')
+          )
+        }}</RouterLink>
+      </a-menu-item>
+    </a-menu>
   </aside>
   <main class="main">
-    <header>🍁枫叶映像🍁</header>
     <RouterView class="content" />
     <footer>powered by Vue + Typescript + Vite + Antd</footer>
   </main>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { links as _links } from '@/utils'
-export default defineComponent({
-  setup() {
-    const links = ref<string[]>(_links)
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { links as _links, routerMap } from '@/utils'
+import { capitalize } from '@liutsing/utils'
 
-    return {
-      links,
-    }
-  },
-  mounted() {
-    this.$message.info('Antd Setup Success')
-  },
-})
+const links = ref<string[]>(_links)
 </script>
 <style scoped lang="less">
 .aside {
   box-shadow: 0 0 5px #eee;
-
 }
+
 .main {
   display: flex;
   flex: 1;
   height: 100%;
   justify-content: flex-start;
   flex-direction: column;
-  padding: 0 20px;
+  padding-left: 20px;
+  background: #eee;
+
   header,
   footer {
     text-align: center;
     padding: 10px 0;
   }
+
   .content {
     flex: 1;
   }

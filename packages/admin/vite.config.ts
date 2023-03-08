@@ -4,9 +4,9 @@ import legacy from '@vitejs/plugin-legacy'
 import path from 'path'
 import Inspect from 'vite-plugin-inspect'
 import { getPort } from '../../build/util'
+import { name } from './package.json'
 
-const appName = 'admin'
-const port = getPort(appName)
+const port = getPort(name)
 
 // https://vitejs.dev/config/
 
@@ -39,6 +39,19 @@ export default ({ mode }) => {
       port,
       cors: true,
       origin: !isProd ? '' : `http://localhost:${port}`,
+      proxy: {
+        '/api': { target: 'http://localhost:3001/' }, // dev: 3000, prod:3001
+        '/ws': {
+          ws: true,
+          target: 'ws://localhost:9010/',
+          changeOrigin: true,
+        },
+        '/socket.io/': {
+          ws: true,
+          target: 'ws://localhost:3001/',
+          changeOrigin: true,
+        },
+      },
     },
     build: {
       target: 'es2015',

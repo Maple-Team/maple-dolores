@@ -16,3 +16,13 @@ declare interface BaseResponse<T> {
 declare type LabelType = 'normal' | 'fiction' | 'image'
 
 declare type AnyToFix = any
+
+declare type Params<T> = Partial<T> & {
+  current?: number
+  pageSize?: number
+}
+
+declare interface Bean {
+  _id: string
+  id: string
+} 
