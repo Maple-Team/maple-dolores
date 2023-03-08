@@ -10,6 +10,7 @@ importers:
       '@garfish/bridge': ^1.6.0
       '@liutsing/eslint-config-typescript': ^0.0.1
       '@liutsing/prettier-config': ^0.0.1
+      '@liutsing/tsconfig': ^0.0.5
       '@liutsing/utils': ^0.0.7
       '@nrwl/nx-cloud': latest
       '@types/jest': ^29.0.3
@@ -43,6 +44,7 @@ importers:
       '@babel/preset-typescript': 7.18.6_@babel+core@7.19.0
       '@liutsing/eslint-config-typescript': 0.0.1
       '@liutsing/prettier-config': 0.0.1
+      '@liutsing/tsconfig': 0.0.5
       '@nrwl/nx-cloud': 15.1.1
       '@types/jest': 29.0.3
       '@types/lodash-es': 4.17.6
@@ -3281,6 +3283,12 @@ packages:
       prettier: 2.8.4
     dev: true
 
+  /@liutsing/tsconfig/0.0.5:
+    resolution: {integrity: sha512-ue32cFyJt6ahCSezAj78nvcgeh/sHQ8tNnDQNfNuGoVQ0bN4YQVyTEA6qsnUq3DGu6TSF43AT1UHNjEIH5t45w==}
+    dependencies:
+      tslib: 2.5.0
+    dev: true
+
   /@liutsing/utils/0.0.7:
     resolution: {integrity: sha512-d4YBW4qPgO+Yb/T19kCnnM1PJaXrFyeyN7oxpDk5ARorGGS8uWVc5TwhuRbCNjd0NNmCMxY33yWY6SPjwboqeg==}
     dependencies:
@@ -4468,7 +4476,7 @@ packages:
     engines: {node: '>=14.15.0'}
     dependencies:
       js-yaml: 3.14.1
-      tslib: 2.4.0
+      tslib: 2.5.0
     dev: true
 
   /@zkochan/js-yaml/0.0.6:
@@ -12485,6 +12493,10 @@ packages:
 
   /tslib/2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
+
+  /tslib/2.5.0:
+    resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}
+    dev: true
 
   /tsutils/3.21.0_typescript@4.8.3:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}

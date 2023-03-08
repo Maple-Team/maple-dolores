@@ -12,7 +12,10 @@
             v-model="newTodo"
             @keydown.enter="addTodo"
           />
-          <MdiSync />
+          <MdiSync
+            @click="sync"
+            :isLoading="isLoading"
+          />
         </div>
       </header>
       <section
@@ -62,20 +65,7 @@
         v-show="todos.length"
       >
         <span class="todo-count"> <strong v-text="remaining"></strong> {{ pluralize('item', remaining) }} left </span>
-        <ul class="filters">
-          <FilterTab
-            type="all"
-            :visibility="visibility"
-          />
-          <FilterTab
-            type="active"
-            :visibility="visibility"
-          />
-          <FilterTab
-            type="completed"
-            :visibility="visibility"
-          />
-        </ul>
+        <FilterTab :visibility="visibility" />
         <button
           class="clear-completed"
           @click="removeCompleted"
@@ -88,11 +78,15 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, Ref, Directive } from 'vue'
+import { ref, computed, Ref, Directive, watchEffect, unref } from 'vue'
 import MdiSync from './MdiSync.vue'
 import { uuid } from '@liutsing/utils'
 import type { Todo, FilterType } from './type'
 import FilterTab from './FilterTab.vue'
+import { useTodoMutation } from './api'
+import { message } from 'ant-design-vue'
+
+// TODO 1. 路由
 type FocusableElement = HTMLInputElement | HTMLTextAreaElement
 const vFocus: Directive<FocusableElement, boolean> = {
   updated: (el, binding) => {
@@ -101,7 +95,9 @@ const vFocus: Directive<FocusableElement, boolean> = {
     }
   },
 }
-const todos: Ref<Todo[]> = ref<Todo[]>([])
+const storageKey = 'maple-todo'
+const todoStr = localStorage.getItem(storageKey) || '[]'
+const todos: Ref<Todo[]> = ref<Todo[]>(JSON.parse(todoStr))
 const newTodo = ref('')
 const editedTodo = ref<Todo | null>(null)
 const visibility = ref<FilterType>('all')
@@ -145,37 +141,24 @@ const addTodo = () => {
 const pluralize = (word: string, count: number) => {
   return word + (count === 1 ? '' : 's')
 }
+const { mutate, isLoading } = useTodoMutation()
+const sync = () => {
+  if (isLoading.value) return
+  mutate(unref(todos.value), {
+    onSuccess: () => {
+      message.success('同步成功')
+    },
+  })
+}
+
+watchEffect(() => {
+  localStorage.setItem(storageKey, JSON.stringify(todos.value))
+  console.log(`write: ${todos.value.length}`)
+})
 </script>
 
 <style>
 @import './index.css';
-</style>
-<style lang="less">
-.filters {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  position: absolute;
-  right: 0;
-  left: 0;
-  li {
-    display: inline;
-    a {
-      color: inherit;
-      margin: 3px;
-      padding: 3px 7px;
-      text-decoration: none;
-      border: 1px solid transparent;
-      border-radius: 3px;
-      &:hover {
-        border-color: rgba(175, 47, 47, 0.1);
-      }
-      &.selected {
-        border-color: rgba(175, 47, 47, 0.2);
-      }
-    }
-  }
-}
 </style>
 
 <style lang="less" scoped>
