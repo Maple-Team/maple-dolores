@@ -28,7 +28,9 @@ body {
   height: 100vh;
   color: #000;
 }
-
+::-webkit-scrollbar {
+  display: none;
+}
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
