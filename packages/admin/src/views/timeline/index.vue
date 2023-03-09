@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 bg-white">
     <template v-if="isLoading">
-      <a-spin spinning="isLoading"></a-spin>
+      <a-spin spinning="isLoading" />
     </template>
     <template v-else>
       <a-select
@@ -30,7 +30,8 @@
         </a-timeline-item>
         <a-timeline-item
           color="green"
-          v-for="record in notTodayRecords"
+          v-for="(record, index) in notTodayRecords"
+          :key="index"
         >
           <p class="text-green-500">
             {{ record[0].date }}
@@ -61,7 +62,7 @@ const { query } = useRoute()
 const { page } = query as { page?: number }
 const current = ref<number>(page || 1)
 const pageSize = ref<number>(10 * 100)
-//@ts-ignore
+// @ts-ignore
 const type = ref<Timeline['type'] | undefined>('')
 const handleChange = (e: Timeline['type']) => {
   type.value = e
