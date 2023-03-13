@@ -42,7 +42,7 @@ onMounted(() => {
     try {
       socket.emit('register', socket!.id)
     } catch (error) {
-      console.error(error, '==ermit register error==')
+      console.error(error, '==emit register error==')
     }
   })
 
@@ -68,7 +68,7 @@ onMounted(() => {
   const host = location.host
   socket2 = new WebSocket(`ws://${host}/ws/a/b`)
 
-  socket2.onopen = function (e) {
+  socket2.onopen = function () {
     message.success('native websocket ws connected')
     console.log('[ws open] Connection established')
     console.log('[ws] Sending to server')
@@ -102,7 +102,7 @@ onUnmounted(() => {
   if (socket) {
     socket?.off('*')
     socket?.disconnect()
-    //@ts-ignore
+    // @ts-ignore
     socket = null
   }
   if (socket2) {

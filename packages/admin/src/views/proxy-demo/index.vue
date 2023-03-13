@@ -6,9 +6,8 @@ import { request } from '@/utils'
 import { onMounted } from 'vue'
 onMounted(() => {
   request({
-    url: '/bpi/proxy/abc/e?id=23432',
-    // @ts-ignore
-    noPrex: true,
+    url: '/api/proxy/abc/e?id=23432',
+    noPrefix: true,
     // baseURL,
   }).catch(console.error)
 })

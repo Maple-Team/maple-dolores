@@ -32,6 +32,8 @@ const links = ref<string[]>(_links)
 <style scoped lang="less">
 .aside {
   box-shadow: 0 0 5px #eee;
+  overflow: auto;
+  max-height: 100%;
 }
 
 .main {
