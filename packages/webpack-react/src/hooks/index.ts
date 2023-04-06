@@ -1,5 +1,5 @@
 import { axios } from '@/http'
-import { remoteCommandTypeEnum, vehicleDeviceSwitchStateEnum } from '@/enums'
+import { remoteCommandTypeEnum, vehicleDeviceSwitchStateEnum } from '@/enums/remote-control'
 import { RemoteControlResult, VehicleResult, SendCommandParams } from '@liutsing/types-utils'
 import { useQuery } from '@tanstack/react-query'
 

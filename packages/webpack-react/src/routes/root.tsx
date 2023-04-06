@@ -34,11 +34,11 @@ export default () => {
         />
       </aside>
       <main className="flex-1 flex flex-col justify-between">
-        <header>header</header>
-        <div className="flex-1">
+        <header className="py-3">header</header>
+        <div className="flex-1 pl-4 bg-gray-300">
           <Outlet />
         </div>
-        <footer>footer</footer>
+        <footer className="py-3 text-center">footer</footer>
       </main>
     </div>
   )

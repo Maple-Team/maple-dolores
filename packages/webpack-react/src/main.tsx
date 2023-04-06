@@ -8,9 +8,9 @@ import Root from './routes/root'
 import ErrorPage from './error-page'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { RemoteControlCard } from './RemoteControl'
+import { RemoteControlCard } from './pages/RemoteControl'
 import { ReactQueryDemo } from './pages/ReactQuery'
-import { ReactAmap } from './pages/ReactAmap'
+import { ReactAmap } from './pages/amap'
 
 const router = createBrowserRouter([
   {

@@ -1,5 +1,5 @@
 import { closeShoutBeaconRequest, sendRemoteCommand } from '@/hooks'
-import { remoteCommandTypeEnum, remoteResultEnum, vehicleDeviceSwitchStateEnum } from '@/enums'
+import { remoteCommandTypeEnum, remoteResultEnum, vehicleDeviceSwitchStateEnum } from '@/enums/remote-control'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FunctionButton } from './FunctionButton'
 import {

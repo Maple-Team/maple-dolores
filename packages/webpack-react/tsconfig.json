@@ -1,9 +1,9 @@
 {
-  "extends":"@liutsing/tsconfig",
+  "extends": "@liutsing/tsconfig",
   "compilerOptions": {
     "rootDir": ".",
     "jsx": "react",
-    "paths":{
+    "paths": {
       "@/*": ["./src/*"]
     }
   }

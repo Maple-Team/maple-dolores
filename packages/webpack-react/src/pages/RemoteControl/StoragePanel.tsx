@@ -1,5 +1,5 @@
 import { sendRemoteCommand } from '@/hooks'
-import { remoteCommandTypeEnum, remoteResultEnum, vehicleDeviceSwitchStateEnum } from '@/enums'
+import { remoteCommandTypeEnum, remoteResultEnum, vehicleDeviceSwitchStateEnum } from '@/enums/remote-control'
 import { message } from 'antd'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
