@@ -1,0 +1,13 @@
+.prettierignore
+.gitignore
+.next
+pnpm-lock.yaml
+
+*.ico
+*.svg
+*.png
+*.jpg
+
+.husky
+
+Dockerfile

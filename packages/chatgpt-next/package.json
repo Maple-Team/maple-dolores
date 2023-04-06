@@ -1,0 +1,51 @@
+{
+  "name": "@liutsing/chatgpt-next",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "eslint": "eslint --ext .ts,.tsx,.js .",
+    "eslint:fix": "eslint --ext .ts,.tsx,.js --fix .",
+    "prettier": "prettier -l \"./**/*\"",
+    "prettier:fix": "prettier --write -l \"./**/*\""
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js}": [
+      "eslint",
+      "prettier --list-different"
+    ],
+    "*.{json,yml,md}": [
+      "prettier --list-different"
+    ]
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.0.16",
+    "chatgpt": "^5.0.10",
+    "classnames": "^2.3.2",
+    "cookies-next": "^2.1.1",
+    "dayjs": "^1.11.7",
+    "is-mobile": "^4.0.0",
+    "markdown-it": "^13.0.1",
+    "next": "13.2.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^12.2.3",
+    "@types/node": "18.14.6",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7",
+    "typescript": "4.9.5",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "autoprefixer": "^10.4.14",
+    "lint-staged": "^13.2.0",
+    "@liutsing/prettier-config": "^0.0.5",
+    "@liutsing/eslint-config": "^0.0.9"
+  },
+  "prettier": "@liutsing/prettier-config"
+}
