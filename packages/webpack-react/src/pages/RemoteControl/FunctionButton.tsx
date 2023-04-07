@@ -1,7 +1,8 @@
-import { Icon } from '@/Components'
 import { Switch } from 'antd'
 import React, { memo } from 'react'
 import { useIconAnimation } from './useAlarmAnimation'
+import { Icon } from '@/Components'
+
 interface Props {
   name: string
   icon: string

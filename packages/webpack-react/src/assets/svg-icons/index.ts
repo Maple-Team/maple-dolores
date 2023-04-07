@@ -8,5 +8,5 @@ const cache: { [key: string]: unknown } = {}
 function importAll(r: AnyToFix) {
   r.keys().forEach((key: string | number) => (cache[key] = r(key)))
 }
-// @ts-ignore
+// @ts-expect-error
 importAll(require.context('.', true, /\.svg$/))

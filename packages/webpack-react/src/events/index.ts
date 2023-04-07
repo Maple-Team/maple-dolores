@@ -1,7 +1,7 @@
-import { Message, RemoteControlResult, VehicleResult } from '@/types'
 import mitt from 'mitt'
+import type { Message, RemoteControlResult, VehicleResult } from '@/types'
 
-type Events = {
+interface Events {
   /**
    * websocket事件
    */

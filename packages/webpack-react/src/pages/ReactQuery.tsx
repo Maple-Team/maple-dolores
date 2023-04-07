@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import React, { useCallback, useEffect, useState } from 'react'
+
 const fetchData = () => fetch('http://localhost:3001/api/zyc-blog', {}).then((res) => res.json())
 
 export const ReactQueryDemo = () => {
@@ -26,9 +27,7 @@ export const ReactQueryDemo = () => {
     staleTime: 10 * 1000,
   })
   useEffect(() => {
-    if (data) {
-      console.log('fetched: ', dayjs().format('YYYY-MM-DD HH:mm:ss'))
-    }
+    if (data) console.log('fetched: ', dayjs().format('YYYY-MM-DD HH:mm:ss'))
   }, [data])
 
   const onRefetch = useCallback(() => {

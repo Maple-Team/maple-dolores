@@ -1,5 +1,3 @@
-import { sendRemoteCommand } from '@/hooks'
-import { remoteCommandTypeEnum, remoteResultEnum } from '@/enums/remote-control'
 import { message } from 'antd'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -10,11 +8,13 @@ import {
   useRemoteControlResult,
   useVehicleRealtimeControlInfo,
 } from './useRemoteControl'
+import { remoteCommandTypeEnum, remoteResultEnum } from '@/enums/remote-control'
+import { sendRemoteCommand } from '@/hooks'
 
 const DrivePanel = () => {
   const vin = ''
 
-  const commandIdRef = useRef<string>(null)
+  const commandIdRef = useRef<string | null>(null)
   // 远控结果
   const { result, noUsingRTdataTimeout, resetTimeout, resetFetchTimeout } = useRemoteControlResult(commandIdRef.current)
   // 实时数据
@@ -62,7 +62,7 @@ const DrivePanel = () => {
         .then((id) => {
           message.success('发送成功')
           resetFetchTimeout(FETCH_REMOTE_CONTROL_TIMEOUT)
-          // @ts-ignore
+          // @ts-expect-error
           commandIdRef.current = id
           setDrivingLoading(true)
         })

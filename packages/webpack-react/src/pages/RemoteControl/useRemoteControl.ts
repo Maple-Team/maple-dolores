@@ -1,11 +1,69 @@
-import { emitter } from '@/events'
-import { useFetchCommandResult, useLatestVehicleResultQuery } from '@/hooks'
-import { vehicleDeviceSwitchStateEnum } from '@/enums/remote-control'
-import { DriveData, DeviceStatusData, VehicleResult, RemoteControlResult } from '@liutsing/types-utils'
+import type { DeviceStatusData, DriveData, RemoteControlResult, VehicleResult } from '@liutsing/types-utils'
 import { useInterval } from 'ahooks'
-import { useState, useEffect, useCallback, useRef } from 'react'
+import type { SetStateAction } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { emitter } from '@/events'
+import { useFetchCommandResult } from '@/hooks'
+import { vehicleDeviceSwitchStateEnum } from '@/enums/remote-control'
 
-type SetStateFn = (bool: boolean) => boolean
+/**
+ * 获取车辆实时数据的Hook
+ * @returns
+ */
+export const useVehicleRtInfo = (vin?: string) => {
+  const [vehicleInfo, setVehicleInfo] = useState<VehicleResult>()
+  // const { data, isSuccess } = useLatestVehicleResultQuery(vin)
+
+  // useEffect(() => {
+  //   if (isSuccess && vin === data.vin) {
+  //     setVehicleInfo(data)
+  //   }
+  // }, [isSuccess, data, vin])
+
+  useEffect(() => {
+    const handler = (result: VehicleResult) => {
+      if (vin === result.vin) setVehicleInfo(result)
+    }
+
+    emitter.on('rtStatus', handler)
+    return () => {
+      emitter.off('rtStatus', handler)
+    }
+  }, [vin])
+
+  return vehicleInfo
+}
+
+/**
+ * 基于commandId的倒计时
+ * @param commandId
+ * @param timeout
+ * @returns
+ */
+const useCountdown = (commandId: string | null | undefined, timeout: number) => {
+  const [num, setNum] = useState(0)
+
+  useInterval(() => {
+    if (!commandId) return
+    setNum((t) => Math.max(t - 1, 0)) // 倒计时到0为止
+  }, 1000)
+
+  useEffect(() => {
+    if (commandId) {
+      // 有新的远控任务时，重置commandId对应的⏲
+      console.debug('倒计时重置', timeout)
+      setNum(timeout)
+    }
+  }, [commandId, timeout])
+
+  // console.log(`=====倒计时: ${num}/${timeout}`, commandId)
+
+  const reset = useCallback((num: number) => {
+    setNum(num)
+  }, [])
+
+  return { timeout: num, reset }
+}
 
 /**
  * 主动轮询远控结果
@@ -67,7 +125,7 @@ export const useRemoteControlResult = (commandID?: string | null) => {
         console.log('远控结果: xhr')
       }
     }
-  }, [isSuccess, commandID, data, hasWSData])
+  }, [isSuccess, commandID, data, hasWSData, resetFetchTimeout])
   /**
    *  有commandId时才开始倒计时
    *  远控下发命令的10s内不使用实况数据
@@ -83,17 +141,17 @@ export const useRemoteControlResult = (commandID?: string | null) => {
  * @param vin
  */
 export const useVehicleRealtimeControlInfo = (noUsingRTdataTimeout: number, vin?: string) => {
-  const [strongLight, setStrongLight] = useState<boolean | SetStateFn>()
-  const [alarmLight, setAlarmLight] = useState<boolean | SetStateFn>()
-  const [alarmRing, setAlarmRing] = useState<boolean | SetStateFn>()
-  const [locker1, setLocker1] = useState<boolean | SetStateFn>()
-  const [locker2, setLocker2] = useState<boolean | SetStateFn>()
+  const [strongLight, setStrongLight] = useState<SetStateAction<boolean> | boolean>()
+  const [alarmLight, setAlarmLight] = useState<SetStateAction<boolean> | boolean>()
+  const [alarmRing, setAlarmRing] = useState<SetStateAction<boolean> | boolean>()
+  const [locker1, setLocker1] = useState<SetStateAction<boolean> | boolean>()
+  const [locker2, setLocker2] = useState<SetStateAction<boolean> | boolean>()
   const [audioFile, setAudioFile] = useState<string>()
   const [videoFile, setVideoFile] = useState<string>()
   const [imageFile, setImageFile] = useState<string>()
   // const [remoteCall, setRemoteCall] = useState<string>()
 
-  const [drivingState, setDrivingState] = useState<boolean | SetStateFn>()
+  const [drivingState, setDrivingState] = useState<SetStateAction<boolean> | boolean>()
   const rtVehicleInfo = useVehicleRtInfo(vin)
 
   useEffect(() => {
@@ -150,22 +208,22 @@ export const useVehicleRealtimeControlInfo = (noUsingRTdataTimeout: number, vin?
     }
   }, [rtVehicleInfo, noUsingRTdataTimeout])
 
-  const setStrongLightCB = useCallback((bool: boolean | SetStateFn) => {
+  const setStrongLightCB = useCallback((bool: SetStateAction<boolean> | boolean) => {
     setStrongLight(bool)
   }, [])
-  const setAlarmLightCB = useCallback((bool: boolean | SetStateFn) => {
+  const setAlarmLightCB = useCallback((bool: SetStateAction<boolean> | boolean) => {
     setAlarmLight(bool)
   }, [])
-  const setAlarmRingCB = useCallback((bool: boolean | SetStateFn) => {
+  const setAlarmRingCB = useCallback((bool: SetStateAction<boolean> | boolean) => {
     setAlarmRing(bool)
   }, [])
-  const setLocker1CB = useCallback((bool: boolean | SetStateFn) => {
+  const setLocker1CB = useCallback((bool: SetStateAction<boolean> | boolean) => {
     setLocker1(bool)
   }, [])
-  const setLocker2CB = useCallback((bool: boolean | SetStateFn) => {
+  const setLocker2CB = useCallback((bool: SetStateAction<boolean> | boolean) => {
     setLocker2(bool)
   }, [])
-  const setDrivingCB = useCallback((bool: boolean | SetStateFn) => {
+  const setDrivingCB = useCallback((bool: SetStateAction<boolean> | boolean) => {
     setDrivingState(bool)
   }, [])
 
@@ -191,70 +249,6 @@ export const useVehicleRealtimeControlInfo = (noUsingRTdataTimeout: number, vin?
     setDrivingCB,
   }
 }
-
-/**
- * 获取车辆实时数据的Hook
- * @returns
- */
-export const useVehicleRtInfo = (vin?: string) => {
-  const [vehicleInfo, setVehicleInfo] = useState<VehicleResult>()
-  // const { data, isSuccess } = useLatestVehicleResultQuery(vin)
-
-  // useEffect(() => {
-  //   if (isSuccess && vin === data.vin) {
-  //     setVehicleInfo(data)
-  //   }
-  // }, [isSuccess, data, vin])
-
-  useEffect(() => {
-    const handler = (result: VehicleResult) => {
-      if (vin === result.vin) {
-        setVehicleInfo(result)
-      }
-    }
-
-    emitter.on('rtStatus', handler)
-    return () => {
-      emitter.off('rtStatus', handler)
-    }
-  }, [vin])
-
-  return vehicleInfo
-}
-
-/**
- * 基于commandId的倒计时
- * @param commandId
- * @param timeout
- * @returns
- */
-const useCountdown = (commandId: string | null | undefined, timeout: number) => {
-  const [num, setNum] = useState(0)
-
-  useInterval(() => {
-    if (!commandId) return
-    setNum((t) => Math.max(t - 1, 0)) // 倒计时到0为止
-  }, 1000)
-
-  useEffect(() => {
-    if (commandId) {
-      // 有新的远控任务时，重置commandId对应的⏲
-      console.debug(`倒计时重置`, timeout)
-      setNum(timeout)
-    }
-  }, [commandId, timeout])
-
-  // console.log(`=====倒计时: ${num}/${timeout}`, commandId)
-
-  const reset = useCallback(
-    (num: number) => {
-      setNum(num)
-    },
-    [num]
-  )
-
-  return { timeout: num, reset }
-}
 interface WebSocketMsg {
   data: string
   vin: string
@@ -266,7 +260,6 @@ export const useWebSocket = (url: string) => {
 
   useEffect(() => {
     if (!wsRef.current) {
-      //@ts-ignore
       wsRef.current = new WebSocket(`${WS_URL}${url}`)
       wsRef.current.onopen = () => {
         console.log(`ws: ${url} open`)
@@ -278,7 +271,7 @@ export const useWebSocket = (url: string) => {
           msgObj = JSON.parse(dataStr) as WebSocketMsg
         } catch (error) {}
         let realData: AnyToFix
-        let realDataStr = msgObj?.data || '{}'
+        const realDataStr = msgObj?.data || '{}'
         try {
           realData = JSON.parse(realDataStr)
         } catch (error) {}
@@ -294,7 +287,7 @@ export const useWebSocket = (url: string) => {
         }
       }
     }
-  }, [wsRef.current])
+  }, [WS_URL, url])
 
   return {
     ws: wsRef.current,

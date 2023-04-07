@@ -1,11 +1,12 @@
-import { Icon, IconClose } from '@/Components'
-import { RemotePanelType } from '@liutsing/types-utils'
+import type { RemotePanelType } from '@liutsing/types-utils'
 import { Empty, Skeleton, Timeline } from 'antd'
-import React, { Suspense, useCallback, useState, ElementType, memo, lazy, useEffect } from 'react'
+import type { ElementType } from 'react'
+import React, { Suspense, lazy, memo, useCallback, useState } from 'react'
 import { DividerLine } from './DividerLine'
 import { useWebSocket } from './useRemoteControl'
-// @ts-ignore
+// @ts-expect-error
 import styles from './style.module.less'
+import { Icon, IconClose } from '@/Components'
 
 interface ItemProps {
   name: string
