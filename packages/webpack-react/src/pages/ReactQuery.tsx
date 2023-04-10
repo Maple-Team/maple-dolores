@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 const fetchData = () => fetch('http://localhost:3001/api/zyc-blog', {}).then((res) => res.json())
 
-export const ReactQueryDemo = () => {
+export const ReactQuery = () => {
   const [flag, setFlag] = useState(0)
   const [num, setNum] = useState(0)
   console.log(flag)
@@ -31,11 +31,13 @@ export const ReactQueryDemo = () => {
   }, [data])
 
   const onRefetch = useCallback(() => {
-    refetch({ cancelRefetch: false })
-  }, [])
+    refetch({ cancelRefetch: false }).catch(console.log)
+  }, [refetch])
+
   const onRefresh = useCallback(() => {
     setFlag((_) => _ + 1)
   }, [])
+
   const increaseNum = useCallback(() => {
     setNum((_) => _ + 1)
   }, [])

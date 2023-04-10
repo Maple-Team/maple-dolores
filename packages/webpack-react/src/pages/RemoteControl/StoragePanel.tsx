@@ -71,7 +71,6 @@ const StoragePanel = () => {
         .then((id) => {
           message.success('发送成功')
           resetFetchTimeout(FETCH_REMOTE_CONTROL_TIMEOUT)
-          // @ts-expect-error
           commandIdRef.current = id
           setLocker1Loading(true)
         })

@@ -14,7 +14,8 @@
     "temp": "webpack --config config/webpack.temp.js",
     "lint": "eslint .",
     "lint:debug": "eslint . --debug",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "start": "react-scripts start"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
@@ -23,10 +24,11 @@
   "prettier": "@liutsing/prettier-config",
   "dependencies": {
     "@antv/g2plot": "^2.4.22",
-    "@pansy/react-amap": "^2.15.5",
+    "@pansy/react-amap": "link:/Volumes/T7/awaresome/react-amap/packages/amap",
     "ahooks": "^3.7.5",
-    "antd": "^5.3.3",
+    "antd": "^5.4.0",
     "lodash-es": "^4.17.21",
+    "rc-util": "^5.29.3",
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^6.9.0"
   },
@@ -57,6 +59,7 @@
     "postcss": "^8.4.21",
     "postcss-loader": "^6.1.1",
     "react-refresh": "^0.14.0",
+    "react-scripts": "5.0.1",
     "style-loader": "^3.3.1",
     "svg-sprite-loader": "^6.0.11",
     "tailwindcss": "^3.2.4",
@@ -65,5 +68,17 @@
     "webpack-cli": "^5.0.0",
     "webpack-dev-server": "^4.11.1",
     "webpack-merge": "^5.8.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

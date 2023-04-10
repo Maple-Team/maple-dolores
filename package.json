@@ -29,7 +29,6 @@
     "@babel/preset-typescript": "^7.18.6",
     "@liutsing/eslint-config": "^0.0.10",
     "@liutsing/prettier-config": "^0.0.1",
-    "@liutsing/rc-components": "^0.0.1",
     "@liutsing/tsconfig": "^0.0.5",
     "@nrwl/nx-cloud": "latest",
     "@tanstack/react-query-devtools": "^4.29.0",

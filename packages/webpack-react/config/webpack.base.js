@@ -12,7 +12,7 @@ const envKeys = require('../plugins/env.js')(appRootPath)
  * @type {import('webpack').Configuration}
  */
 const config = {
-  entry: path.resolve(__dirname, '../src/main.tsx'),
+  entry: path.resolve(__dirname, '../src/index.tsx'),
 
   // NOTE @antv/g2 按需加载
   resolve: {

@@ -4,7 +4,7 @@ import type { ElementType } from 'react'
 import React, { Suspense, lazy, memo, useCallback, useState } from 'react'
 import { DividerLine } from './DividerLine'
 import { useWebSocket } from './useRemoteControl'
-// @ts-expect-error
+
 import styles from './style.module.less'
 import { Icon, IconClose } from '@/Components'
 
@@ -36,10 +36,12 @@ const TabItem = memo(({ name, icon, checked, type, code, onClick, children: _chi
       } flex items-center pt-[5px] pb-[3px] px-4 mb-4 cursor-pointer first:mt-4`}
       onClick={() => onClick?.(code!)}
     >
-      <Icon
-        name={checked ? `${icon}-on` : `${icon}-off`}
-        className="w-[20px] h-[20px]"
-      />
+      {icon && (
+        <Icon
+          name={checked ? `${icon}-on` : `${icon}-off`}
+          className="w-[20px] h-[20px]"
+        />
+      )}
       <span className="ml-3">{name}</span>
     </div>
   )
@@ -70,7 +72,7 @@ export const RemoteControlCard = memo(() => {
   return (
     //  w-[669px] h-[637px]
     <div
-      className={`${styles.container} absolute rounded top-0
+      className={`${styles.container} rounded mt-3 bg-white
       transition-all duration-500 ease-in will-change-transform`}
     >
       <header className="justify-between flex items-center px-4 pt-[11px] pb-[10px] border-0 border-b-[1px] border-solid border-[#0000001A]">

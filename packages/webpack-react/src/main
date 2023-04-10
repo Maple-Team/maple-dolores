@@ -9,8 +9,9 @@ import Root from './routes/root'
 import ErrorPage from './error-page'
 
 import { RemoteControlCard } from './pages/RemoteControl'
-import { ReactQueryDemo } from './pages/ReactQuery'
+import { ReactQuery } from './pages/ReactQuery'
 import { ReactAmap } from './pages/amap'
+import { ReactDemo } from './pages/ReactDemo'
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/rc',
+        path: '/react-hooks',
         element: <RemoteControlCard />,
       },
       {
@@ -27,8 +28,16 @@ const router = createBrowserRouter([
         element: <ReactAmap />,
       },
       {
+        path: '/react-tooltip',
+        element: <ReactAmap />,
+      },
+      {
         path: '/react-query',
-        element: <ReactQueryDemo />,
+        element: <ReactQuery />,
+      },
+      {
+        path: '/react-Demo',
+        element: <ReactDemo />,
       },
     ],
   },
