@@ -1,23 +1,5 @@
-import { Button } from 'antd'
-import React, { useCallback, useEffect } from 'react'
 import { render } from 'rc-util/lib/React/render'
-import { UseImperativeDemo } from '@/Components/use-imperative-example'
-
-export const ReactDemo = () => {
-  const showMsg = useCallback(() => {
-    message.info()
-  }, [])
-  useEffect(() => {
-    showMsg()
-  }, [showMsg])
-  return (
-    <div>
-      <Button onClick={showMsg}>showMsg</Button>
-      <UseImperativeDemo />
-    </div>
-  )
-}
-
+import React from 'react'
 // TODO 实现message/notification
 
 export class message {
