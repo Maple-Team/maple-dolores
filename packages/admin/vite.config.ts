@@ -1,14 +1,13 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+import path from 'path'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
-import path from 'path'
 import Inspect from 'vite-plugin-inspect'
 import { getPort } from '../../build/util'
 import { name } from './package.json'
 
 const port = getPort(name)
-
-// https://vitejs.dev/config/
 
 export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
@@ -29,7 +28,7 @@ export default ({ mode }) => {
         {
           // find: /@\//,
           find: '@/',
-          replacement: path.resolve(__dirname, 'src') + '/',
+          replacement: `${path.resolve(__dirname, 'src')}/`,
         },
       ],
     },

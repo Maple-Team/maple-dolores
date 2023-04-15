@@ -30,4 +30,11 @@ export const routes = [
       hidden: true,
     },
   },
+  {
+    path: '/video/:id',
+    component: () => import('@/views/video/detail.vue'),
+    meta: {
+      hidden: true,
+    },
+  },
 ]
