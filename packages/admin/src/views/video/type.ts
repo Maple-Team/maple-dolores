@@ -16,4 +16,12 @@ export interface PlayerOptions {
   aspectRatio?: string
   fluid?: boolean | undefined
   controlBar?: AnyToFix
+  bigPlayButton?: boolean
 }
+export interface LzzModel {
+  year: number
+  date: string
+  time: string[]
+  _id: string
+}
+export type LzzResponse = Record<string, LzzModel[]>

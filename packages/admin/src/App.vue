@@ -1,3 +1,11 @@
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { capitalize } from '@liutsing/utils'
+import { links as _links, routerMap } from '@/utils'
+
+const links = ref<string[]>(_links)
+</script>
+
 <template>
   <aside class="aside w-[140px]">
     <a-menu mode="vertical">
@@ -22,13 +30,6 @@
   </main>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { links as _links, routerMap } from '@/utils'
-import { capitalize } from '@liutsing/utils'
-
-const links = ref<string[]>(_links)
-</script>
 <style scoped lang="less">
 .aside {
   box-shadow: 0 0 5px #eee;

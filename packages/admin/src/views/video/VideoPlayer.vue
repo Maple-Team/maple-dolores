@@ -1,15 +1,9 @@
-<template>
-  <video
-    ref="playerRef"
-    class="video-js"
-  ></video>
-</template>
-
 <script setup lang="ts">
-import { onMounted, ref, watch, onUnmounted, PropType } from 'vue'
+import type { PropType } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import Videojs from 'video.js'
-import Player from 'video.js/dist/types/player'
-import { PlayerOptions } from './type'
+import type Player from 'video.js/dist/types/player'
+import type { PlayerOptions } from './type'
 import 'video.js/dist/video-js.min.css'
 
 const props = defineProps({
@@ -29,9 +23,7 @@ watch(
   () => props.options?.sources,
   () => {
     console.log(props.options?.sources[0].src)
-    if (player) {
-      player.src(props.options?.sources[0].src)
-    }
+    if (player) player.src(props.options?.sources[0].src)
   },
   { deep: true }
 )
@@ -39,3 +31,10 @@ onUnmounted(() => {
   player && player.dispose()
 })
 </script>
+
+<template>
+  <video
+    ref="playerRef"
+    class="video-js"
+  ></video>
+</template>

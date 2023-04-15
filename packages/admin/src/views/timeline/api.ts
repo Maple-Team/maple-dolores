@@ -1,7 +1,8 @@
-import { request } from '@/utils'
-import type { Timeline } from './type'
 import { useQuery } from '@tanstack/vue-query'
-import { Ref, unref } from 'vue'
+import type { Ref } from 'vue'
+import { unref } from 'vue'
+import type { Timeline } from './type'
+import { request } from '@/utils'
 
 export const fetchList = async (params: Params<{ type?: Timeline['type'] }>) => {
   return request<BaseList<Timeline>>({ url: '/timeline', params })
