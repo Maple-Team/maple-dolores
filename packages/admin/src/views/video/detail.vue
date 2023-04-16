@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, nextTick, onUpdated, ref } from 'vue'
 import { chunk } from 'lodash-es'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import VideoPlayer from './VideoPlayer.vue'
-import type { PlayerOptions } from './type'
+import type { LzzModel, PlayerOptions } from './type'
 import { useListQuery } from './api'
 
 const route = useRoute()
+const router = useRouter()
+
 const query = route.query
 const date = ref<string>(query.date as string)
 const time = ref<string>(query.time as string)
 
-const options = ref<PlayerOptions>({
+const options = computed<PlayerOptions>(() => ({
   sources: [
     {
       src: `http://localhost:4091/bilibili/liuzaozao/${date.value}/${date.value}${time.value}/playlist.m3u8`,
@@ -67,22 +69,33 @@ const options = ref<PlayerOptions>({
       },
     ],
   },
-})
-const title = ref<string>()
+}))
 
-const openKeys = ref<string[]>([])
-const setPlayUrl = (date: string, time: string) => {
+const getTitleStr = (date: string, time: string) => {
+  const dateArr = date.replace(/(?<=\d{4})\d+/, ($0) => `-${$0}`).split('-')
   const timeChunksStr = chunk(time.split(''), 2)
     .map((item) => item.join(''))
     .join(':')
-  const dateArr = date.replace(/(?<=\d{4})\d+/, ($0) => `-${$0}`).split('-')
-  title.value = `${dateArr[0]}-${dateArr[1].replace(/(?<=\d{2})\d+/, ($0) => `-${$0}`)} ${timeChunksStr}`
-  options.value.sources = [
-    {
-      src: `http://localhost:4091/bilibili/liuzaozao/${date}/${date}${time}/playlist.m3u8`,
-      type: 'application/vnd.apple.mpegurl',
-    },
-  ]
+  return `${dateArr[0]}-${dateArr[1].replace(/(?<=\d{2})\d+/, ($0) => `-${$0}`)} ${timeChunksStr}`
+}
+const title = computed(() => getTitleStr(date.value, time.value))
+
+const openKeys = ref<string[]>([date.value])
+const selectedKeys = ref<string[]>([time.value])
+
+const updateDateTime = ({ _id, date: dateStr }: LzzModel, timeStr: string) => {
+  router
+    .push({
+      path: `/video/${_id}`,
+      query: {
+        date: dateStr,
+        time: timeStr,
+      },
+    })
+    .then(() => {
+      date.value = dateStr
+      time.value = timeStr
+    })
 }
 
 const onOpenChange = (keys: string[]) => {
@@ -90,6 +103,20 @@ const onOpenChange = (keys: string[]) => {
   openKeys.value = latestOpenKey ? [latestOpenKey] : []
 }
 const { data, isFetching } = useListQuery()
+
+onUpdated(() => {
+  console.log(query, date.value, time.value)
+})
+
+nextTick(() => {
+  console.log('nextTick')
+  // TODO 滚动处理
+  try {
+    document.getElementById(`${date.value}-${time.value}`)?.scrollIntoView({ behavior: 'smooth' })
+  } catch (err) {
+    console.error('nexttick', err)
+  }
+})
 </script>
 
 <template>
@@ -100,7 +127,7 @@ const { data, isFetching } = useListQuery()
         class="rounded"
       />
       <div class="bg-white mt-3 rounded p-2 flex-1">
-        <div>标题:</div>
+        <div>标题: 刘灶灶日常直播{{ time.substring(0, 2) }}点场</div>
         <div>时间: {{ title }}</div>
         <div>
           关键字:
@@ -120,6 +147,7 @@ const { data, isFetching } = useListQuery()
         mode="inline"
         :open-keys="openKeys"
         @openChange="onOpenChange"
+        v-model:selectedKeys="selectedKeys"
       >
         <a-sub-menu
           v-for="item in data"
@@ -131,7 +159,10 @@ const { data, isFetching } = useListQuery()
             :key="t"
             class="cursor-pointer"
           >
-            <span @click="setPlayUrl(item[0].date, t)">
+            <span
+              @click="updateDateTime(item[0], t)"
+              :id="`${date}-${t}`"
+            >
               {{ t }}
             </span>
           </a-menu-item>

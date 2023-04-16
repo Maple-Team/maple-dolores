@@ -72,7 +72,7 @@ const transFormData = computed(() => {
               :options="options"
               class="rounded h-40"
             />
-            <span>{{ dateStr }} {{ time.substring(0, 2) }}点场 </span>
+            <span>{{ dateStr }} 刘灶灶{{ time.substring(0, 2) }}点场</span>
           </RouterLink>
         </a-col>
       </a-row>
