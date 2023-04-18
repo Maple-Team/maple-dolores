@@ -7,7 +7,7 @@ export const useStateDemo = (arg: number) => {
     setNum(n)
   }, [])
 
-  console.log(num, 'num', arg)
+  console.log({ num, arg })
 
   return {
     num,
@@ -22,7 +22,7 @@ export const Component1 = () => {
 
 export const Component2 = () => {
   const { num, changeNum } = useStateDemo(2)
-
+  console.count('render')
   return (
     <div
       style={{ width: 100, padding: 6 }}

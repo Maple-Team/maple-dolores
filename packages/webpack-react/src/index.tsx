@@ -1,3 +1,4 @@
+import './wdyr'
 import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -37,11 +38,10 @@ const router = createBrowserRouter([
         path: '/react-hooks',
         element: <RemoteControlCard />,
       },
-
-      {
-        path: '/react-tooltip',
-        element: <ReactAmap />,
-      },
+      // {
+      //   path: '/react-tooltip',
+      //   element: <ReactAmap />,
+      // },
       {
         path: '/react-query',
         element: <ReactQuery />,
