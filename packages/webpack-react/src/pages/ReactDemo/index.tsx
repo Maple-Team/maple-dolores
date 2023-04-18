@@ -11,6 +11,7 @@ export const ReactDemo = () => {
     message.info()
   }, [])
   const [num, setNum] = useState<number>(0)
+
   return (
     <div>
       <Button onClick={showMsg}>showMsg</Button>
@@ -25,7 +26,11 @@ export const ReactDemo = () => {
       <UseImperativeDemo />
       <UseDebugValueDemo />
       <Component1 />
-      <Component2 />
+      <Component2
+        onClick={() => {
+          console.log('123')
+        }}
+      />
     </div>
   )
 }

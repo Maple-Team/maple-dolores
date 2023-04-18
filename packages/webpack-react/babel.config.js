@@ -1,14 +1,16 @@
 module.exports = {
   presets: [
-    [
-      '@babel/preset-env',
-      {
-        useBuiltIns: 'usage',
-        corejs: '3.26.1',
-        exclude: [],
-        targets: {},
-      },
-    ],
+    process.env.NODE_ENV === 'development'
+      ? '@babel/preset-env'
+      : [
+          '@babel/preset-env',
+          {
+            useBuiltIns: 'usage',
+            corejs: '3.26.1',
+            exclude: [],
+            targets: {},
+          },
+        ],
     [
       '@babel/preset-react',
       {
@@ -19,7 +21,16 @@ module.exports = {
     ],
     '@babel/preset-typescript',
   ],
-  plugins: ['@babel/plugin-transform-runtime'],
+  plugins: [
+    process.env.NODE_ENV === 'development' && [
+      '@babel/plugin-transform-runtime', 
+      {
+        absoluteRuntime: false,
+        corejs: false,
+        version: '^7.20.6',
+      },
+    ],
+  ].filter(Boolean),
   env: {
     test: {
       presets: [

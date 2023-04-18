@@ -5,8 +5,8 @@ if (process.env.NODE_ENV === 'development') {
   console.log(whyDidYouRender)
   whyDidYouRender(React, {
     trackAllPureComponents: true,
-    logOnDifferentValues: true,
-    logOwnerReasons: true,
+    // logOnDifferentValues: true,
+    // logOwnerReasons: false,
     trackHooks: true,
   })
 }
