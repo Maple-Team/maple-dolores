@@ -56,6 +56,14 @@ export default () => {
         nav('/react-demo')
       },
     },
+    {
+      label: 'React Panel',
+      key: 'react-panel',
+      style: { cursor: 'pointer' },
+      onClick() {
+        nav('/react-panel')
+      },
+    },
   ]
   return (
     <div className="flex h-full">

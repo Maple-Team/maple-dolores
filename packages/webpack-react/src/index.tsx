@@ -13,6 +13,7 @@ import ErrorPage from './error-page'
 import { RemoteControlCard } from './pages/RemoteControl'
 import { ReactAmap } from './pages/amap'
 import { ReactDemo } from './pages/ReactDemo'
+import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
 
 const queryCache = new QueryCache()
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: '/react-Demo',
         element: <ReactDemo />,
+      },
+      {
+        path: '/react-panel',
+        element: <ReactPanel />,
       },
     ],
   },

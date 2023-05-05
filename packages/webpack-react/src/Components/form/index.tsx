@@ -31,7 +31,7 @@ const CustomButton = ({
     (e: MouseEvent) => {
       onClick(e, additionalParameter)
     },
-    [additionalParameter]
+    [additionalParameter, onClick]
   )
 
   return <Button onClick={onInnerClick}>{children}</Button>
