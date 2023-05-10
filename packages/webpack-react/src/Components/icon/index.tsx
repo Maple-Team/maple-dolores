@@ -29,7 +29,7 @@ interface IconProps {
 export const Icon = ({ name, className, currentColor, onClick, style }: IconProps) => {
   return (
     <svg
-      className={`${className} align-middle`}
+      className={`${className ?? ''} align-middle`}
       onClick={onClick}
       fill={currentColor}
       style={style}
@@ -46,7 +46,7 @@ export const Icon = ({ name, className, currentColor, onClick, style }: IconProp
 export const IconClose = ({ onClick, className }: { className?: string; onClick?: () => void }) => (
   <Icon
     name="icon-close"
-    className={`w-[24px] h-[24px] cursor-pointer ${className}`}
+    className={`w-[24px] h-[24px] cursor-pointer ${className ?? ''}`}
     onClick={onClick}
   />
 )

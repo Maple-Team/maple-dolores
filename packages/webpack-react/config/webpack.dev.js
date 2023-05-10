@@ -46,4 +46,11 @@ module.exports = merge(dev, {
       },
     },
   },
+  resolve: {
+    alias: {
+      // NOTE 因依赖调试本地的@liutsing/rc-components, 确保同一份react/react-dom
+      react: '/root/maple/base/node_modules/react',
+      'react-dom': '/root/maple/base/node_modules/react-dom',
+    },
+  },
 })
