@@ -22,8 +22,9 @@ module.exports = {
     '@babel/preset-typescript',
   ],
   plugins: [
+    process.env.NODE_ENV === 'development' && require.resolve('react-refresh/babel'),
     process.env.NODE_ENV === 'development' && [
-      '@babel/plugin-transform-runtime', 
+      '@babel/plugin-transform-runtime',
       {
         absoluteRuntime: false,
         corejs: false,

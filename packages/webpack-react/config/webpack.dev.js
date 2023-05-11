@@ -1,8 +1,9 @@
 const path = require('path')
+const webpack = require('webpack')
 const { dev } = require('@liutsing/webpack-config')
 const { merge } = require('webpack-merge')
 
-module.exports = merge(dev, {
+const config = merge(dev, {
   devtool: 'cheap-module-source-map',
   entry: path.resolve(__dirname, '../src/index.tsx'),
   experiments: {
@@ -53,4 +54,12 @@ module.exports = merge(dev, {
       'react-dom': '/root/maple/base/node_modules/react-dom',
     },
   },
+  plugins: [
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: path.join(__dirname, '../dll', 'vendor-manifest.json'),
+    }),
+  ],
 })
+
+module.exports = config
