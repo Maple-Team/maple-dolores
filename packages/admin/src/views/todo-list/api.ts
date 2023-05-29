@@ -1,6 +1,6 @@
+import { useMutation, useQuery } from '@tanstack/vue-query'
+import type { Todo } from './type'
 import { request } from '@/utils'
-import { useQuery, useMutation } from '@tanstack/vue-query'
-import { Todo } from './type'
 
 const syncTodos = async (data: Todo[]) => {
   return request<BaseResponse<null>>({ url: '/todos', data, method: 'POST' })

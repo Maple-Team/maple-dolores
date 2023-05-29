@@ -11,6 +11,7 @@ importers:
       '@liutsing/eslint-config': ^0.0.10
       '@liutsing/prettier-config': ^0.0.1
       '@liutsing/tsconfig': ^0.0.5
+      '@liutsing/types-utils': ~0.0.8
       '@liutsing/utils': ^0.0.8
       '@nrwl/nx-cloud': latest
       '@tanstack/react-query': ^4.28.0
@@ -64,6 +65,7 @@ importers:
       '@liutsing/eslint-config': 0.0.10_xzmbiupdb5npivbxsd3svt2uom
       '@liutsing/prettier-config': 0.0.1
       '@liutsing/tsconfig': 0.0.5
+      '@liutsing/types-utils': 0.0.8
       '@nrwl/nx-cloud': 16.0.5
       '@tanstack/react-query-devtools': 4.29.0_q4teel2yjbizrm4naiaqcdpjum
       '@types/jest': 29.0.3
@@ -4451,6 +4453,10 @@ packages:
 
   /@liutsing/types-utils/0.0.7:
     resolution: {integrity: sha512-BtqQw3je9bG/bVmTlg3pqs/2lN1/otp/UfhKpy3+4Gju3FMoMuUCmyIjWTcyOdP9cb2ndJolt6QbK4LgX4EUvw==}
+    dev: true
+
+  /@liutsing/types-utils/0.0.8:
+    resolution: {integrity: sha512-co5ehG0cUGG4KKdufK9H3OIrxvZxPIqIGiGw6Vdpk6gxJSfnbPaG589mwTCB9xeIAMJq7YSk7bk7hXAc5167gQ==}
     dev: true
 
   /@liutsing/utils/0.0.8:

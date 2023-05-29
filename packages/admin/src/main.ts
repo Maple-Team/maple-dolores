@@ -1,13 +1,14 @@
 import { createApp, h } from 'vue'
 import './style.css'
-import App from './App.vue'
-import { routes } from './router'
 import Antd, { message } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import { vueBridge } from '@garfish/bridge-vue-v3'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
+
 import directives from './directives'
+import App from './App.vue'
+import { routes } from './router'
 
 function newRouter(basename: string) {
   const router = createRouter({
