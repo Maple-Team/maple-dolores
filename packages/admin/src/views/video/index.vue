@@ -64,7 +64,7 @@ const transFormData = computed(() => {
       <a-row :gutter="[16, 16]">
         <a-col
           :span="4"
-          v-for="{ _id, dateStr, timeStr, options, date, time } in transFormData"
+          v-for="{ _id, dateStr, options, date, time } in transFormData"
           :key="`${_id}_${time}`"
         >
           <RouterLink :to="`/video/${_id}?date=${date}&time=${time}`">
@@ -72,7 +72,7 @@ const transFormData = computed(() => {
               :options="options"
               class="rounded h-40"
             />
-            <span>{{ dateStr }} {{ timeStr }}点录播 </span>
+            <span>{{ dateStr }} 刘灶灶{{ time.substring(0, 2) }}点场</span>
           </RouterLink>
         </a-col>
       </a-row>

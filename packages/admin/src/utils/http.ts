@@ -1,7 +1,9 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { BaseResponse } from '@liutsing/types-utils'
 import { API_TIMEOUT } from '@/utils/constant'
 import emitter from '@/utils/emitter'
+
 declare module 'axios' {
   interface AxiosRequestConfig {
     /**
@@ -19,14 +21,13 @@ const api = axios.create({
 })
 
 api.interceptors.request.use(
-  async function (config: AxiosRequestConfig) {
-    if (config.headers) {
-      config.headers['X-API-VERSION'] = 'v1'
-    }
-    if (!config.noPrefix) config.url = `/api${config.url}`
+  async (config: AxiosRequestConfig) => {
+    if (config.headers) config.headers['X-API-VERSION'] = 'v1'
+
+    if (!config.noPrefix) config.url = `/api${config.url || ''}`
     return config
   },
-  function (error: AxiosError) {
+  (error: AxiosError) => {
     emitter.emit('REQUEST_ERROR', error)
     return Promise.reject(error)
   }

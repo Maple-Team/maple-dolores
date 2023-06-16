@@ -1,3 +1,81 @@
+<script setup lang="ts">
+import type { Directive, Ref } from 'vue'
+import { computed, ref, unref, watchEffect } from 'vue'
+import { uuid } from '@liutsing/utils'
+import { message } from 'ant-design-vue'
+import MdiSync from './MdiSync.vue'
+import type { FilterType, Todo } from './type'
+import FilterTab from './FilterTab.vue'
+import { useTodoMutation } from './api'
+
+// TODO 1. 路由
+type FocusableElement = HTMLInputElement | HTMLTextAreaElement
+const vFocus: Directive<FocusableElement, boolean> = {
+  updated: (el, binding) => {
+    if (binding.value) el.focus()
+  },
+}
+const storageKey = 'maple-todo'
+const todoStr = localStorage.getItem(storageKey) || '[]'
+const todos: Ref<Todo[]> = ref<Todo[]>(JSON.parse(todoStr))
+const newTodo = ref('')
+const editedTodo = ref<Todo | null>(null)
+const visibility = ref<FilterType>('all')
+
+const filteredTodos = computed<Todo[]>(() =>
+  // eslint-disable-next-line prettier/prettier
+  visibility.value === 'all' ? todos.value : todos.value.filter(({ completed }) => (visibility.value === 'active' ? !completed : completed))
+)
+const remaining = computed(() => todos.value.filter(({ completed }) => !completed).length)
+
+const allDone = computed(() => remaining.value === 0)
+
+const removeCompleted = () => {
+  todos.value = todos.value.filter(({ completed }) => !completed)
+}
+const editTodo = (todo: Todo) => {
+  editedTodo.value = todo
+}
+const doneEdit = (todo: Todo) => {
+  const index = todos.value.findIndex((item) => item.id === todo.id)
+  todos.value[index] = todo
+  editedTodo.value = null
+}
+const cancelEdit = () => {
+  editedTodo.value = null
+}
+const removeTodo = (todo: Todo) => {
+  const index = todos.value.findIndex((item) => item === todo)
+  todos.value.splice(index >>> 0, 1)
+}
+
+const addTodo = () => {
+  todos.value.push({
+    title: newTodo.value,
+    id: uuid(10),
+  })
+  newTodo.value = ''
+}
+
+const pluralize = (word: string, count: number) => {
+  return word + (count === 1 ? '' : 's')
+}
+const { mutate, isLoading } = useTodoMutation()
+const sync = () => {
+  if (isLoading.value) return
+  mutate(unref(todos.value), {
+    onSuccess: () => {
+      message.success('同步成功')
+    },
+  })
+}
+
+watchEffect(() => {
+  localStorage.setItem(storageKey, JSON.stringify(todos.value))
+  console.log(`write: ${todos.value.length}`)
+})
+</script>
+
 <template>
   <div class="">
     <section class="todoapp">
@@ -77,85 +155,6 @@
     </section>
   </div>
 </template>
-<script setup lang="ts">
-import { ref, computed, Ref, Directive, watchEffect, unref } from 'vue'
-import MdiSync from './MdiSync.vue'
-import { uuid } from '@liutsing/utils'
-import type { Todo, FilterType } from './type'
-import FilterTab from './FilterTab.vue'
-import { useTodoMutation } from './api'
-import { message } from 'ant-design-vue'
-
-// TODO 1. 路由
-type FocusableElement = HTMLInputElement | HTMLTextAreaElement
-const vFocus: Directive<FocusableElement, boolean> = {
-  updated: (el, binding) => {
-    if (binding.value) {
-      el.focus()
-    }
-  },
-}
-const storageKey = 'maple-todo'
-const todoStr = localStorage.getItem(storageKey) || '[]'
-const todos: Ref<Todo[]> = ref<Todo[]>(JSON.parse(todoStr))
-const newTodo = ref('')
-const editedTodo = ref<Todo | null>(null)
-const visibility = ref<FilterType>('all')
-
-const filteredTodos = computed<Todo[]>(() =>
-  visibility.value === 'all'
-    ? todos.value
-    : todos.value.filter(({ completed }) => (visibility.value === 'active' ? !completed : completed))
-)
-const remaining = computed(() => todos.value.filter(({ completed }) => !completed).length)
-
-const allDone = computed(() => remaining.value === 0)
-
-const removeCompleted = () => {
-  todos.value = todos.value.filter(({ completed }) => !completed)
-}
-const editTodo = (todo: Todo) => {
-  editedTodo.value = todo
-}
-const doneEdit = (todo: Todo) => {
-  const index = todos.value.findIndex((item) => item.id === todo.id)
-  todos.value[index] = todo
-  editedTodo.value = null
-}
-const cancelEdit = () => {
-  editedTodo.value = null
-}
-const removeTodo = (todo: Todo) => {
-  const index = todos.value.findIndex((item) => item === todo)
-  todos.value.splice(index >>> 0, 1)
-}
-
-const addTodo = () => {
-  todos.value.push({
-    title: newTodo.value,
-    id: uuid(10),
-  })
-  newTodo.value = ''
-}
-
-const pluralize = (word: string, count: number) => {
-  return word + (count === 1 ? '' : 's')
-}
-const { mutate, isLoading } = useTodoMutation()
-const sync = () => {
-  if (isLoading.value) return
-  mutate(unref(todos.value), {
-    onSuccess: () => {
-      message.success('同步成功')
-    },
-  })
-}
-
-watchEffect(() => {
-  localStorage.setItem(storageKey, JSON.stringify(todos.value))
-  console.log(`write: ${todos.value.length}`)
-})
-</script>
 
 <style>
 @import './index.css';

@@ -1,3 +1,11 @@
+<script lang="ts" setup>
+defineProps({
+  isLoading: {
+    type: Boolean,
+  },
+})
+</script>
+
 <template>
   <div
     class="cursor-pointer text-lg px-2"
@@ -18,13 +26,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-defineProps({
-  isLoading: {
-    type: Boolean,
-  },
-})
-</script>
 <style>
 @-webkit-keyframes rotating /* Safari and Chrome */ {
   from {

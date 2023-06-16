@@ -2,12 +2,13 @@ import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import React, { useCallback, useEffect, useState } from 'react'
 
-const fetchData = () => fetch('http://localhost:3001/api/zyc-blog', {}).then((res) => res.json())
+const fetchData = () => fetch('http://192.168.108.201:3001/api/zyc-blog', {}).then((res) => res.json())
 
 export const ReactQuery = () => {
   const [flag, setFlag] = useState(0)
   const [num, setNum] = useState(0)
-  console.log(flag)
+
+  console.log(flag, num)
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -18,16 +19,27 @@ export const ReactQuery = () => {
     }
   }, [])
 
-  const { data, isLoading, error, refetch } = useQuery(['fetchData'], fetchData, {
-    refetchInterval: 1000 * 30 * 1,
+  const { data, isLoading, error, refetch } = useQuery(['fetchData', flag], fetchData, {
+    // refetchInterval: 1000 * 30 * 1,
     // refetchIntervalInBackground: true,
     // keepPreviousData: true,
-    refetchOnWindowFocus: false,
-    cacheTime: 20 * 1000,
-    staleTime: 10 * 1000,
+
+    // cacheTime: 10 * 1000,
+    // // staleTime: 0 * 1000,
+    // keepPreviousData: true,
+
+    staleTime: 5 * 1000,
+    cacheTime: 60 * 1000,
   })
   useEffect(() => {
-    if (data) console.log('fetched: ', dayjs().format('YYYY-MM-DD HH:mm:ss'))
+    console.log('[req-log]: mounted', dayjs().format('YYYY-MM-DD HH:mm:ss'))
+    return () => {
+      console.log('[req-log]: unmounted', dayjs().format('YYYY-MM-DD HH:mm:ss'))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (data) console.log('[req-log]: fetched: ', dayjs().format('YYYY-MM-DD HH:mm:ss'))
   }, [data])
 
   const onRefetch = useCallback(() => {

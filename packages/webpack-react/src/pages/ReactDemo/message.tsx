@@ -1,4 +1,5 @@
 import { render } from 'rc-util/lib/React/render'
+// import { render } from 'react-dom'
 import React from 'react'
 // TODO 实现message/notification
 

@@ -1,18 +1,34 @@
+import './wdyr'
 import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import './main.css'
+// import './main.css'
 import './assets/svg-icons'
-import 'antd/dist/reset.css'
+// import 'antd/dist/reset.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Root from './routes/root'
 import ErrorPage from './error-page'
 
 import { RemoteControlCard } from './pages/RemoteControl'
-import { ReactQuery } from './pages/ReactQuery'
 import { ReactAmap } from './pages/amap'
 import { ReactDemo } from './pages/ReactDemo'
+import ReactPanel from './pages/panel'
+import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
+
+const queryCache = new QueryCache()
+
+window.queryCache = queryCache
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+      retry: false,
+    },
+  },
+  queryCache,
+})
 
 const router = createBrowserRouter([
   {
@@ -28,48 +44,37 @@ const router = createBrowserRouter([
         path: '/react-amap',
         element: <ReactAmap />,
       },
-      {
-        path: '/react-query',
-        element: <ReactQuery />,
-      },
 
       {
         path: '/react-hooks',
         element: <RemoteControlCard />,
       },
-
-      {
-        path: '/react-tooltip',
-        element: <ReactAmap />,
-      },
+      // {
+      //   path: '/react-tooltip',
+      //   element: <ReactAmap />,
+      // },
       {
         path: '/react-query',
-        element: <ReactQuery />,
+        element: <ReactQueryWrapper />,
       },
       {
         path: '/react-Demo',
         element: <ReactDemo />,
       },
+      {
+        path: '/react-panel',
+        element: <ReactPanel />,
+      },
     ],
   },
 ])
-
-const queryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: true,
-        retry: false,
-      },
-    },
-  })
 
 const rootElement = document.getElementById('app') as HTMLElement
 const root = createRoot(rootElement)
 
 root.render(
   <StrictMode>
-    <QueryClientProvider client={queryClient()}>
+    <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen />
     </QueryClientProvider>

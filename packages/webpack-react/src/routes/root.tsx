@@ -56,6 +56,14 @@ export default () => {
         nav('/react-demo')
       },
     },
+    {
+      label: 'React Panel',
+      key: 'react-panel',
+      style: { cursor: 'pointer' },
+      onClick() {
+        nav('/react-panel')
+      },
+    },
   ]
   return (
     <div className="flex h-full">
@@ -66,7 +74,7 @@ export default () => {
         />
       </aside>
       <main className="flex-1 flex flex-col justify-between">
-        <header className="py-3">header</header>
+        <header className="py-3 px-4">&nbsp;</header>
         <div className="flex-1 px-4 bg-gray-100">
           <Outlet />
         </div>

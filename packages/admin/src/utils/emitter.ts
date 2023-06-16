@@ -9,6 +9,7 @@ type MessageType = 'info' | 'success' | 'fail' | 'offline'
 /**
  * 通用事件类型及参数
  */
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type Events = {
   SESSION_EXPIRED?: string
   SHOW_MESSAGE: { message: string; type: MessageType }
