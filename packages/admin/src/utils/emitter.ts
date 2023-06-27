@@ -21,6 +21,8 @@ export type Events = {
   // 业务
   CREATED_ROOM: { room: string; socketId: string }
   JOINED_ROOM: { room: string; socketId: string }
+  USER_LEAVE: string
+  NEW_USER: { socketId: string; stream: MediaStream }
 }
 
 /**
