@@ -6,6 +6,7 @@ import legacy from '@vitejs/plugin-legacy'
 import Inspect from 'vite-plugin-inspect'
 import { getPort } from '../../build/util'
 import { name } from './package.json'
+import fs from 'fs'
 
 const port = getPort(name)
 
@@ -51,6 +52,10 @@ export default ({ mode }) => {
           target: 'ws://localhost:3001/',
           changeOrigin: true,
         },
+      },
+      https: isProd || {
+        cert: fs.readFileSync('./localhost+3.pem'),
+        key: fs.readFileSync('./localhost+3-key.pem'),
       },
     },
     build: {

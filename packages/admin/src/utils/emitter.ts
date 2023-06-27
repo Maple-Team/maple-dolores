@@ -18,6 +18,9 @@ export type Events = {
   LOGOUT_SUCCESS?: string
   RESPONSE_ERROR: AxiosError
   REQUEST_ERROR: AxiosError
+  // 业务
+  CREATED_ROOM: { room: string; socketId: string }
+  JOINED_ROOM: { room: string; socketId: string }
 }
 
 /**
