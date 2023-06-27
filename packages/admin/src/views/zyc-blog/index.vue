@@ -4,6 +4,7 @@ import { Tag } from 'ant-design-vue'
 import type { TableColumnProps } from 'ant-design-vue'
 import { RouterLink } from 'vue-router'
 import { useQuery } from '@tanstack/vue-query'
+import type { BaseList } from '@liutsing/types-utils'
 import type { Blog } from './type'
 import { fetchCategory, fetchList } from './api'
 
@@ -119,7 +120,7 @@ const { data: categories } = useQuery<string[]>(['zyc-blog-category'], fetchCate
           <a-button
             style="margin-left: 10px"
             @click.prevent="handleReset"
-            >重置</a-button
+          >重置</a-button
           >
         </a-form-item>
       </a-col>

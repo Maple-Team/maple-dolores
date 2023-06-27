@@ -4,6 +4,6 @@ export interface Meitu extends Bean {
   title: string
   images: string[]
   tags: string[]
-  modelName: string[]
+  modelName: string
   orgName: string
 }

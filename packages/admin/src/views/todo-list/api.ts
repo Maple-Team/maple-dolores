@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/vue-query'
+import type { BaseList, BaseResponse } from '@liutsing/types-utils'
 import type { Todo } from './type'
 import { request } from '@/utils'
 

@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/vue-query'
 import type { Ref } from 'vue'
 import { unref } from 'vue'
+import type { BaseList, BaseParams } from '@liutsing/types-utils'
 import type { Timeline } from './type'
 import { request } from '@/utils'
 
-export const fetchList = async (params: Params<{ type?: Timeline['type'] }>) => {
+export const fetchList = async (params: BaseParams<{ type?: Timeline['type'] }>) => {
   return request<BaseList<Timeline>>({ url: '/timeline', params })
 }
 const searchKey = 'timeline-list-key'
