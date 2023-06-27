@@ -54,11 +54,13 @@ export class WebRtc extends EventTarget {
 
     // 已加入房间
     this.socket?.on('joined', (room, socketId) => {
-      console.log(room, socketId)
       emitter.emit('JOINED_ROOM', {
         room,
         socketId,
       })
+      this.isReady = true
+      this.room = room
+      this._myId = socketId
     })
 
     this.socket?.on('log', (msg) => {
@@ -98,12 +100,12 @@ export class WebRtc extends EventTarget {
         case 'offer':
           if (!this.pcs[socketId]) this._connect(socketId)
           // @ts-expect-error: 设置发送过来的offer
-          await this.pcs[socketId].setRemoteDescription(new RTCSessionDescription(message))
+          this.pcs[socketId].setRemoteDescription(new RTCSessionDescription(message)).catch(console.error)
           this._answer(socketId)
           break
         case 'answer':
           // @ts-expect-error: 获得发送的offer的answer
-          await this.pcs[socketId].setRemoteDescription(new RTCSessionDescription(message))
+          this.pcs[socketId].setRemoteDescription(new RTCSessionDescription(message)).catch(console.error)
           break
         case 'candidate':
           // 获得candidate sdp
@@ -113,8 +115,7 @@ export class WebRtc extends EventTarget {
             sdpMLineIndex: message.label,
             candidate: message.candidate,
           })
-          console.log(socketId, this.pcs[socketId])
-          await this.pcs[socketId].addIceCandidate(candidate)
+          this.pcs[socketId].addIceCandidate(candidate).catch(console.error)
           break
         default:
           break
@@ -185,7 +186,7 @@ export class WebRtc extends EventTarget {
           type: 'candidate',
           label: ev.candidate.sdpMLineIndex,
           id: ev.candidate.sdpMid,
-          candidate: ev.candidate,
+          candidate: ev.candidate.candidate,
         },
         socketId
       )
