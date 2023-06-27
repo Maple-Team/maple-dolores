@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import path from 'path'
+import fs from 'fs'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
 import Inspect from 'vite-plugin-inspect'
 import { getPort } from '../../build/util'
 import { name } from './package.json'
-import fs from 'fs'
 
 const port = getPort(name)
 
@@ -47,11 +47,10 @@ export default ({ mode }) => {
           target: 'ws://localhost:9010/',
           changeOrigin: true,
         },
-        '/socket.io/': {
-          ws: true,
-          target: 'ws://localhost:3001/',
-          changeOrigin: true,
-        },
+        // '/socket.io/': {
+        //   target: 'http://localhost:3000/',
+        //   changeOrigin: true,
+        // },
       },
       https: isProd || {
         cert: fs.readFileSync('./localhost+3.pem'),
