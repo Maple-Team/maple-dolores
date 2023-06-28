@@ -36,7 +36,7 @@ export default defineComponent({
   },
 
   methods: {
-    show(e: Event) {
+    show(e: AnyToFix) {
       // this.$emit('addBook', 2)
       // this.$emit('addBook', {
       //     b: '',

@@ -1,12 +1,12 @@
 import type { Socket } from 'socket.io-client'
 import dayjs from 'dayjs'
 import { uuid } from '@liutsing/utils'
-import type { ChatMessage, ClientToServerEvents, Message, ServerToClientEvents } from './types'
+import type { ChatMessage, ClientToServerEvents, Message, ServerToClientEvents } from './types' 
 import emitter from '@/utils/emitter'
 
 export class WebRtc extends EventTarget {
   private _localStream: MediaStream | null
-  private socket: Socket<ServerToClientEvents, ClientToServerEvents> | undefined
+  private socket: Socket<ServerToClientEvents, ClientToServerEvents>
   private pcConfig: RTCConfiguration | undefined
   private _myId: string | undefined | null
   private pcs: Record<string, RTCPeerConnection> = {}
@@ -115,7 +115,10 @@ export class WebRtc extends EventTarget {
           break
         case 'offer':
           if (!this.pcs[socketId]) this._connect(socketId)
+<<<<<<< HEAD
 
+=======
+>>>>>>> e62c3a8 (fix: 继续处理类型问题)
           this.pcs[socketId]
             .setRemoteDescription(new RTCSessionDescription(message as RTCSessionDescriptionInit))
             .catch(console.error)

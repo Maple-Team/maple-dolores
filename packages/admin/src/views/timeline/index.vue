@@ -11,8 +11,7 @@ const { query } = useRoute()
 const { page } = query as { page?: number }
 const current = ref<number>(page || 1)
 const pageSize = ref<number>(10 * 100)
-// @ts-expect-error: xxx
-const type = ref<Timeline['type'] | undefined>('')
+const type = ref<Timeline['type']>()
 const handleChange = (e: Timeline['type']) => {
   type.value = e
 }

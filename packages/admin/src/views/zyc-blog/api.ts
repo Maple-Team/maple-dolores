@@ -2,6 +2,7 @@ import type { BaseList } from '@liutsing/types-utils'
 import type { Blog } from './type'
 import { request } from '@/utils'
 
+// TODO 待处理
 // @ts-expect-error: xx
 export const fetchList = async ({ queryKey }) => {
   return request<BaseList<Blog>>({ url: '/zyc-blog', params: queryKey[1] })

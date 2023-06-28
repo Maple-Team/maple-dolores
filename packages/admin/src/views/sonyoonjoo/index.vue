@@ -30,7 +30,7 @@ onUnmounted(() => {
   ele?.removeEventListener('scroll', handler)
 })
 
-const { isLoading, data, error } = useQuery<BaseList<SonYoonJoo>>(
+const { data, error } = useQuery<BaseList<SonYoonJoo>>(
   [
     searchKey,
     {

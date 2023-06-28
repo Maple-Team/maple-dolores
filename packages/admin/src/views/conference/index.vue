@@ -4,7 +4,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { io } from 'socket.io-client'
 import type { Socket } from 'socket.io-client'
 import { WebRtc } from './webRTC'
-import type { ChatMessage, ClientToServerEvents, Participant, ServerToClientEvents } from './types'
+import type { ChatMessage, ClientToServerEvents, Participant, ServerToClientEvents } from './types' 
 import emitter from '@/utils/emitter'
 
 const socketRef = ref<Socket<ServerToClientEvents, ClientToServerEvents>>()

@@ -7,11 +7,11 @@ export default defineComponent({
       return payload.bookName.length > 1
     },
   },
-  setup(props, { emit, expose }) {
+  setup(props, { emit }) {
     emit('addBook', { bookName: 'test name' })
   },
   methods: {
-    test(e: Event) {
+    test() {
       // this.$emit('addBook', 2)
       // this.$emit('addBook', { bookName: 3 })
       this.$emit('addBook', {

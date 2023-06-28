@@ -4,6 +4,7 @@ import { Form, message } from 'ant-design-vue'
 import { UploadOutlined } from '@ant-design/icons-vue'
 import type { UploadProps } from 'ant-design-vue'
 import type { RuleObject } from 'ant-design-vue/lib/form'
+import type { RcFile } from 'antd/lib/upload'
 import { save, upload } from './api'
 import type { Fiction } from './type'
 
@@ -23,7 +24,6 @@ const handleRemove: UploadProps['onRemove'] = (file) => {
 
 const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   fileList.value = [...(fileList.value || []), file]
-
   return false
 }
 
@@ -53,6 +53,7 @@ const modelRef = reactive<Fiction>({
 })
 const { resetFields, validate, validateInfos } = useForm(modelRef, rulesRef)
 const onSubmit = () => {
+  // TODO use vue-query useMutation
   validate()
     .then(() => {
       const data = toRaw(modelRef)
@@ -63,10 +64,8 @@ const onSubmit = () => {
         })
       } else if (activeKey.value === 'upload') {
         const formData = new FormData()
-
-        // @ts-expect-error: xxx
-        fileList.value?.forEach((file: UploadProps['fileList'][number]) => {
-          formData.append('fictions[]', file?.originFileObj, encodeURIComponent(file.name))
+        fileList.value?.forEach((file) => {
+          formData.append('fictions', file as RcFile, encodeURIComponent(file.name))
         })
         formData.append('bookName', data.bookName)
         upload(formData).then(() => {

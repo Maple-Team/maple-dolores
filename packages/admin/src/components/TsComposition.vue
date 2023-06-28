@@ -14,7 +14,7 @@ const { name = '1234' } = defineProps<A>()
 // runtime
 // const emit1 = defineEmits(['change', 'update'])
 // type-based
-const emit2 = defineEmits<{
+const _emit2 = defineEmits<{
   (e: 'change', id: number): void
   (e: 'update', value: string): void
   (e: 'test', obj: { str: string }): void
@@ -30,7 +30,7 @@ console.log(year.value)
 year.value = 2022
 
 // Reactive
-const data1 = reactive({ a: 1 })
+const _data1 = reactive({ a: 1 })
 // 不推荐使用类型参数
 const data2: { c: number; a?: string | number } = reactive({ c: 1 })
 console.log(data2.c)
@@ -42,7 +42,7 @@ const computed1 = computed<number>(() => count.value * 2)
 console.log(computed1.value)
 
 // 事件处理函数标注类型
-function test(e: MouseEvent) {
+function test(e: AnyToFix) {
   console.log(e.target, '=====')
 }
 
