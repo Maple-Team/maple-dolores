@@ -9,12 +9,14 @@ import type { Fiction } from './type'
 
 const useForm = Form.useForm
 
+
 const fileList = ref<UploadProps['fileList']>([])
 // const _uploading = ref<boolean>(false)
 
 const activeKey = ref<'input' | 'upload'>('input')
 
 const handleRemove: UploadProps['onRemove'] = (file) => {
+
   const index = fileList.value?.indexOf(file) || -1
   const newFileList = fileList.value?.slice()
   index > -1 && newFileList?.splice(index, 1)
@@ -22,7 +24,9 @@ const handleRemove: UploadProps['onRemove'] = (file) => {
 }
 
 const beforeUpload: UploadProps['beforeUpload'] = (file) => {
+
   fileList.value = [...(fileList.value || []), file]
+
   return false
 }
 
@@ -62,9 +66,11 @@ const onSubmit = () => {
         })
       } else if (activeKey.value === 'upload') {
         const formData = new FormData()
+
         // @ts-expect-error: xxx
         fileList.value?.forEach((file: UploadProps['fileList'][number]) => {
           formData.append('fictions[]', file?.originFileObj, encodeURIComponent(file.name))
+
         })
         formData.append('bookName', data.bookName)
         upload(formData).then(() => {
