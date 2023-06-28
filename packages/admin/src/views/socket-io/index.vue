@@ -13,8 +13,8 @@ const sendMsg = () => {
 }
 
 onMounted(() => {
-  socket = io('http://localhost:3000')
-  //   socket = io('/socketIO')
+  //   socket = io('http://localhost:3000') // 直连
+  socket = io({ path: '/socket.io' }) // 转发
   socket.on('connect', () => {
     message.success('socket.io ws connected')
 

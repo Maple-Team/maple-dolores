@@ -41,17 +41,15 @@ export default ({ mode }) => {
       origin: !isProd ? '' : `http://localhost:${port}`,
       proxy: {
         '/api': { target: `${process.env.VITE_API_URL}:${process.env.VITE_API_PORT}/` }, // dev: 3000, prod:3001
-        // '/api': { target: `${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/` }, // dev: 3000, prod:3001
         '/ws': {
           ws: true,
           target: 'ws://localhost:9010/',
           changeOrigin: true,
         },
-        // '/socketIO': {
-        //   ws: true,
-        //   target: 'http://localhost:3000/socket.io/',
-        //   changeOrigin: true,
-        // },
+        '/socket.io/': {
+          target: 'http://localhost:3000', // socket.io服务
+          changeOrigin: true,
+        },
       },
       https: isProd || {
         cert: fs.readFileSync('./localhost+3.pem'),
