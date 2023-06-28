@@ -1,3 +1,53 @@
+<script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+import { ref, toRaw, unref } from 'vue'
+import { useQuery } from '@tanstack/vue-query'
+import type { Meitu } from './type'
+import { fetchDetail, fetchPrevAndNext } from './api'
+
+const route = useRoute()
+const router = useRouter()
+
+const params = route.params
+
+const id = ref<string>()
+
+id.value = params.id as string
+// key值关键
+const { isLoading, data: record } = useQuery<Meitu>(['xiuren-detail', toRaw(id)], () => fetchDetail(unref(id)), {
+  enabled: !!unref(id),
+  networkMode: 'offlineFirst',
+})
+// key值关键
+const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Meitu; next?: Meitu }>(
+  ['xiuren-nav', toRaw(id)],
+  () => fetchPrevAndNext(unref(id)),
+  {
+    enabled: !!unref(id),
+    networkMode: 'offlineFirst',
+  }
+)
+
+const onPrev = (pid?: string) => {
+  router
+    .push({
+      path: `/xiuren/${pid}`,
+    })
+    .then(() => {
+      id.value = pid
+    })
+}
+const onNext = (nid?: string) => {
+  router
+    .push({
+      path: `/xiuren/${nid}`,
+    })
+    .then(() => {
+      id.value = nid
+    })
+}
+</script>
+
 <template>
   <template v-if="id">
     <a-spin
@@ -42,7 +92,7 @@
       </div>
       <a-spin
         :spinning="navLoading"
-        delay="500"
+        :delay="500"
       >
         <ul>
           <li
@@ -70,59 +120,10 @@
     <template #extra>
       <a-button
         type="primary"
-        @click="router.push({ path: '/sonyoonjoo' })"
+        @click="router.push({ path: '/xiuren' })"
       >
         Back Home
       </a-button>
     </template>
   </a-result>
 </template>
-<script setup lang="ts">
-import { fetchDetail, fetchPrevAndNext } from './api'
-import { useRoute, useRouter } from 'vue-router'
-import { ref, toRaw, unref } from 'vue'
-import { Meitu } from './type'
-import { useQuery } from '@tanstack/vue-query'
-
-const route = useRoute()
-const router = useRouter()
-
-const params = route.params
-
-const id = ref<string>()
-
-id.value = params.id as string
-// key值关键
-const { isLoading, data: record } = useQuery<Meitu>(['xiuren-detail', toRaw(id)], () => fetchDetail(unref(id)), {
-  enabled: !!unref(id),
-  networkMode: 'offlineFirst',
-})
-// key值关键
-const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Meitu; next?: Meitu }>(
-  ['xiuren-nav', toRaw(id)],
-  () => fetchPrevAndNext(unref(id)),
-  {
-    enabled: !!unref(id),
-    networkMode: 'offlineFirst',
-  }
-)
-
-const onPrev = (pid?: string) => {
-  router
-    .push({
-      path: `/xiuren/${pid}`,
-    })
-    .then(() => {
-      id.value = pid
-    })
-}
-const onNext = (nid?: string) => {
-  router
-    .push({
-      path: `/xiuren/${nid}`,
-    })
-    .then(() => {
-      id.value = nid
-    })
-}
-</script>
