@@ -1,5 +1,5 @@
+import type { Fiction, Label } from './type'
 import { request } from '@/utils'
-import { Fiction, Label } from './type'
 
 export const fetchLabels = () => request<Label[]>({ url: '/label/all' })
 

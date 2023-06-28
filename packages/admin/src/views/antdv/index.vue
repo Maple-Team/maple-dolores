@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { columns, dataSource } from './data'
+// import { columns, dataSource } from './data'
 </script>
 
 <template>
-  <a-table
+  1
+  <!-- <a-table
     :columns="columns"
     :dataSource="dataSource"
-  />
+  /> -->
 </template>

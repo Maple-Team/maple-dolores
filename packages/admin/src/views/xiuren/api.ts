@@ -1,5 +1,6 @@
-import { request } from '@/utils'
+import type { BaseList } from '@liutsing/types-utils'
 import type { Meitu } from './type'
+import { request } from '@/utils'
 
 export const fetchList = async (params: AnyToFix) => {
   return request<BaseList<Meitu>>({ url: '/meitulu', params })
@@ -16,5 +17,5 @@ export const fetchPrevAndNext = async (id?: string) => {
 }
 
 export const fetchTags = async () => {
-  return request<string[]>({ url: `/meitulu/tags` })
+  return request<string[]>({ url: '/meitulu/tags' })
 }

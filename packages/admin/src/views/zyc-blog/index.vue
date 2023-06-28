@@ -4,6 +4,7 @@ import { Tag } from 'ant-design-vue'
 import type { TableColumnProps } from 'ant-design-vue'
 import { RouterLink } from 'vue-router'
 import { useQuery } from '@tanstack/vue-query'
+import type { BaseList } from '@liutsing/types-utils'
 import type { Blog } from './type'
 import { fetchCategory, fetchList } from './api'
 
@@ -88,11 +89,11 @@ const { data: categories } = useQuery<string[]>(['zyc-blog-category'], fetchCate
         <a-form-item label="分类">
           <a-select v-model:value="modelRef.category">
             <a-select-option
-              v-for="category in categories"
-              :key="category"
-              :value="category"
+              v-for="cate in categories"
+              :key="cate"
+              :value="cate"
             >
-              {{ category }}
+              {{ cate }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -119,8 +120,9 @@ const { data: categories } = useQuery<string[]>(['zyc-blog-category'], fetchCate
           <a-button
             style="margin-left: 10px"
             @click.prevent="handleReset"
-            >重置</a-button
           >
+            重置
+          </a-button>
         </a-form-item>
       </a-col>
     </a-row>

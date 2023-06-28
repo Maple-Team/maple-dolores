@@ -46,7 +46,7 @@
     "@liutsing/eslint-config": "^0.0.10",
     "@liutsing/html-webpack-plugin": "~0.0.2",
     "@liutsing/prettier-config": "^0.0.6",
-    "@liutsing/types-utils": "~0.0.7",
+    "@liutsing/types-utils": "~0.0.9",
     "@liutsing/webpack-config": "^0.0.5",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@types/lodash": "^4.14.191",

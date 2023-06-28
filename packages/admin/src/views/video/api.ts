@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/vue-query'
 import { values } from 'lodash-es'
 import type { Ref } from 'vue'
+import type { BaseList, BaseResponse } from '@liutsing/types-utils'
 import type { LzzModel, LzzResponse } from './type'
 import { request } from '@/utils'
 

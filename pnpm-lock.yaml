@@ -11,7 +11,7 @@ importers:
       '@liutsing/eslint-config': ^0.0.10
       '@liutsing/prettier-config': ^0.0.1
       '@liutsing/tsconfig': ^0.0.5
-      '@liutsing/types-utils': ~0.0.8
+      '@liutsing/types-utils': ~0.0.9
       '@liutsing/utils': ^0.0.8
       '@nrwl/nx-cloud': latest
       '@tanstack/react-query': ^4.28.0
@@ -68,7 +68,7 @@ importers:
       '@liutsing/eslint-config': 0.0.10_xzmbiupdb5npivbxsd3svt2uom
       '@liutsing/prettier-config': 0.0.1
       '@liutsing/tsconfig': 0.0.5
-      '@liutsing/types-utils': 0.0.8
+      '@liutsing/types-utils': 0.0.9
       '@nrwl/nx-cloud': 16.0.5
       '@tanstack/react-query-devtools': 4.29.0_q4teel2yjbizrm4naiaqcdpjum
       '@types/jest': 29.0.3
@@ -417,7 +417,7 @@ importers:
       '@liutsing/html-webpack-plugin': ~0.0.2
       '@liutsing/prettier-config': ^0.0.6
       '@liutsing/rc-components': link:../../../base/packages/react-components
-      '@liutsing/types-utils': ~0.0.7
+      '@liutsing/types-utils': ~0.0.9
       '@liutsing/webpack-config': ^0.0.5
       '@pansy/react-amap': 2.15.5
       '@pmmmwh/react-refresh-webpack-plugin': ^0.5.10
@@ -479,7 +479,7 @@ importers:
       '@liutsing/eslint-config': 0.0.10_xzmbiupdb5npivbxsd3svt2uom
       '@liutsing/html-webpack-plugin': 0.0.2_webpack@5.79.0
       '@liutsing/prettier-config': 0.0.6
-      '@liutsing/types-utils': 0.0.7
+      '@liutsing/types-utils': 0.0.9
       '@liutsing/webpack-config': 0.0.5_4ie4y7scqyhbeuqtkfsb7mxn74
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.10_4uh7ikbt5gdpzpncswyzbkue2e
       '@types/lodash': 4.14.191
@@ -4473,12 +4473,8 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@liutsing/types-utils/0.0.7:
-    resolution: {integrity: sha512-BtqQw3je9bG/bVmTlg3pqs/2lN1/otp/UfhKpy3+4Gju3FMoMuUCmyIjWTcyOdP9cb2ndJolt6QbK4LgX4EUvw==}
-    dev: true
-
-  /@liutsing/types-utils/0.0.8:
-    resolution: {integrity: sha512-co5ehG0cUGG4KKdufK9H3OIrxvZxPIqIGiGw6Vdpk6gxJSfnbPaG589mwTCB9xeIAMJq7YSk7bk7hXAc5167gQ==}
+  /@liutsing/types-utils/0.0.9:
+    resolution: {integrity: sha512-75WhHqqFYY+tu2Dt50F/2/i+w7TtlWbTweD/53bNPkfica0uRLijPjRkaydh7CA65WKvMNwLgnXofSPQdLTKhA==}
     dev: true
 
   /@liutsing/utils/0.0.8:
@@ -21640,7 +21636,7 @@ packages:
         optional: true
     dependencies:
       esbuild: 0.15.7
-      postcss: 8.4.21
+      postcss: 8.4.16
       resolve: 1.22.1
       rollup: 2.78.1
     optionalDependencies:
@@ -21668,7 +21664,7 @@ packages:
     dependencies:
       esbuild: 0.15.7
       less: 4.1.3
-      postcss: 8.4.21
+      postcss: 8.4.16
       resolve: 1.22.1
       rollup: 2.78.1
     optionalDependencies:

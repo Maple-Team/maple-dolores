@@ -1,5 +1,6 @@
-import { request } from '@/utils'
+import type { BaseList } from '@liutsing/types-utils'
 import type { SonYoonJoo } from './type'
+import { request } from '@/utils'
 
 export const fetchList = async ({ queryKey }: AnyToFix) => {
   return request<BaseList<SonYoonJoo>>({ url: '/sonyoonjoo', params: queryKey[1] })
@@ -16,5 +17,5 @@ export const fetchPrevAndNext = async (id?: string) => {
 }
 
 export const fetchCategory = async () => {
-  return request<number[]>({ url: `/sonyoonjoo/category/years` })
+  return request<number[]>({ url: '/sonyoonjoo/category/years' })
 }
