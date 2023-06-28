@@ -89,7 +89,7 @@ export class WebRtc extends EventTarget {
       }
 
       if (this.pcs[socketId] && this.pcs[socketId].connectionState === 'connected') {
-        console.log(`connection with ${socketId}, is already established`)
+        console.log(`connection with ${socketId}, is already established`, message.type)
         return
       }
 

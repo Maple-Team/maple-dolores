@@ -33,7 +33,8 @@ const showLocalVideo = () => {
   })
 }
 onMounted(() => {
-  socketRef.value = io('https://localhost:18081')
+  //   socketRef.value = io('https://localhost:18081')
+  socketRef.value = io({ path: '/socket.io' })
   if (socketRef.value) {
     // @ts-expect-error: xx
     WebRTCRef.value = new WebRtc(socketRef.value)
