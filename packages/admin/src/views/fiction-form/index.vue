@@ -1,115 +1,16 @@
-<template>
-  <a-form
-    :label-col="labelCol"
-    :wrapper-col="wrapperCol"
-  >
-    <a-form-item
-      label="Book Name"
-      v-bind="validateInfos.bookName"
-    >
-      <a-input v-model:value="modelRef.bookName"></a-input>
-    </a-form-item>
-    <a-tabs v-model:activeKey="activeKey">
-      <a-tab-pane
-        key="input"
-        tab="Textarea"
-      >
-        <a-form-item
-          label="Chapter Name"
-          v-bind="validateInfos.chapterName"
-        >
-          <a-input v-model:value="modelRef.chapterName"></a-input>
-        </a-form-item>
-        <a-form-item
-          label="Chapter No."
-          v-bind="validateInfos.chapterNo"
-        >
-          <a-input-number
-            v-model:value="modelRef.chapterNo"
-            :min="0"
-            :step="1"
-          ></a-input-number>
-        </a-form-item>
-        <a-form-item
-          label="Chapter Content"
-          v-bind="validateInfos.chapterContent"
-        >
-          <a-textarea
-            v-model:value="modelRef.chapterContent"
-            allowClear
-          ></a-textarea>
-        </a-form-item>
-        <a-form-item label="Chapter Words">
-          <a-input-number
-            v-model:value="modelRef.words"
-            :min="0"
-          ></a-input-number>
-        </a-form-item>
-      </a-tab-pane>
-      <a-tab-pane
-        key="upload"
-        tab="Upload"
-      >
-        <a-upload
-          multiple
-          :file-list="fileList"
-          :before-upload="beforeUpload"
-          @remove="handleRemove"
-        >
-          <a-button>
-            <upload-outlined></upload-outlined>
-            Upload
-          </a-button>
-        </a-upload>
-      </a-tab-pane>
-    </a-tabs>
-    <!-- <a-form-item label="labels">
-    <a-form-item label="labels">
-      <a-select
-        v-model:value="modelRef.labels"
-        mode="tags"
-        style="width: 100%"
-        :token-separators="[',']"
-        placeholder="选择或输入标签"
-      >
-        <a-select-option
-          :value="label.id"
-          v-for="label in labels"
-          :key="label.id"
-          >{{ label.name }}</a-select-option
-        >
-      </a-select>
-    </a-form-item> -->
-    <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-      <a-button
-        type="primary"
-        @click.prevent="onSubmit"
-        htmlType="submit"
-      >
-        创建
-      </a-button>
-      <a-button
-        style="margin-left: 10px"
-        @click="resetFields"
-        >重置</a-button
-      >
-    </a-form-item>
-  </a-form>
-</template>
 <script lang="ts" setup>
-import { reactive, toRaw, ref, computed } from 'vue'
+import { computed, reactive, ref, toRaw } from 'vue'
 import { Form, message } from 'ant-design-vue'
 import { UploadOutlined } from '@ant-design/icons-vue'
 import type { UploadProps } from 'ant-design-vue'
-import { useQuery } from '@tanstack/vue-query'
-import { fetchLabels, save, upload } from './api'
-import { Fiction, Label } from './type'
-import { RuleObject } from 'ant-design-vue/lib/form'
+import type { RuleObject } from 'ant-design-vue/lib/form'
+import { save, upload } from './api'
+import type { Fiction } from './type'
 
 const useForm = Form.useForm
 
 const fileList = ref<File[]>([])
-const uploading = ref<boolean>(false)
+const _uploading = ref<boolean>(false)
 // TODO reactive vs ref
 const activeKey = ref<'input' | 'upload'>('input')
 
@@ -180,3 +81,103 @@ const onSubmit = () => {
 // const labelsQuery = useQuery<Label>(['labels'], fetchLabels)
 // const labels = labelsQuery.data
 </script>
+
+<template>
+  <a-form
+    :label-col="labelCol"
+    :wrapper-col="wrapperCol"
+  >
+    <a-form-item
+      label="Book Name"
+      v-bind="validateInfos.bookName"
+    >
+      <a-input v-model:value="modelRef.bookName" />
+    </a-form-item>
+    <a-tabs v-model:activeKey="activeKey">
+      <a-tab-pane
+        key="input"
+        tab="Textarea"
+      >
+        <a-form-item
+          label="Chapter Name"
+          v-bind="validateInfos.chapterName"
+        >
+          <a-input v-model:value="modelRef.chapterName" />
+        </a-form-item>
+        <a-form-item
+          label="Chapter No."
+          v-bind="validateInfos.chapterNo"
+        >
+          <a-input-number
+            v-model:value="modelRef.chapterNo"
+            :min="0"
+            :step="1"
+          />
+        </a-form-item>
+        <a-form-item
+          label="Chapter Content"
+          v-bind="validateInfos.chapterContent"
+        >
+          <a-textarea
+            v-model:value="modelRef.chapterContent"
+            allowClear
+          />
+        </a-form-item>
+        <a-form-item label="Chapter Words">
+          <a-input-number
+            v-model:value="modelRef.words"
+            :min="0"
+          />
+        </a-form-item>
+      </a-tab-pane>
+      <a-tab-pane
+        key="upload"
+        tab="Upload"
+      >
+        <a-upload
+          multiple
+          :file-list="fileList"
+          :before-upload="beforeUpload"
+          @remove="handleRemove"
+        >
+          <a-button>
+            <UploadOutlined />
+            Upload
+          </a-button>
+        </a-upload>
+      </a-tab-pane>
+    </a-tabs>
+    <!-- <a-form-item label="labels">
+    <a-form-item label="labels">
+      <a-select
+        v-model:value="modelRef.labels"
+        mode="tags"
+        style="width: 100%"
+        :token-separators="[',']"
+        placeholder="选择或输入标签"
+      >
+        <a-select-option
+          :value="label.id"
+          v-for="label in labels"
+          :key="label.id"
+          >{{ label.name }}</a-select-option
+        >
+      </a-select>
+    </a-form-item> -->
+    <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+      <a-button
+        type="primary"
+        @click.prevent="onSubmit"
+        htmlType="submit"
+      >
+        创建
+      </a-button>
+      <a-button
+        style="margin-left: 10px"
+        @click="resetFields"
+      >
+        重置
+      </a-button>
+    </a-form-item>
+  </a-form>
+</template>

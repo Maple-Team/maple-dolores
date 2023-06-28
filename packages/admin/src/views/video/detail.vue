@@ -146,7 +146,7 @@ nextTick(() => {
         class="h-[calc(100vh-42px)] overflow-auto rounded"
         mode="inline"
         :open-keys="openKeys"
-        @openChange="onOpenChange"
+        @openChange="(e) => onOpenChange(e as string[])"
         v-model:selectedKeys="selectedKeys"
       >
         <a-sub-menu

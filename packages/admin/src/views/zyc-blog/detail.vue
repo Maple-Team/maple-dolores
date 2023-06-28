@@ -86,7 +86,7 @@ const onNext = (nid?: string) => {
       ></article>
       <a-spin
         :spinning="navLoading"
-        delay="500"
+        :delay="500"
       >
         <ul>
           <li

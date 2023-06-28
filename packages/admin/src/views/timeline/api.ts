@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/vue-query'
 import type { Ref } from 'vue'
 import { unref } from 'vue'
+import type { BaseList } from '@liutsing/types-utils'
 import type { Timeline } from './type'
 import { request } from '@/utils'
 

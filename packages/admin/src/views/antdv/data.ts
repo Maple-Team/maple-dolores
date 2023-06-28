@@ -1,4 +1,4 @@
-import { ColumnsType } from 'ant-design-vue/lib/vc-table/interface'
+import type { ColumnsType } from 'ant-design-vue/lib/vc-table/interface'
 
 export interface DataSource {
   name: string

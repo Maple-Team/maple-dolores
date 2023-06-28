@@ -7,3 +7,8 @@ declare interface Bean {
   _id: string
   id: string
 }
+
+declare type Params<T> = Partial<T> & {
+  current?: number
+  pageSize?: number
+}

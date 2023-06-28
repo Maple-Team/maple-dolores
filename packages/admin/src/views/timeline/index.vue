@@ -1,13 +1,46 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import dayjs from 'dayjs'
+import { capitalize } from '@liutsing/utils'
+import { groupBy, values } from 'lodash-es'
+import type { Timeline } from './type'
+import { useListQuery } from './api'
+
+const { query } = useRoute()
+const { page } = query as { page?: number }
+const current = ref<number>(page || 1)
+const pageSize = ref<number>(10 * 100)
+// @ts-expect-error: xxx
+const type = ref<Timeline['type'] | undefined>('')
+const handleChange = (e: Timeline['type']) => {
+  type.value = e
+}
+const { isLoading, data } = useListQuery({
+  current,
+  pageSize,
+  type,
+})
+
+const currentDate = dayjs().format('dddd, MMMM D, YYYY')
+
+const notTodayRecords = computed(() => {
+  const records = data.value?.records.filter(({ date }) => date !== currentDate)
+  return values(groupBy(records, 'date'))
+})
+const todayRecords = computed(() => data.value?.records.filter(({ date }) => date === currentDate))
+</script>
+
 <template>
   <div class="p-4 bg-white">
     <template v-if="isLoading">
-      <a-spin spinning="isLoading" />
+      <a-spin :spinning="isLoading" />
     </template>
     <template v-else>
       <a-select
         v-model:value="type"
         class="!mb-3 w-[120px]"
-        @change="handleChange"
+        @change="(e) => handleChange(e as 'timeline'|'treehole')"
       >
         <a-select-option value="">All</a-select-option>
         <a-select-option value="timeline">Timeline</a-select-option>
@@ -49,35 +82,3 @@
     </template>
   </div>
 </template>
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { useListQuery } from './api'
-import { Timeline } from './type'
-import dayjs from 'dayjs'
-import { capitalize } from '@liutsing/utils'
-import { groupBy, values } from 'lodash-es'
-
-const { query } = useRoute()
-const { page } = query as { page?: number }
-const current = ref<number>(page || 1)
-const pageSize = ref<number>(10 * 100)
-// @ts-ignore
-const type = ref<Timeline['type'] | undefined>('')
-const handleChange = (e: Timeline['type']) => {
-  type.value = e
-}
-const { isLoading, data } = useListQuery({
-  current,
-  pageSize,
-  type,
-})
-
-const currentDate = dayjs().format('dddd, MMMM D, YYYY')
-
-const notTodayRecords = computed(() => {
-  const records = data.value?.records.filter(({ date }) => date !== currentDate)
-  return values(groupBy(records, 'date'))
-})
-const todayRecords = computed(() => data.value?.records.filter(({ date }) => date === currentDate))
-</script>

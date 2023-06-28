@@ -1,63 +1,12 @@
-<template>
-  <a-form :layout="'inline'">
-    <a-row class="w-full py-2">
-      <a-col :span="6">
-        <a-form-item label="标签">
-          <a-select v-model:value="modelRef.tags">
-            <a-select-option
-              v-for="tag in []"
-              :key="tag"
-              :value="tag"
-            >
-              {{ tag }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-      </a-col>
-      <a-col :span="6">
-        <a-form-item label="模特">
-          <a-input v-model:value="modelRef.modelName" />
-        </a-form-item>
-      </a-col>
-      <a-col :span="6">
-        <a-form-item>
-          <a-button
-            type="primary"
-            @click.prevent="onSubmit"
-            htmlType="submit"
-          >
-            查找
-          </a-button>
-          <a-button
-            style="margin-left: 10px"
-            @click.prevent="handleReset"
-            >重置</a-button
-          >
-        </a-form-item>
-      </a-col>
-    </a-row>
-  </a-form>
-  <template v-if="error"> {{ JSON.stringify(error) }}</template>
-  <template v-else>
-    <div class="max-h-[700px] overflow-auto">
-      <a-table
-        :dataSource="data?.records"
-        :columns="columns"
-        :pagination="{ ...data?.pagination, onChange, onShowSizeChange, showQuickJumper: true }"
-        :loading="isLoading"
-        rowKey="_id"
-      />
-    </div>
-  </template>
-</template>
 <script setup lang="ts">
-import { h, ref, reactive, toRaw, unref, watch } from 'vue'
+import { h, reactive, ref, toRaw, unref, watch } from 'vue'
 import { Tag } from 'ant-design-vue'
 import type { TableColumnProps } from 'ant-design-vue'
-import { Meitu } from './type'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { useQuery } from '@tanstack/vue-query'
-import { fetchTags, fetchList } from './api'
+import type { BaseList } from '@liutsing/types-utils'
+import type { Meitu } from './type'
+import { fetchList } from './api'
 
 const searchKey = 'meitulu-list'
 
@@ -112,9 +61,8 @@ const { isLoading, data, error } = useQuery<BaseList<Meitu>>(
 const onSubmit = () => {
   const data = toRaw(modelRef)
   title.value = data.title
-  // @ts-ignore
   modelName.value = data.modelName as string
-  // @ts-ignore
+  // @ts-expect-error: xxx
   tagName.value = data.tagName as string
   orgName.value = data.orgName
   current.value = 1
@@ -129,9 +77,7 @@ const columns: TableColumnProps<Meitu>[] = [
     title: '是否推荐',
     dataIndex: 'isRecommend',
     customRender: ({ record }) => {
-      if (record.isRecommend) {
-        return h(Tag, { color: 'red' }, () => ['精选'])
-      }
+      if (record.isRecommend) return h(Tag, { color: 'red' }, () => ['精选'])
     },
   },
   {
@@ -153,18 +99,18 @@ const columns: TableColumnProps<Meitu>[] = [
   {
     title: '模特',
     dataIndex: 'modelName',
-    customRender: ({ record }) => {
-      return record.modelName.map((model) =>
-        h(
-          RouterLink,
-          {
-            key: model,
-            to: `/xiuren?modelName=${model}`,
-          },
-          () => [h(Tag, { color: 'blue' }, () => [model])]
-        )
-      )
-    },
+    // customRender: ({ record }) => { // FIXME
+    //   return record.modelName.map((model) =>
+    //     h(
+    //       RouterLink,
+    //       {
+    //         key: model,
+    //         to: `/xiuren?modelName=${model}`,
+    //       },
+    //       () => [h(Tag, { color: 'blue' }, () => [model])]
+    //     )
+    //   )
+    // },
   },
   {
     title: '机构',
@@ -193,7 +139,7 @@ const columns: TableColumnProps<Meitu>[] = [
 ]
 
 const onChange = (page: number) => {
-  router.push('/xiuren?page=' + page)
+  router.push(`/xiuren?page=${page}`)
   current.value = page
 }
 const onShowSizeChange = (_: number, size: number) => {
@@ -212,3 +158,57 @@ const handleReset = () => {
 // networkMode: 'offlineFirst',
 // })
 </script>
+
+<template>
+  <a-form layout="inline">
+    <a-row class="w-full py-2">
+      <a-col :span="6">
+        <a-form-item label="标签">
+          <a-select v-model:value="modelRef.tags">
+            <a-select-option
+              v-for="tag in []"
+              :key="tag"
+              :value="tag"
+            >
+              {{ tag }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-col>
+      <a-col :span="6">
+        <a-form-item label="模特">
+          <a-input v-model:value="modelRef.modelName" />
+        </a-form-item>
+      </a-col>
+      <a-col :span="6">
+        <a-form-item>
+          <a-button
+            type="primary"
+            @click.prevent="onSubmit"
+            htmlType="submit"
+          >
+            查找
+          </a-button>
+          <a-button
+            style="margin-left: 10px"
+            @click.prevent="handleReset"
+          >
+            重置
+          </a-button>
+        </a-form-item>
+      </a-col>
+    </a-row>
+  </a-form>
+  <template v-if="error"> {{ JSON.stringify(error) }}</template>
+  <template v-else>
+    <div class="max-h-[700px] overflow-auto">
+      <a-table
+        :dataSource="data?.records"
+        :columns="columns"
+        :pagination="{ ...data?.pagination, onChange, onShowSizeChange, showQuickJumper: true }"
+        :loading="isLoading"
+        rowKey="_id"
+      />
+    </div>
+  </template>
+</template>
