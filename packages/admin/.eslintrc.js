@@ -5,5 +5,6 @@ module.exports = {
     'vue/v-on-event-hyphenation': 'off',
     'vue/comma-dangle': 'off',
     'no-restricted-syntax': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
   },
 }

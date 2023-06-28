@@ -115,10 +115,6 @@ export class WebRtc extends EventTarget {
           break
         case 'offer':
           if (!this.pcs[socketId]) this._connect(socketId)
-<<<<<<< HEAD
-
-=======
->>>>>>> e62c3a8 (fix: 继续处理类型问题)
           this.pcs[socketId]
             .setRemoteDescription(new RTCSessionDescription(message as RTCSessionDescriptionInit))
             .catch(console.error)

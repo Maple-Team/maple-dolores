@@ -101,6 +101,7 @@ const kick = (uid: string) => {
   WebRTCRef?.value?.kick(uid)
 }
 onUnmounted(() => {
+  // WebRTCRef?.value?.localStream
   WebRTCRef.value?.leaveRoom()
 })
 </script>
