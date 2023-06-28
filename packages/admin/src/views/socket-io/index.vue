@@ -14,7 +14,7 @@ const sendMsg = () => {
 
 onMounted(() => {
   socket = io('http://localhost:3000')
-  //   socket = io('/socket.io', { path: '/events' })
+  //   socket = io('/socketIO')
   socket.on('connect', () => {
     message.success('socket.io ws connected')
 

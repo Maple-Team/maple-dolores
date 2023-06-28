@@ -21,6 +21,13 @@ const onJoin = () => {
   else message.info('请先输入房间号')
 }
 const showLocalVideo = () => {
+  if (localVideoRef.value?.srcObject) {
+    // @ts-expect-error: 待测试
+    const localStream: MediaStream = localVideoRef.value.srcObject
+    localStream.getTracks().forEach((track) => {
+      track.stop()
+    })
+  }
   WebRTCRef.value?.getLocalStream({ width: 640, height: 480 }).then((stream) => {
     if (localVideoRef.value) localVideoRef.value.srcObject = stream
   })
