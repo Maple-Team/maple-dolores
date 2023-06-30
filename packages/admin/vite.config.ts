@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import path from 'path'
 import fs from 'fs'
 import { defineConfig, loadEnv } from 'vite'
@@ -47,7 +46,7 @@ export default ({ mode }) => {
           changeOrigin: true,
         },
         '/socket.io/': {
-          target: 'http://localhost:3000', // socket.io服务
+          target: `http://localhost:${process.env.VITE_API_PORT}`, // socket.io服务
           changeOrigin: true,
         },
       },
