@@ -2,9 +2,9 @@
 import { onMounted, onUnmounted, reactive, ref, toRaw } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useQuery } from '@tanstack/vue-query'
+import type { BaseList } from '@liutsing/types-utils'
 import type { SonYoonJoo } from './type'
 import { fetchCategory, fetchList } from './api'
-import { BaseList } from '@liutsing/types-utils'
 
 const searchKey = 'sonyoonjoo-list'
 

@@ -1,62 +1,8 @@
-<template>
-  <div
-    class="vue3-waterfall"
-    id="waterfallBox"
-  >
-    <div
-      class="vue3-waterfall-scroller"
-      ref="scrollElRef"
-    >
-      <div
-        v-for="(item, index) in waterfallList"
-        :key="index"
-        class="vue3-waterfall-item"
-        :style="{
-          top: item._top + 'px',
-          left: item._left + 'px',
-          width: item._width + 'px',
-          height: item._height + 'px',
-        }"
-      >
-        <div class="vue3-waterfall-item_image">
-          <slot :item="item">
-            <img :src="item.imgSrc" />
-          </slot>
-        </div>
-        <div
-          class="vue3-waterfall-item_footer"
-          :style="{ height: footerHeight + 'px' }"
-        >
-          <slot
-            name="footer"
-            :item="item"
-          >
-            <p class="title">{{ item.title }}</p>
-            <p class="info">{{ item.info }}</p>
-          </slot>
-        </div>
-      </div>
-    </div>
-    <!-- 加载更多 -->
-    <div
-      class="vue3-waterfall-loading"
-      v-if="isPreloading && !nomore"
-    >
-      <slot name="loading"> 加载中... </slot>
-    </div>
-    <div
-      class="vue3-waterfall-nomore"
-      v-if="nomore"
-    >
-      <slot name="nomore"> 没有更多数据了 </slot>
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 // @https://www.npmjs.com/package/vue3-waterfall
 
-import { defineComponent, reactive, ref, toRefs, onMounted, onUnmounted, watch, nextTick, Ref, computed } from 'vue'
+import type { Ref } from 'vue'
+import { defineComponent, nextTick, onMounted, onUnmounted, reactive, ref, toRefs, watch } from 'vue'
 
 interface IWaterfallProps {
   width?: number
@@ -65,7 +11,7 @@ interface IWaterfallProps {
   colWidth?: number
   cols?: number
   footerHeight: number
-  list: any[]
+  list: AnyToFixToFix[]
   nomore: boolean
   scrollDisabled: boolean
   scrollDelay: number
@@ -127,7 +73,7 @@ export default defineComponent({
       colC: number
       beginIndex: number
       heightArr: number[]
-      waterfallList: any[]
+      waterfallList: AnyToFix[]
       isPreloading: boolean
     } = reactive({
       // 容器宽
@@ -150,17 +96,13 @@ export default defineComponent({
         dom && (state.containerWidth = dom.offsetWidth)
       }
       // 初始化列宽
-      if (props.cols) {
-        state.colW = Math.floor((state.containerWidth - (props.cols - 1) * props.gap) / props.cols)
-      } else {
-        state.colC = Math.floor(state.containerWidth / (state.colW + props.gap))
-      }
+      if (props.cols) state.colW = Math.floor((state.containerWidth - (props.cols - 1) * props.gap) / props.cols)
+      else state.colC = Math.floor(state.containerWidth / (state.colW + props.gap))
+
       if (state.beginIndex === 0) {
         state.waterfallList = []
         state.heightArr = new Array(state.colC)
-        for (let i = 0; i < state.heightArr.length; i++) {
-          state.heightArr[i] = 0
-        }
+        for (let i = 0; i < state.heightArr.length; i++) state.heightArr[i] = 0
       }
       preload()
     }
@@ -170,9 +112,9 @@ export default defineComponent({
       state.isPreloading = true
       for (let i = state.beginIndex; i < props.list.length; i++) {
         const item = props.list[i]
-        let img = new Image()
+        const img = new Image()
         img.src = item.imgSrc
-        img.onload = img.onerror = (e: any) => {
+        img.onload = img.onerror = (e: AnyToFix) => {
           const minIndex = filterMin()
           item._width = state.colW
           item._height = Math.floor((state.colW * img.height) / img.width + props.footerHeight)
@@ -189,9 +131,7 @@ export default defineComponent({
             ctx.emit('preLoaded')
             state.isPreloading = false
             // 判断是否自动加载
-            if (!props.scrollDisabled) {
-              props.scrollImmediate && scrollFn()
-            }
+            if (!props.scrollDisabled) props.scrollImmediate && scrollFn()
           }
         }
       }
@@ -251,9 +191,7 @@ export default defineComponent({
     onMounted(() => {
       window.addEventListener('resize', response)
       // 监听滚动事件
-      if (!props.scrollDisabled && scrollElRef.value !== null) {
-        scrollElRef.value.addEventListener('scroll', scrollFn)
-      }
+      if (!props.scrollDisabled && scrollElRef.value !== null) scrollElRef.value.addEventListener('scroll', scrollFn)
     })
 
     onUnmounted(() => {
@@ -268,6 +206,61 @@ export default defineComponent({
   },
 })
 </script>
+
+<template>
+  <div
+    class="vue3-waterfall"
+    id="waterfallBox"
+  >
+    <div
+      class="vue3-waterfall-scroller"
+      ref="scrollElRef"
+    >
+      <div
+        v-for="(item, index) in waterfallList"
+        :key="index"
+        class="vue3-waterfall-item"
+        :style="{
+          top: `${item._top}px`,
+          left: `${item._left}px`,
+          width: `${item._width}px`,
+          height: `${item._height}px`,
+        }"
+      >
+        <div class="vue3-waterfall-item_image">
+          <slot :item="item">
+            <img :src="item.imgSrc" />
+          </slot>
+        </div>
+        <div
+          class="vue3-waterfall-item_footer"
+          :style="{ height: `${footerHeight}px` }"
+        >
+          <slot
+            name="footer"
+            :item="item"
+          >
+            <p class="title">{{ item.title }}</p>
+            <p class="info">{{ item.info }}</p>
+          </slot>
+        </div>
+      </div>
+    </div>
+    <!-- 加载更多 -->
+    <div
+      class="vue3-waterfall-loading"
+      v-if="isPreloading && !nomore"
+    >
+      <slot name="loading"> 加载中... </slot>
+    </div>
+    <div
+      class="vue3-waterfall-nomore"
+      v-if="nomore"
+    >
+      <slot name="nomore"> 没有更多数据了 </slot>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .vue3-waterfall {

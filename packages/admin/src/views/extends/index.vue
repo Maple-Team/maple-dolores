@@ -1,11 +1,3 @@
-<template>
-  <div>
-    <div>Mouse position is at: {{ x }}, {{ y }}</div>
-    <button @click="onChange">change</button>
-    <div>data: {{ JSON.stringify(data) }}</div>
-    <div>error: {{ JSON.stringify(error) }}</div>
-  </div>
-</template>
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useMouse } from './hooks/useComponent'
@@ -20,6 +12,16 @@ function onChange() {
 }
 const { data, error } = useFetch(url)
 </script>
+
+<template>
+  <div>
+    <div>Mouse position is at: {{ x }}, {{ y }}</div>
+    <button @click="onChange">change</button>
+    <div>data: {{ JSON.stringify(data) }}</div>
+    <div>error: {{ JSON.stringify(error) }}</div>
+  </div>
+</template>
+
 <style>
 button {
   padding: 4px 10px;

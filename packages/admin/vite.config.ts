@@ -6,6 +6,7 @@ import legacy from '@vitejs/plugin-legacy'
 import Inspect from 'vite-plugin-inspect'
 import { getPort } from '../../build/util'
 import { name } from './package.json'
+import eslintPlugin from 'vite-plugin-eslint'
 
 const port = getPort(name)
 
@@ -22,6 +23,7 @@ export default ({ mode }) => {
       legacy({
         targets: ['defaults', 'not IE 11'],
       }),
+      eslintPlugin(),
     ],
     resolve: {
       alias: [

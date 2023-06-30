@@ -1,10 +1,3 @@
-<template>
-  <div
-    id="map"
-    class="map"
-  ></div>
-</template>
-
 <script lang="ts">
 // 初始化一个map变量存储map对象
 // import initMap from './initMap'
@@ -15,3 +8,10 @@ export default {
   methods: {},
 }
 </script>
+
+<template>
+  <div
+    id="map"
+    class="map"
+  ></div>
+</template>

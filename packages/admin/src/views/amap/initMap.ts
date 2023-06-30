@@ -1,4 +1,5 @@
 import AMapLoader from '@amap/amap-jsapi-loader'
+
 const initMap = function () {
   //   window._AMapSec = {}
 

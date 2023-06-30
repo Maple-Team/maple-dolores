@@ -1,6 +1,3 @@
-<template>
-  <button @click="test">test</button>
-</template>
 <script lang="ts">
 import { defineComponent } from 'vue'
 
@@ -9,6 +6,9 @@ export default defineComponent({
     addBook(payload: { bookName: string }) {
       return payload.bookName.length > 1
     },
+  },
+  setup(props, { emit, expose }) {
+    emit('addBook', { bookName: 'test name' })
   },
   methods: {
     test(e: Event) {
@@ -20,8 +20,9 @@ export default defineComponent({
       this.$translate('a')
     },
   },
-  setup(props, { emit, expose }) {
-    emit('addBook', { bookName: 'test name' })
-  },
 })
 </script>
+
+<template>
+  <button @click="test">test</button>
+</template>

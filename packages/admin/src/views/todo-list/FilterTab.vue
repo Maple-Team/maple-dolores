@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import type { PropType } from 'vue'
+import { capitalize } from '@liutsing/utils'
+import type { FilterType } from './type'
+
+defineProps({
+  visibility: { type: String as PropType<FilterType>, required: true },
+})
+
+const filters: FilterType[] = ['all', 'active', 'completed']
+</script>
+
 <template>
   <ul class="filters">
     <li
@@ -15,16 +27,6 @@
   </ul>
 </template>
 
-<script setup lang="ts">
-import { FilterType } from './type'
-import { PropType } from 'vue'
-import { capitalize } from '@liutsing/utils'
-const filters: FilterType[] = ['all', 'active', 'completed']
-
-defineProps({
-  visibility: { type: String as PropType<FilterType>, required: true },
-})
-</script>
 <style lang="less" scoped>
 .filters {
   margin: 0;

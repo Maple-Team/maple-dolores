@@ -1,4 +1,4 @@
-import { type Ref, ref, watchEffect, watch, unref, isRef } from 'vue'
+import { type Ref, isRef, ref, unref, watchEffect } from 'vue'
 /**
  * 接收静态的 URL 字符串和 URL 字符串的 ref
  * @param url
@@ -17,11 +17,8 @@ export function useFetch(url: string | Ref<string>) {
       .then((res) => (data.value = res))
       .catch((err) => (error.value = err))
   }
-  if (isRef(url)) {
-    watchEffect(doFetch)
-  } else {
-    doFetch()
-  }
+  if (isRef(url)) watchEffect(doFetch)
+  else doFetch()
 
   return { data, error }
 }

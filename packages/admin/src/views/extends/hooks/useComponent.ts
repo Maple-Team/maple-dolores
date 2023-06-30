@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { useEventListener } from './useEventListener'
 
 // 有状态组件

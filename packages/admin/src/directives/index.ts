@@ -1,5 +1,8 @@
-import { Directive, Plugin } from 'vue'
-type DefaultImport = { default: { value: Directive } }
+import type { Directive, Plugin } from 'vue'
+
+interface DefaultImport {
+  default: { value: Directive }
+}
 
 const modules = import.meta.glob<DefaultImport>('./**/*.ts')
 

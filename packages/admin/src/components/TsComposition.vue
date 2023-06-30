@@ -1,11 +1,6 @@
-<template>
-  <button @click="test">{{ name }}</button>
-  <span>{{ obj.abbr }}{{ obj.age }}</span>
-  <input ref="el" />
-</template>
 <script lang="ts" setup>
-import Modal from './modal.vue'
-import { ref, type Ref, reactive, computed, provide, inject, type InjectionKey, onMounted } from 'vue'
+import { type InjectionKey, type Ref, computed, inject, onMounted, provide, reactive, ref } from 'vue'
+import type Modal from './modal.vue'
 // import type { A } from './a'
 interface A {
   name?: string
@@ -69,3 +64,9 @@ const openModal = () => {
   modal.value?.open()
 }
 </script>
+
+<template>
+  <button @click="test">{{ name }}</button>
+  <span>{{ obj.abbr }}{{ obj.age }}</span>
+  <input ref="el" />
+</template>
