@@ -5,7 +5,7 @@ import { OnLongPress } from '@vueuse/components'
 
 const el = ref()
 
-function close(e: any) {
+function close(e: AnyToFix) {
   /* ... */
   console.log(e)
 }
@@ -14,7 +14,7 @@ onClickOutside(el, close)
 
 const longPressedComponent = ref(false)
 
-const onLongPressCallbackComponent = (e: PointerEvent) => {
+const onLongPressCallbackComponent = () => {
   longPressedComponent.value = true
 }
 const resetComponent = () => {

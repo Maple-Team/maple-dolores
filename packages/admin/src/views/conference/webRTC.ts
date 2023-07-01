@@ -1,5 +1,7 @@
-import type { Socket } from 'socket.io'
-import type { ClientToServerEvents, Message, ServerToClientEvents } from './types'
+import type { Socket } from 'socket.io-client'
+import dayjs from 'dayjs'
+import { uuid } from '@liutsing/utils'
+import type { ChatMessage, ClientToServerEvents, Message, ServerToClientEvents } from './types'
 import emitter from '@/utils/emitter'
 
 export class WebRtc extends EventTarget {
@@ -8,8 +10,11 @@ export class WebRtc extends EventTarget {
   private pcConfig: RTCConfiguration | undefined
   private _myId: string | undefined | null
   private pcs: Record<string, RTCPeerConnection> = {}
+  private users: Record<string, string> = {}
   private streams: Record<string, MediaStream> = {}
+  private dataChannels: Record<string, RTCDataChannel> = {}
   private room: string | undefined | null
+  private _userName: string | undefined | null
   private inCall: boolean | undefined
   /** 当前会议室是否存在两个用户以上 */
   private isReady: boolean | undefined
@@ -23,6 +28,7 @@ export class WebRtc extends EventTarget {
     this.pcConfig = pcConfig
     this._myId = null
     this.pcs = {}
+    this.users = {}
     this.streams = {}
     this.room = null
     this.inCall = false
@@ -33,7 +39,7 @@ export class WebRtc extends EventTarget {
     this._onSocketListeners()
   }
 
-  _onSocketListeners() {
+  private _onSocketListeners() {
     console.log('socket listener initialized')
 
     /**
@@ -69,7 +75,9 @@ export class WebRtc extends EventTarget {
 
     // Room is ready for connection 当前房间内收到
     this.socket?.on('ready', (user: string) => {
-      console.log(`users: ${user} joined room`)
+      if (this._myId === user) console.log('joined room')
+      else console.log(`users: ${user} joined room`)
+
       if (this._myId !== user && this.inCall) this.isInitiator = true
     })
 
@@ -86,6 +94,14 @@ export class WebRtc extends EventTarget {
         this._removeUser(socketId)
         this.isInitiator = true
         emitter.emit('USER_LEAVE', socketId)
+      } else if (message.type === 'chat') {
+        emitter.emit('CHAT_CONTENT', {
+          content: message.content,
+          from: message.from,
+          userName: message.userName,
+          uuid: message.uuid,
+          ts: message.ts,
+        })
       }
 
       if (this.pcs[socketId] && this.pcs[socketId].connectionState === 'connected') {
@@ -95,26 +111,29 @@ export class WebRtc extends EventTarget {
 
       switch (message.type) {
         case 'initialize':
-          this._connect(socketId)
+          this._connect(socketId, message.userName)
           break
         case 'offer':
           if (!this.pcs[socketId]) this._connect(socketId)
-          // @ts-expect-error: 设置发送过来的offer
-          this.pcs[socketId].setRemoteDescription(new RTCSessionDescription(message)).catch(console.error)
+
+          this.pcs[socketId]
+            .setRemoteDescription(new RTCSessionDescription(message as RTCSessionDescriptionInit))
+            .catch(console.error)
           this._answer(socketId)
           break
         case 'answer':
-          // @ts-expect-error: 获得发送的offer的answer
-          this.pcs[socketId].setRemoteDescription(new RTCSessionDescription(message)).catch(console.error)
+          this.pcs[socketId]
+            .setRemoteDescription(new RTCSessionDescription(message as RTCSessionDescriptionInit))
+            .catch(console.error)
           break
         case 'candidate':
           // 获得candidate sdp
-          this.inCall = true
           // eslint-disable-next-line no-case-declarations
           const candidate = new RTCIceCandidate({
             sdpMLineIndex: message.label,
             candidate: message.candidate,
           })
+          this.inCall = true
           this.pcs[socketId].addIceCandidate(candidate).catch(console.error)
           break
         default:
@@ -123,13 +142,12 @@ export class WebRtc extends EventTarget {
     })
   }
 
-  _answer(socketId: string) {
+  private _answer(socketId: string) {
     console.log(`sending answer to ${socketId}`)
     this.pcs[socketId]
       .createAnswer()
       .then(async (answer) => {
-        // @ts-expect-error: 忽略类型问题
-        this._sendMessage(answer, socketId)
+        this._sendMessage(answer as Message, socketId)
         await this.pcs[socketId].setLocalDescription(answer)
       })
       .catch((e) => {
@@ -137,9 +155,8 @@ export class WebRtc extends EventTarget {
       })
   }
 
-  _removeUser(socketId: string) {
-    console.log(socketId)
-    throw new Error('Method not implemented.')
+  private _removeUser(socketId: string) {
+    this.socket?.emit('message', { type: 'leave' }, socketId)
   }
 
   /**
@@ -147,22 +164,24 @@ export class WebRtc extends EventTarget {
    * if got local stream and is ready for connection
    * @param socketId
    */
-  _connect(socketId: string) {
+  private _connect(socketId: string, userName?: string) {
     if (typeof this._localStream === 'undefined' || !this.isReady) return
+
+    if (userName) this.users[socketId] = userName
+
     this._createPeerConnection(socketId)
     if (this._localStream)
       for (const track of this._localStream?.getTracks()) this.pcs[socketId].addTrack(track, this._localStream)
     if (this.isInitiator) this._makeOffer(socketId)
   }
 
-  _makeOffer(socketId: string) {
+  private _makeOffer(socketId: string) {
     // NOTE 发起offser连接
     console.log(`Creating offer for ${socketId}`)
     this.pcs[socketId]
       .createOffer()
       .then(async (offer) => {
-        // @ts-expect-error: 处理类型问题
-        this._sendMessage(offer, socketId)
+        this._sendMessage(offer as Message, socketId)
         await this.pcs[socketId].setLocalDescription(new RTCSessionDescription(offer))
       })
       .catch((e) => {
@@ -170,12 +189,13 @@ export class WebRtc extends EventTarget {
       })
   }
 
-  _createPeerConnection(socketId: string) {
+  private _createPeerConnection(socketId: string) {
     if (this.pcs[socketId]) {
       console.warn(`connection with ${socketId}, already established`)
       return
     }
     this.pcs[socketId] = new RTCPeerConnection(this.pcConfig)
+
     // 处理peer之间的连接协商
     this.pcs[socketId].addEventListener('icecandidate', (ev: RTCPeerConnectionIceEvent) => {
       console.log('icecandidate event: ', ev)
@@ -191,34 +211,64 @@ export class WebRtc extends EventTarget {
         socketId
       )
     })
+
     // 处理远程轨道（track）的到达
     this.pcs[socketId].addEventListener('track', (ev: RTCTrackEvent) => {
-      console.log(`Remote stream added for ${socketId}`)
+      console.log(`Remote stream added for ${socketId}`, ev.streams)
       // NOTE 这里的流含有多个轨道(音轨，视频轨，比如多个视频/音频输入)
-      if (ev.streams[0] && this.streams[socketId]?.id !== ev.streams[0].id) {
+      if (ev.streams[0]) {
         this.streams[socketId] = ev.streams[0]
-        emitter.emit('NEW_USER', { socketId, stream: ev.streams[0] })
+        emitter.emit('NEW_USER', { socketId, stream: ev.streams[0], userName: this.users[socketId] || 'unknown' })
       }
     })
+
+    // const dataChannel = this.pcs[socketId].createDataChannel('dataChannel')
+    // dataChannel.addEventListener('message', (msg) => {
+    //   console.log('dataChannel received message: ', msg)
+    // })
+    // this.pcs[socketId].addEventListener('datachannel', (e) => {
+    //   const { channel, ...rest } = e
+    //   console.log(rest)
+    //   channel.addEventListener('message', (msg) => {
+    //     console.log(socketId, 'dataChannel received message: ', msg.data)
+    //   })
+    // })
+    // this.dataChannels[socketId] = dataChannel
   }
 
-  _sendMessage(message: Message, toId?: string | null, roomId?: string | null) {
+  private _sendMessage(message: Message, toId?: string | null, roomId?: string | null) {
     this.socket?.emit('message', message, toId, roomId)
+  }
+
+  /**
+   * 发送消息
+   * @param msg
+   */
+  sendText(msg: string, toId?: string) {
+    const chatMessage: ChatMessage = {
+      content: msg,
+      from: this.myId!,
+      userName: this.userName!,
+      uuid: uuid(),
+      ts: dayjs().valueOf(),
+    }
+    emitter.emit('CHAT_CONTENT', chatMessage)
+    this.socket?.emit('message', { type: 'chat', ...chatMessage }, toId, this.room)
+    // for (const id in this.dataChannels) if (this.dataChannels[id].readyState === 'open') this.dataChannels[id].send(msg)
   }
 
   /**
    * 在房间内发送gotstream类型事件
    */
   initialize() {
-    if (this.room) this._sendMessage({ type: 'initialize' }, null, this.room)
+    if (this.room) this._sendMessage({ type: 'initialize', userName: this.userName }, null, this.room)
     else console.log('no room')
   }
 
-  joinRoom(room: string) {
-    if (room) {
-      this.room = room
-      this.socket?.emit('create or join', room)
-    }
+  joinRoom(userName: string, room: string) {
+    this.room = room
+    this._userName = userName
+    this.socket?.emit('create or join', room)
   }
 
   leaveRoom() {
@@ -227,6 +277,10 @@ export class WebRtc extends EventTarget {
       this.isInitiator = false
       this.socket?.emit('leave room', this.room)
     }
+  }
+
+  kick(socketId: string) {
+    this.socket?.emit('kickout', socketId, this.room!)
   }
 
   getLocalStream(
@@ -255,7 +309,7 @@ export class WebRtc extends EventTarget {
   }
 
   get myId() {
-    return this.room
+    return this._myId
   }
 
   get isAdmin() {
@@ -268,5 +322,9 @@ export class WebRtc extends EventTarget {
 
   get participants() {
     return this.pcs ? Object.keys(this.pcs) : []
+  }
+
+  get userName() {
+    return this._userName
   }
 }

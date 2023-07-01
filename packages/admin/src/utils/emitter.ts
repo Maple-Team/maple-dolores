@@ -1,5 +1,6 @@
 import type { AxiosError } from 'axios'
 import mitt, { type Emitter } from 'mitt'
+import type { ChatMessage } from '@/views/conference/types'
 
 /**
  * 弹窗消息类型
@@ -22,7 +23,8 @@ export type Events = {
   CREATED_ROOM: { room: string; socketId: string }
   JOINED_ROOM: { room: string; socketId: string }
   USER_LEAVE: string
-  NEW_USER: { socketId: string; stream: MediaStream }
+  NEW_USER: { socketId: string; stream: MediaStream; userName: string }
+  CHAT_CONTENT: ChatMessage
 }
 
 /**

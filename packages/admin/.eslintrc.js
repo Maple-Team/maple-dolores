@@ -3,6 +3,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/require-await': 'off',
     'vue/v-on-event-hyphenation': 'off',
-    '@typescript-eslint/indent': 'off',
+    'vue/comma-dangle': 'off',
+    'no-restricted-syntax': 'off',
   },
 }

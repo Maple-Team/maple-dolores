@@ -1,7 +1,15 @@
 export interface Message {
-  type: 'offer' | 'answer' | 'candidate' | 'initialize' | 'leave'
+  type: 'offer' | 'answer' | 'candidate' | 'initialize' | 'leave' | 'chat'
   [key: string]: AnyToFix
 }
+export interface ChatMessage {
+  content: string
+  from: string
+  userName: string
+  uuid: string
+  ts: number
+}
+
 export interface ServerToClientEvents {
   /**
    * 已创建会议室事件
@@ -79,4 +87,5 @@ export interface ClientToServerEvents {
 export interface Participant {
   uid: string
   stream: MediaStream
+  userName: string
 }
