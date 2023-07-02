@@ -13,10 +13,7 @@ const sendMsg = () => {
 }
 
 onMounted(() => {
-  // NOTE 自定义网关要直连
-  if (import.meta.env.MODE === 'development') socket = io('http://localhost:3003/events')
-  else socket = io('http://maple-gateway:3003/events')
-
+  socket = io('/events') // 转发
   socket.on('connect', () => {
     message.success('socket.io ws connected')
 

@@ -14,7 +14,7 @@ const sendMsg = () => {
 
 onMounted(() => {
   //   socket = io('http://localhost:3000') // 直连 默认path: /socket.io/
-  socket = io({ path: '/socket.io' }) // 转发
+  socket = io('/') // 转发
   socket.on('connect', () => {
     message.success('socket.io ws connected')
 

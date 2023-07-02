@@ -55,10 +55,10 @@ export default ({ mode }) => {
           secure: false,
         },
       },
-      //   https: isProd || {
-      //     cert: fs.readFileSync('./localhost+3.pem'),
-      //     key: fs.readFileSync('./localhost+3-key.pem'),
-      //   },
+      https: isProd || {
+        cert: fs.readFileSync('./localhost+3.pem'),
+        key: fs.readFileSync('./localhost+3-key.pem'),
+      },
     },
     build: {
       target: 'es2015',
