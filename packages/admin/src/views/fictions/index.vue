@@ -1,3 +1,5 @@
 <script lang="ts" setup></script>
 
-<template>1</template>
+<template>
+  <div>fiction list</div>
+</template>

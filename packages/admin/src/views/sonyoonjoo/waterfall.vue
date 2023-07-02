@@ -11,7 +11,7 @@ interface IWaterfallProps {
   colWidth?: number
   cols?: number
   footerHeight: number
-  list: AnyToFixToFix[]
+  list: AnyToFix[]
   nomore: boolean
   scrollDisabled: boolean
   scrollDelay: number

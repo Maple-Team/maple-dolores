@@ -13,12 +13,15 @@ const sendMsg = () => {
 }
 
 onMounted(() => {
-  //   socket = io('http://localhost:3000') // 直连 默认path: /socket.io/
-  socket = io({ path: '/socket.io' }) // 转发
+  // NOTE 自定义网关要直连
+  if (import.meta.env.MODE === 'development') socket = io('http://localhost:3003/events')
+  else socket = io('http://maple-gateway:3003/events')
+
   socket.on('connect', () => {
     message.success('socket.io ws connected')
 
     id.value = socket!.id
+
     try {
       socket.emit('register', socket!.id)
     } catch (error) {
@@ -32,7 +35,6 @@ onMounted(() => {
 
   socket.on('onRegister', (e) => {
     message.success('收到注册回复的消息')
-
     ids.value = JSON.parse(e).ids
   })
 

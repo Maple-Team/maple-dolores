@@ -2,6 +2,7 @@
   "extends": "@liutsing/tsconfig",
   "compilerOptions": {
     "lib": ["ESNext", "DOM"],
+    "module": "ESNext",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

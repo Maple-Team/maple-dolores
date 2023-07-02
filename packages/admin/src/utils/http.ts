@@ -21,7 +21,7 @@ const api = axios.create({
 })
 
 api.interceptors.request.use(
-  async (config: AxiosRequestConfig) => {
+  async (config) => {
     if (config.headers) config.headers['X-API-VERSION'] = 'v1'
 
     if (!config.noPrefix) config.url = `/api${config.url || ''}`

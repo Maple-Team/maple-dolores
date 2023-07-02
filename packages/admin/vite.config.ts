@@ -25,8 +25,8 @@ export default ({ mode }) => {
       legacy({
         targets: ['defaults', 'not IE 11'],
       }),
-      eslintPlugin(),
-    ],
+      isProd ? null : eslintPlugin(),
+    ].filter(Boolean),
     resolve: {
       alias: [
         {
@@ -52,16 +52,13 @@ export default ({ mode }) => {
         '/socket.io/': {
           target: `http://localhost:${process.env.VITE_API_PORT}`, // socket.io服务
           changeOrigin: true,
-        },
-        '/events/': {
-          target: `http://localhost:${process.env.VITE_API_PORT}`, // socket.io服务
-          changeOrigin: true,
+          secure: false,
         },
       },
-      https: isProd || {
-        cert: fs.readFileSync('./localhost+3.pem'),
-        key: fs.readFileSync('./localhost+3-key.pem'),
-      },
+      //   https: isProd || {
+      //     cert: fs.readFileSync('./localhost+3.pem'),
+      //     key: fs.readFileSync('./localhost+3-key.pem'),
+      //   },
     },
     build: {
       target: 'es2015',
