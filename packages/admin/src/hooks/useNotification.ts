@@ -8,10 +8,12 @@ export const useNotification = () => {
   let socket: Socket
 
   onMounted(() => {
-    //   socket = io('http://localhost:3000') // 直连 默认path: /socket.io/
-    socket = io('/') // 转发
+    socket = io('/default', {
+      query: {
+        token: '123',
+      },
+    }) // 转发
     socket.on('connect', async () => {
-      notification.info({ message: '通知', description: 'WebSocket服务已成功建立' })
       id.value = socket.id
 
       socket.on(id.value, (e) => {
@@ -23,7 +25,7 @@ export const useNotification = () => {
       })
 
       socket.on('notification', (msg: string) => {
-        notification.info({ message: '通知', description: msg })
+        notification.info({ message: '通知', description: msg, duration: 1000 })
       })
 
       socket.on('error', (e) => {
