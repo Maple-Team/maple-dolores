@@ -2,7 +2,7 @@
 import { onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
 import type { Socket } from 'socket.io-client'
 import { io } from 'socket.io-client'
-import { message, notification } from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 
 const ids = ref<string[]>([])
 const id = ref<string>('')
@@ -13,12 +13,12 @@ const sendMsg = () => {
 }
 
 onMounted(() => {
-  //   socket = io('http://localhost:3000') // 直连 默认path: /socket.io/
-  socket = io('/') // 转发
+  socket = io('/events') // 转发
   socket.on('connect', () => {
     message.success('socket.io ws connected')
 
     id.value = socket!.id
+
     try {
       socket.emit('register', socket!.id)
     } catch (error) {
@@ -32,15 +32,11 @@ onMounted(() => {
 
   socket.on('onRegister', (e) => {
     message.success('收到注册回复的消息')
-
     ids.value = JSON.parse(e).ids
   })
 
   socket.on('broadcast', (e) => {
     console.log('broadcast', e)
-  })
-  socket.on('notification', (msg: string) => {
-    notification.info({ message: '通知', description: msg })
   })
 
   socket.on('error', (e) => {

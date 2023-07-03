@@ -2,6 +2,9 @@
 import { ref } from 'vue'
 import { capitalize } from '@liutsing/utils'
 import { links as _links, routerMap } from '@/utils'
+import { useNotification } from '@/hooks'
+
+useNotification()
 
 const links = ref<string[]>(_links)
 </script>
@@ -60,7 +63,7 @@ const links = ref<string[]>(_links)
 .logo {
   text-align: center;
   font-size: 24px;
-  font-family: 'SF Pro Rounded';
+  font-family: 'SF Pro Rounded', Arial, Helvetica, sans-serif;
   background: linear-gradient(to right, #ff6b6b, #ffa06a, #f3ff6d, #72ff6a, #72ffcc, #72cfff, #b072ff, #ff72f2);
   -webkit-background-clip: text;
   background-clip: text;
