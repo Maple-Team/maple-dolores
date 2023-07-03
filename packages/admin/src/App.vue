@@ -2,9 +2,9 @@
 import { ref } from 'vue'
 import { capitalize } from '@liutsing/utils'
 import { links as _links, routerMap } from '@/utils'
-import { useNotification } from '@/hooks'
+// import { useNotification } from '@/hooks'
 
-useNotification()
+// useNotification()
 
 const links = ref<string[]>(_links)
 </script>
