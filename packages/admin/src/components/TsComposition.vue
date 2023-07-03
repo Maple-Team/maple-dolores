@@ -49,8 +49,8 @@ function test(e: AnyToFix) {
 // 为 provide / inject 标注类型
 const key = Symbol() as InjectionKey<string>
 provide(key, '22')
-const foo = inject(key, '234')
-const foo1 = inject<string>('23')
+const _foo = inject(key, '234')
+const _foo1 = inject<string>('23')
 
 // 为模板引用标注类型
 const el = ref<HTMLInputElement | null>(null)
@@ -60,7 +60,7 @@ onMounted(() => {
 
 // 为组件模板引用标注类型
 const modal = ref<InstanceType<typeof Modal> | null>(null)
-const openModal = () => {
+const _openModal = () => {
   modal.value?.open()
 }
 </script>

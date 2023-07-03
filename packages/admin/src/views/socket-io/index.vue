@@ -2,7 +2,7 @@
 import { onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
 import type { Socket } from 'socket.io-client'
 import { io } from 'socket.io-client'
-import { message } from 'ant-design-vue'
+import { message, notification } from 'ant-design-vue'
 
 const ids = ref<string[]>([])
 const id = ref<string>('')
@@ -38,6 +38,9 @@ onMounted(() => {
 
   socket.on('broadcast', (e) => {
     console.log('broadcast', e)
+  })
+  socket.on('notification', (msg: string) => {
+    notification.info({ message: '通知', description: msg })
   })
 
   socket.on('error', (e) => {

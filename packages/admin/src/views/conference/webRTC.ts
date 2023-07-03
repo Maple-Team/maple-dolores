@@ -1,7 +1,7 @@
 import type { Socket } from 'socket.io-client'
 import dayjs from 'dayjs'
 import { uuid } from '@liutsing/utils'
-import type { ChatMessage, ClientToServerEvents, Message, ServerToClientEvents } from './types' 
+import type { ChatMessage, ClientToServerEvents, Message, ServerToClientEvents } from './types'
 import emitter from '@/utils/emitter'
 
 export class WebRtc extends EventTarget {
