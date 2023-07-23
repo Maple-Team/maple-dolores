@@ -6,25 +6,18 @@ const slides = ref([
   { key: 2, value: 2 },
   { key: 3, value: 3 },
 ])
-// const length = computed(() => slides.value.length)
 
 const currentIndex = ref<number>(0)
 
 const moveSide = (forward: number) => {
-  if (forward > 0) currentIndex.value++
-  else currentIndex.value--
-  //   const item = slides.value.shift()
-  //   item && slides.value.push(item)
-  //   console.log(slides.value)
+  currentIndex.value += forward
+
+  // Wrap around to the beginning if reaching the end
+  if (currentIndex.value >= slides.value.length) currentIndex.value = 0
+  else if (currentIndex.value < 0) currentIndex.value = slides.value.length - 1
 }
 </script>
 
-<!-- -translate-x-1/4 -->
-<!-- -translate-x-2/4 -->
-<!-- -translate-x-3/4 -->
-<!-- translate-x-3/4 -->
-<!-- translate-x-1/4 -->
-<!-- translate-x-2/4 -->
 <template>
   <div>
     <div class="slider-container">
@@ -65,7 +58,6 @@ const moveSide = (forward: number) => {
   .slider {
     display: flex;
     flex-wrap: nowrap;
-    // width: 900px;
     transition: transform 0.5s ease-in-out;
     will-change: transform;
     .slide {
@@ -77,6 +69,7 @@ const moveSide = (forward: number) => {
       background: #ff9500;
       border: 1px solid red;
       box-sizing: border-box;
+      color: #fff;
     }
   }
 }
