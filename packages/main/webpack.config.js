@@ -1,14 +1,18 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { ModuleFederationPlugin } = require('webpack').container
-const ExternalTemplateRemotesPlugin = require('external-remotes-plugin')
+// const { ModuleFederationPlugin } = require('webpack').container
+// const ExternalTemplateRemotesPlugin = require('external-remotes-plugin')
 const path = require('path')
 
 const { getPort, getPublicPath } = require('../../build/util')
 const appName = 'main'
 
+/**
+ * @type {import('webpack').Configuration}
+ */
 module.exports = {
   entry: './src/index',
-  mode: 'development',
+  mode: process.env.NODE_ENV,
+  devtool: process.env.NODE_ENV === 'production' ? false : 'eval-cheap-source-map',
   devServer: {
     static: path.join(__dirname, 'dist'),
     port: getPort(appName),
@@ -16,6 +20,13 @@ module.exports = {
   },
   output: {
     publicPath: getPublicPath(appName),
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      maxSize: 244 * 1024,
+      maxAsyncSize: 244 * 1024,
+    },
   },
   module: {
     rules: [
@@ -29,7 +40,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: 'css-loader',
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },

@@ -1,11 +1,12 @@
 import React from 'react'
 import apps from '../../../build/config.json'
+import './index.css'
 
 const App = () => {
   const keys = Object.keys(apps).filter((k) => k !== 'main')
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
-      <aside style={{ width: 240 }}>
+      <aside style={{ width: 160 }}>
         <nav>
           <ul>
             {keys.map((k) => (
