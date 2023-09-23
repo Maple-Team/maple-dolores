@@ -3,28 +3,16 @@
     "pkgName": "@liutsing/main",
     "port": 5040
   },
-  "sub": {
-    "pkgName": "@liutsing/sub",
+  "react17": {
+    "pkgName": "@liutsing/react17",
     "port": 5041
-  },
-  "count-down": {
-    "pkgName": "@liutsing/count-down",
-    "port": 5042
   },
   "admin": {
     "pkgName": "@liutsing/admin",
+    "port": 5042
+  },
+  "react18-webpack": {
+    "pkgName": "@liutsing/react18-webpack",
     "port": 5043
-  },
-  "svelte-taste": {
-    "pkgName": "@liutsing/svelte-taste",
-    "port": 5044
-  },
-  "solidjs-taste": {
-    "pkgName": "@liutsing/solidjs-taste",
-    "port": 5045
-  },
-  "react-taste": {
-    "pkgName": "@liutsing/react-taste",
-    "port": 5046
   }
 }

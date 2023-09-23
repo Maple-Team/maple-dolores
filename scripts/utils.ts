@@ -2,6 +2,7 @@ import { execa } from 'execa'
 import type { Options as ExecaOptions, ExecaReturnValue } from 'execa'
 import colors from 'picocolors'
 import minimist from 'minimist'
+import { sleep } from '@liutsing/utils'
 
 export const args = minimist(process.argv.slice(2))
 
@@ -27,7 +28,8 @@ export async function runCommand(command: string, args: string[], cwd: string) {
 }
 
 export async function dryRun(bin: string, args: string[], opts?: ExecaOptions<string>): Promise<void> {
-  return console.log(colors.blue(`[dryrun] ${bin} ${args.join(' ')}`), opts || '')
+  console.log(colors.blue(`[dryrun] ${bin} ${args.join(' ')}`), opts || '')
+  return (await sleep(0)) as Promise<void>
 }
 
 export const runIfNotDry = isDryRun ? dryRun : run

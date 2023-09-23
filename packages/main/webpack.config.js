@@ -1,9 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-// const { ModuleFederationPlugin } = require('webpack').container
-// const ExternalTemplateRemotesPlugin = require('external-remotes-plugin')
-const path = require('path')
-
-const { getPort, getPublicPath } = require('../../build/util')
+const { getPort } = require('../../build/util')
 const appName = 'main'
 
 /**
@@ -11,15 +7,13 @@ const appName = 'main'
  */
 module.exports = {
   entry: './src/index',
+  cache: true,
+  target: 'web',
   mode: process.env.NODE_ENV,
   devtool: process.env.NODE_ENV === 'production' ? false : 'eval-cheap-source-map',
   devServer: {
-    static: path.join(__dirname, 'dist'),
     port: getPort(appName),
     historyApiFallback: true,
-  },
-  output: {
-    publicPath: getPublicPath(appName),
   },
   optimization: {
     splitChunks: {
@@ -40,7 +34,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },

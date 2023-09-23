@@ -6,7 +6,7 @@ const App = () => {
   const keys = Object.keys(apps).filter((k) => k !== 'main')
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
-      <aside style={{ width: 160 }}>
+      <aside style={{ width: 160, background: '#fff' }}>
         <nav>
           <ul>
             {keys.map((k) => (
@@ -17,8 +17,8 @@ const App = () => {
           </ul>
         </nav>
       </aside>
-      <main style={{ flex: 1 }}>
-        <h1 style={{ textAlign: 'center' }}>Main App Title</h1>
+      <main style={{ flex: 1, marginLeft: 16, background: '#fff' }}>
+        <h1>Main APP</h1>
         <div id="container"></div>
       </main>
     </div>

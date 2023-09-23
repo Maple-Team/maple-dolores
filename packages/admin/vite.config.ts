@@ -1,5 +1,4 @@
 import path from 'path'
-import fs from 'fs'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
@@ -14,7 +13,6 @@ const port = getPort(name)
 export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
   const isProd = process.env.NODE_ENV === 'production'
-
   return defineConfig({
     plugins: [
       VueDevTools(),
@@ -36,7 +34,6 @@ export default ({ mode }) => {
         },
       ],
     },
-    // base: '/',
     base: !isProd ? `http://localhost:${port}` : '/', // https://iendeavor.github.io/import-meta-env/guide.html
     server: {
       port,
@@ -55,10 +52,10 @@ export default ({ mode }) => {
           secure: false,
         },
       },
-      https: isProd || {
-        cert: fs.readFileSync('./localhost+3.pem'),
-        key: fs.readFileSync('./localhost+3-key.pem'),
-      },
+      //   https: isProd || {
+      //     cert: fs.readFileSync('./localhost+3.pem'),
+      //     key: fs.readFileSync('./localhost+3-key.pem'),
+      //   },
     },
     build: {
       target: 'es2015',

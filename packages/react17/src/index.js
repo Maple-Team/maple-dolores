@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom'
+import React from 'react'
 import { reactBridge } from '@garfish/bridge-react'
 import RootComponent from './App'
 import ErrorBoundary from './ErrorBoundary'
@@ -9,49 +10,26 @@ const getRootDom = (dom) => (dom ? dom.querySelector('#root') : document.querySe
 
 export const render = () => ReactDOM.render(<RootComponent {..._props} />, _root)
 
-// provider 写法：
-// export const provider = (props) => {
-//   const root = getRootDom(props);
-//   _root = root;
-//   _props = props;
-
-//   return {
-//     render() {
-//       window?.Garfish.channel.on('stateChange', render);
-//       ReactDOM.render(<RootComponent {...props} />, root);
-//     },
-//     destroy({ dom }) {
-//       window?.Garfish.channel.removeListener('stateChange', render);
-//       ReactDOM.unmountComponentAtNode(
-//         dom ? dom.querySelector('#root') : document.querySelector('#root'),
-//       );
-//     },
-//   };
-// };
-
 export const provider = reactBridge({
   el: '#root', //mount node
+  // NOTE 方式1
   // a promise that resolves with the react component. Wait for it to resolve before mounting
-  loadRootComponent: (appInfo) => {
-    _root = getRootDom(appInfo.dom)
-    _props = appInfo
-    console.log(appInfo)
-    return Promise.resolve(() => <RootComponent {...appInfo} />)
-  },
+  //   loadRootComponent: (appInfo) => {
+  //     _root = getRootDom(appInfo.dom)
+  //     _props = appInfo
+  //     console.log(appInfo)
+  //     return Promise.resolve(() => <RootComponent {...appInfo} />)
+  //   },
+  // NOTE 方式2
+  rootComponent: RootComponent,
   errorBoundary: (e) => <ErrorBoundary />,
 })
 
 // 这能够让子应用独立运行起来，以保证后续子应用能脱离主应用独立运行，方便调试、开发
 if (!window.__GARFISH__) {
   ReactDOM.render(
-    <RootComponent basename={process.env.NODE_ENV === 'production' ? '/sub' : '/'} />,
+    // TODO production
+    <RootComponent basename={process.env.NODE_ENV === 'production' ? '/react17' : '/'} />,
     document.querySelector('#root')
   )
 }
-
-console.log('react 17 -- main document.currentScript', document.currentScript)
-
-let iframe = document.createElement('iframe')
-iframe.src = '/iframe'
-iframe.setAttribute('data-test', 'iframe-pre-fix-app-17')
-document.body.appendChild(iframe)

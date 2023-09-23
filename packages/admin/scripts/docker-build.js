@@ -1,5 +1,5 @@
-const { version } = require('../package.json')
 const { exec } = require('child_process')
+const { version } = require('../package.json')
 
 const name = 'liutsing/admin'
 const dockerProcss = exec(`docker build ../../ -t ${name}:latest -t ${name}:${version}`)

@@ -4,19 +4,22 @@ import ReactDOM from 'react-dom'
 import Garfish from 'garfish'
 import configs from '../../../build/config.json'
 
-
 ReactDOM.render(<App />, document.getElementById('root'))
-const escapedApps = ['react-taste', 'admin', 'solidjs-taste', 'svelte-taste']
+
+const escapedApps = ['admin']
 const protocol = window.location.protocol
-const pathname = window.location.pathname
+const hostname = window.location.hostname
+
 const apps = Object.keys(configs)
   .filter((k) => k !== 'main')
-  .map((k) => ({
-    name: configs[k].pkgName,
-    activeWhen: k,
-    entry: `${protocol}://${pathname}:${configs[k].port}`,
-    sandbox: !escapedApps.includes(k), // vite下关闭沙箱
-  }))
+  .map((k) => {
+    return {
+      name: configs[k].pkgName,
+      activeWhen: k,
+      entry: `${protocol}//${hostname}:${configs[k].port}`,
+      sandbox: !escapedApps.includes(k), // vite下关闭沙箱
+    }
+  })
 
 Garfish.run({
   basename: '/',

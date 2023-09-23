@@ -4,7 +4,7 @@ const webpack = require('webpack')
 const path = require('path')
 
 const { getPort, getPublicPath } = require('../../build/util')
-const appName = 'sub'
+const appName = 'react17'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -13,10 +13,11 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
  */
 module.exports = {
   entry: './src/index',
+  cache: true,
+  target: 'web',
   mode: process.env.NODE_ENV,
   devtool: !isDevelopment ? false : 'eval-cheap-source-map',
   devServer: {
-    static: path.join(__dirname, 'dist'),
     port: getPort(appName),
     headers: {
       'Access-Control-Allow-Origin': '*',
@@ -47,7 +48,7 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin({
-      banner: 'Micro App: sub',
+      banner: 'Micro App: React17',
     }),
     // To learn more about the usage of this plugin, please visit https://webpack.js.org/plugins/module-federation-plugin/
     // new ModuleFederationPlugin({
@@ -59,6 +60,7 @@ module.exports = {
     //   shared: { react: { singleton: true }, 'react-dom': { singleton: true } },
     // }),
     new HtmlWebpackPlugin({
+      inject: true,
       template: './public/index.html',
     }),
   ],

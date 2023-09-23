@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs'
 import { join } from 'path'
-import { runCommand, step, args } from './utils'
+import { args, runCommand, step } from './utils'
 
 const mainAppName = 'main'
 const rootDir = join(__dirname, '../packages/')
@@ -19,21 +19,21 @@ async function main() {
   const apps = readdirSync(rootDir)
   const { app } = args
   if (app) {
-    if (apps.includes(app)) {
-      await dev(app)
-    } else {
-      // app not exist
-    }
+    if (apps.includes(app)) await dev(app)
   } else {
     const subApps = getSubApps(apps)
-    subApps.forEach(async (item) => {
-      await dev(item)
+    // .filter((app) => app === 'admin' || app === 'sub')
+    subApps.forEach((item) => {
+      const handler = async () => {
+        await dev(item)
+      }
+      handler().catch(console.error)
     })
     await dev(mainAppName)
   }
 }
 
-main()
+main().catch(console.error)
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
