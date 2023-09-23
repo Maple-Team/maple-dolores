@@ -1,4 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from 'vue'
+
+const props = defineProps({ render: Number })
+onMounted(() => {
+  console.log(props.render, 'mounted')
+})
+</script>
 
 <template>
   <div class="item-container">

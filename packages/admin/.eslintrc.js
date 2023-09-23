@@ -12,5 +12,7 @@ module.exports = {
     'vue/require-explicit-emits': 'off',
     'symbol-description': 'off',
     'vue/html-indent': 'off',
+    // NOT FOR VUE3
+    'vue/no-use-v-if-with-v-for': 'off',
   },
 }
