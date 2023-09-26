@@ -5,6 +5,7 @@ const { getPublicPath } = require('../../../build/util')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const appName = 'react18-webpack'
+const root = process.cwd()
 
 const config = merge(dev, {
   devtool: 'cheap-module-source-map',
@@ -17,11 +18,13 @@ const config = merge(dev, {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-        ],
+        loader: 'babel-loader',
+      },
+      {
+        test: /\.(j|t)sx?$/,
+        exclude: /node_modules/,
+        include: [path.resolve(root, './src/assets/svg-icons')],
+        loader: 'babel-loader',
         sideEffects: true,
       },
     ],
@@ -64,4 +67,6 @@ const config = merge(dev, {
   },
 })
 
+const fs = require('node:fs')
+fs.writeFileSync('./merge.config.js', JSON.stringify(config))
 module.exports = config

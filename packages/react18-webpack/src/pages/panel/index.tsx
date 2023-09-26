@@ -1,6 +1,7 @@
 import React from 'react'
 import { Drawer } from '@liutsing/rc-components'
 import '@liutsing/rc-components/dist/index.css'
+import { Icon } from '@/Components'
 
 const DrawerPage = () => {
   return (
@@ -12,7 +13,18 @@ const DrawerPage = () => {
             额外的底部附加内容
           </div>
         }
-        foldRenderer={(open) => (open ? <>&lt;&lt;</> : <>&gt;&gt;</>)}
+        foldRenderer={(open) =>
+          open ? (
+            <>
+              <Icon
+                name="icon-driving"
+                className="w-[16px] h-[16px] bg-slate-950"
+              />
+            </>
+          ) : (
+            <>&gt;&gt;</>
+          )
+        }
       >
         <div className="w-80 h-full bg-white rounded">左侧实际内容区域</div>
       </Drawer>

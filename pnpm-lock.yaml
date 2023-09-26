@@ -72,6 +72,9 @@ importers:
       '@liutsing/types-utils':
         specifier: ^0.0.9
         version: 0.0.9
+      '@liutsing/webpack-config':
+        specifier: link:F:/T7/maple-base/packages/webpack-config
+        version: link:../../maple-base/packages/webpack-config
       '@nrwl/nx-cloud':
         specifier: latest
         version: 16.4.0
@@ -99,6 +102,9 @@ importers:
       '@types/video.js':
         specifier: ^7.3.52
         version: 7.3.52
+      '@types/webpack-env':
+        specifier: ^1.18.0
+        version: 1.18.0
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.30)
@@ -108,9 +114,6 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
-      dotenv-expand:
-        specifier: ^10.0.0
-        version: 10.0.0
       execa:
         specifier: ^7.1.1
         version: 7.1.1
@@ -4723,6 +4726,10 @@ packages:
   /@types/web-bluetooth@0.0.17:
     resolution: {integrity: sha512-4p9vcSmxAayx72yn70joFoL44c9MO/0+iVEBIQXe3v2h2SiAsEIo/G5v6ObFWvNKRFjbrVadNf9LqEEZeQPzdA==}
 
+  /@types/webpack-env@1.18.0:
+    resolution: {integrity: sha512-56/MAlX5WMsPVbOg7tAxnYvNYMMWr/QJiIp6BxVSW3JJXUVzzOn64qW8TzQyMSqSUFM2+PVI4aUHcHOzIz/1tg==}
+    dev: true
+
   /@types/webpack-sources@3.2.0:
     resolution: {integrity: sha512-Ft7YH3lEVRQ6ls8k4Ff1oB4jN6oy/XmU6tQISKdhfh+1mR+viZFphS6WL0IrtDOzvefmJg5a0s7ZQoRXwqTEFg==}
     dependencies:
@@ -8018,11 +8025,6 @@ packages:
     dependencies:
       no-case: 3.0.4
       tslib: 2.6.0
-    dev: true
-
-  /dotenv-expand@10.0.0:
-    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
-    engines: {node: '>=12'}
     dev: true
 
   /dotenv-expand@5.1.0:
@@ -16978,7 +16980,7 @@ packages:
       schema-utils: 3.3.0
       serialize-javascript: 6.0.1
       terser: 5.18.2
-      webpack: 5.88.1(webpack-cli@5.1.4)
+      webpack: 5.88.1(webpack-cli@4.10.0)
     dev: true
 
   /terser@5.18.2:

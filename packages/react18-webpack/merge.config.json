@@ -1,0 +1,122 @@
+{
+  "entry": "F:\\T7\\maple\\maple-colorful\\packages\\react18-webpack\\src\\index.tsx",
+  "resolve": {
+    "extensions": [".js", ".ts", ".tsx", ".jsx", ".node", ".wasm"],
+    "mainFiles": ["index"],
+    "alias": { "@": "F:\\T7\\maple\\maple-colorful\\packages\\react18-webpack\\src" },
+    "cacheWithContext": false
+  },
+  "target": "web",
+  "module": {
+    "rules": [
+      {
+        "test": {},
+        "exclude": {},
+        "include": ["F:\\T7\\maple\\maple-colorful\\packages\\react18-webpack\\src"],
+        "use": ["babel-loader"]
+      },
+      {
+        "test": {},
+        "exclude": {},
+        "include": ["F:\\T7\\maple\\maple-colorful\\packages\\react18-webpack\\src\\assets\\svg-icons"],
+        "use": ["babel-loader"],
+        "sideEffects": true
+      },
+      { "test": {}, "use": ["style-loader", "css-loader", "postcss-loader"], "sideEffects": true },
+      { "test": {}, "use": ["style-loader", "css-loader", "postcss-loader", "less-loader"], "sideEffects": true },
+      { "test": {}, "exclude": {}, "use": ["svg-sprite-loader"] },
+      { "test": {}, "exclude": {}, "use": [{ "loader": "babel-loader" }] }
+    ]
+  },
+  "plugins": [
+    {
+      "userOptions": {
+        "inject": true,
+        "template": "F:\\T7\\maple\\maple-colorful\\packages\\react18-webpack\\public\\index.html",
+        "title": "webpack config demo"
+      },
+      "version": 5
+    },
+    { "options": { "tagName": "link", "rel": "stylesheet", "href": "./fonts/index.css" }, "position": "body" },
+    {
+      "patterns": [
+        { "from": "F:\\T7\\maple\\maple-colorful\\packages\\react18-webpack\\public\\fonts", "to": "fonts" }
+      ],
+      "options": {}
+    },
+    { "definitions": { "React": "react", "process": "process/browser" } },
+    {
+      "definitions": {
+        "process.env.API_URL": "\"http://localhost:3001\"",
+        "process.env.WS_URL": "\"ws://localhost:9010\"",
+        "process.env.PORT": "\"5043\""
+      }
+    },
+    {
+      "config": { "plainSprite": true, "spriteAttrs": {} },
+      "svgCompiler": {
+        "config": { "rules": [{ "test": {}, "value": "sprite.svg" }] },
+        "rules": { "rules": [{ "test": {}, "value": "sprite.svg" }] },
+        "symbols": []
+      },
+      "rules": {}
+    },
+    {
+      "options": {
+        "exclude": {},
+        "include": {},
+        "overlay": {
+          "entry": "F:\\T7\\maple-base\\node_modules\\.pnpm\\@pmmmwh+react-refresh-webpack-plugin@0.5.10_react-refresh@0.14.0_webpack-dev-server@4.15.0_webpack@5.82.1\\node_modules\\@pmmmwh\\react-refresh-webpack-plugin\\client\\ErrorOverlayEntry.js",
+          "module": "F:\\T7\\maple-base\\node_modules\\.pnpm\\@pmmmwh+react-refresh-webpack-plugin@0.5.10_react-refresh@0.14.0_webpack-dev-server@4.15.0_webpack@5.82.1\\node_modules\\@pmmmwh\\react-refresh-webpack-plugin\\overlay\\index.js",
+          "sockIntegration": "wds"
+        }
+      }
+    }
+  ],
+  "output": {
+    "filename": "[name].[contenthash].js",
+    "chunkFilename": "[name].[contenthash].js",
+    "publicPath": "http://localhost:5043",
+    "clean": false,
+    "libraryTarget": "umd",
+    "globalObject": "window"
+  },
+  "mode": "development",
+  "devtool": "cheap-module-source-map",
+  "cache": true,
+  "optimization": {
+    "removeAvailableModules": true,
+    "removeEmptyChunks": true,
+    "splitChunks": {
+      "chunks": "all",
+      "minSize": 20000,
+      "minRemainingSize": 0,
+      "minChunks": 1,
+      "maxAsyncRequests": 30,
+      "maxInitialRequests": 30,
+      "enforceSizeThreshold": 50000,
+      "cacheGroups": {
+        "vendors": { "test": {}, "priority": -10, "reuseExistingChunk": true },
+        "default": { "priority": 20, "minChunks": 6, "reuseExistingChunk": true }
+      }
+    },
+    "runtimeChunk": "single"
+  },
+  "resolveLoader": { "alias": {} },
+  "devServer": {
+    "headers": { "X-Upstream": "http://localhost:3001", "Access-Control-Allow-Origin": "*" },
+    "compress": false,
+    "port": "5043",
+    "hot": true,
+    "open": false,
+    "setupExitSignals": true,
+    "historyApiFallback": true,
+    "proxy": {
+      "/api": { "target": "http://localhost:3001" },
+      "/ws/": { "target": "ws://localhost:9010", "ws": true, "secure": false, "changeOrigin": true }
+    },
+    "client": { "logging": "error", "overlay": false }
+  },
+  "infrastructureLogging": { "appendOnly": true, "level": "verbose", "debug": true },
+  "experiments": { "lazyCompilation": false }
+}
