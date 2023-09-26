@@ -6,24 +6,25 @@ import { Menu } from 'antd'
 import type { ItemType } from 'antd/es/menu/hooks/useItems'
 
 export default () => {
+  // NOTE 登陆权限判断 -> 参考react-query-auth这个库, 类比vue-query
   const nav = useNavigate()
   const items: ItemType[] = [
-    {
-      key: 'hooks-example',
-      label: 'Hooks Example',
-      style: { cursor: 'pointer' },
-      onClick() {
-        nav('/react-hooks')
-      },
-    },
-    {
-      label: 'ToolTip example',
-      key: 'react-tooltip',
-      style: { cursor: 'pointer' },
-      onClick() {
-        nav('/react-tooltip')
-      },
-    },
+    // {
+    //   key: 'hooks-example',
+    //   label: 'Hooks Example',
+    //   style: { cursor: 'pointer' },
+    //   onClick() {
+    //     nav('/react-hooks')
+    //   },
+    // },
+    // {
+    //   label: 'ToolTip example',
+    //   key: 'react-tooltip',
+    //   style: { cursor: 'pointer' },
+    //   onClick() {
+    //     nav('/react-tooltip')
+    //   },
+    // },
     {
       label: 'React Query',
       key: 'react-query',
@@ -40,14 +41,14 @@ export default () => {
         nav('/react-amap')
       },
     },
-    {
-      label: 'Infinite Scroll',
-      key: 'react-infinite-scroll-component',
-      style: { cursor: 'pointer' },
-      onClick() {
-        nav('/react-infinite-scroll-component')
-      },
-    },
+    // {
+    //   label: 'Infinite Scroll',
+    //   key: 'react-infinite-scroll-component',
+    //   style: { cursor: 'pointer' },
+    //   onClick() {
+    //     nav('/react-infinite-scroll-component')
+    //   },
+    // },
     {
       label: 'React Demo',
       key: 'react-demo',
