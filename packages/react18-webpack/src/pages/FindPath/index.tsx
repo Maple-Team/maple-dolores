@@ -1,9 +1,9 @@
 import { Button, Space } from 'antd'
-import { uniqBy } from 'lodash-es'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 type Point = [number, number]
 type Cell = 0 | 1 | 2
+const visitedPoints = new Set<number>()
 
 export const FindPath = () => {
   const initMap: Cell[] = localStorage.getItem('map')
@@ -14,6 +14,7 @@ export const FindPath = () => {
   const onSaveMap = useCallback(() => {
     localStorage.setItem('map', JSON.stringify(map))
   }, [map])
+
   const [isClear, setIsClear] = useState<boolean>()
   const onMouseMove = useCallback(
     (_: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) =>
@@ -43,67 +44,51 @@ export const FindPath = () => {
 
   const end: Point = useMemo(() => [99, 99], [])
 
-  //   const findPath = useCallback((start: Point = [0, 0]) => getNext(start, end), [end, getNext])
+  console.log(visitedPoints.size, 'visitedPoints.size')
+  const getNext = useCallback(
+    (curr: Point, target: Point) => {
+      const index = 100 * curr[0] + curr[1]
+      if (visitedPoints.has(index)) return
 
-  type Fn = () => Point[]
-  const [pendingTasks, setPendingTask] = useState<Fn[]>([])
+      //   console.count(`access ${index}, point: (${curr[0]}, ${curr[1]})`)
+      visitedPoints.add(index)
 
-  const mapRef = useRef<Cell[]>(map)
+      if (curr?.[0] === target[0] && curr?.[1] === target[1]) return null
+      // 边界、阻碍物
+      const [row, col] = curr
+      const dimension = [null, null, null, null] as [Point | null, Point | null, Point | null, Point | null]
+      if (col - 1 >= 0 && map[100 * row + col - 1] === 0) dimension[0] = [row, col - 1] // left
+      if (row - 1 >= 0 && map[100 * (row - 1) + col] === 0) dimension[1] = [row - 1, col] // upper
+      if (col + 1 <= 99 && map[100 * row + col + 1] === 0) dimension[2] = [row, col + 1] // right
+      if (row + 1 <= 99 && map[100 * (row + 1) + col] === 0) dimension[3] = [row + 1, col] // bottom
 
-  useEffect(() => {
-    mapRef.current = map // 更新 ref 中的值，保持最新
-  }, [map])
+      return dimension.filter(Boolean).filter((p) => (p ? !visitedPoints.has(100 * p[0] + p[1]) : false))
+    },
+    [map]
+  )
 
-  const getNext = useCallback((curr: Point, target: Point) => {
-    const index = 100 * curr[0] + curr[1]
-    // console.log(`access ${index}, point: (${curr[0]},${curr[1]})`)
-    const newMap = mapRef.current.map((i, _index) => (index === _index ? 2 : i))
+  const [nextPoints, setNextPoints] = useState<Point[]>()
 
-    if (curr?.[0] === target[0] && curr?.[1] === target[1]) return [null, null, null, null]
-    // 边界、阻碍物
-    const [row, col] = curr
-    const dimension = [null, null, null, null] as [Point | null, Point | null, Point | null, Point | null]
-    if (col - 1 >= 0 && mapRef.current[100 * row + col - 1] === 0) dimension[0] = [row, col - 1] // left
-    if (row - 1 >= 0 && mapRef.current[100 * (row - 1) + col] === 0) dimension[1] = [row - 1, col] // upper
-    if (col + 1 <= 99 && mapRef.current[100 * row + col + 1] === 0) dimension[2] = [row, col + 1] // right
-    if (row + 1 <= 99 && mapRef.current[100 * (row + 1) + col] === 0) dimension[3] = [row + 1, col] // bottom
-
-    setMap(newMap)
-    return dimension.filter(Boolean)
-  }, [])
-
-  useEffect(() => {
-    if (!pendingTasks.length) return
-
-    const nextPoints: Point[][] = []
-
-    pendingTasks.forEach((tasks) => {
-      nextPoints.push(tasks())
-    })
-
-    // // const newPoints = [...Array.prototype.concat.apply([], nextPoints)].filter(Boolean) as Point[]
-
-    const newPoints = uniqBy(
-      [...Array.prototype.concat.apply([], nextPoints)].filter(Boolean) as Point[],
-      ([x, y]) => `${x}-${y}`
-    )
-
-    const newTasks: Fn[] = []
-    newPoints.filter(Boolean).forEach((point) => {
-      newTasks.push((() => getNext(point, end)) as Fn)
-    })
-    setPendingTask(newTasks)
-  }, [end, getNext, pendingTasks])
-
+  // 起始点
   const onStart = useCallback(() => {
     const nexts = getNext([0, 0], end)
-    const tasks: Fn[] = []
-
-    nexts.filter(Boolean).forEach((point) => {
-      point && tasks.push((() => getNext(point, end)) as Fn)
-    })
-    setPendingTask(tasks)
+    setNextPoints(nexts?.filter(Boolean) as Point[])
   }, [end, getNext])
+
+  useEffect(() => {
+    let newPoints: Point[] = []
+    nextPoints?.filter(Boolean).forEach((point) => {
+      if (point) {
+        const siblings = getNext(point, end)?.filter(Boolean) as Point[]
+        newPoints = newPoints.concat(siblings)
+        setNextPoints((points) => points?.filter((p) => p === point))
+      }
+    })
+
+    setTimeout(() => {
+      if (newPoints.length) setNextPoints(newPoints)
+    }, 100)
+  }, [end, getNext, nextPoints])
 
   return (
     <div className="mt-4 bg-white p-2 rounded flex flex-col">
@@ -130,12 +115,13 @@ export const FindPath = () => {
             return Array(100)
               .fill(0)
               .map((_, c) => {
+                const index = 100 * r + c
                 return (
                   <div
-                    key={100 * r + c}
-                    onMouseMove={(e) => onMouseMove(e, 100 * r + c)}
+                    key={index}
+                    onMouseMove={(e) => onMouseMove(e, index)}
                     className={`w-[6px] h-[6px] box-border border-0 border-b-[1px]  border-b-white border-r-[1px] border-r-white bg-gray-100 ${
-                      map[100 * r + c] === 1 ? '!bg-black' : map[100 * r + c] === 2 ? '!bg-green-300' : ''
+                      map[index] === 1 ? '!bg-black' : visitedPoints.has(index) ? '!bg-green-300' : ''
                     }`}
                   />
                 )
