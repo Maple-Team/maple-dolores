@@ -65,6 +65,14 @@ export default () => {
         nav('/react-panel')
       },
     },
+    {
+      label: 'Find Path',
+      key: 'Find-Path',
+      style: { cursor: 'pointer' },
+      onClick() {
+        nav('/find-path')
+      },
+    },
   ]
   return (
     <div className="flex h-full">

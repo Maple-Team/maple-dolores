@@ -1,4 +1,4 @@
-import React, { StrictMode } from 'react'
+import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { HelmetProvider } from 'react-helmet-async'
 import type { RouteObject } from 'react-router-dom'
@@ -13,6 +13,7 @@ import { ReactAmap } from './pages/amap'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
 import { ReactDemo } from './pages/ReactDemo'
 import ReactPanel from './pages/panel'
+import { FindPath } from './pages/FindPath'
 
 // import { AuthProvider } from '@/lib/auth'
 
@@ -48,30 +49,28 @@ const queryClient = new QueryClient({
 
 export const AppProvider = ({ children, basename }: AppProviderProps) => {
   return (
-    <StrictMode>
-      <React.Suspense
-        fallback={
-          <div className="flex items-center justify-center w-screen h-screen">
-            <Spin
-              size="large"
-              spinning
-              delay={200}
-            />
-          </div>
-        }
-      >
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <HelmetProvider>
-            <QueryClientProvider client={queryClient}>
-              {process.env.NODE_ENV !== 'test' && <ReactQueryDevtools />}
-              {/* <AuthProvider> */}
-              <Router basename={basename}>{children}</Router>
-              {/* </AuthProvider> */}
-            </QueryClientProvider>
-          </HelmetProvider>
-        </ErrorBoundary>
-      </React.Suspense>
-    </StrictMode>
+    <React.Suspense
+      fallback={
+        <div className="flex items-center justify-center w-screen h-screen">
+          <Spin
+            size="large"
+            spinning
+            delay={200}
+          />
+        </div>
+      }
+    >
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <HelmetProvider>
+          <QueryClientProvider client={queryClient}>
+            {process.env.NODE_ENV !== 'test' && <ReactQueryDevtools />}
+            {/* <AuthProvider> */}
+            <Router basename={basename}>{children}</Router>
+            {/* </AuthProvider> */}
+          </QueryClientProvider>
+        </HelmetProvider>
+      </ErrorBoundary>
+    </React.Suspense>
   )
 }
 
@@ -101,6 +100,10 @@ export const AppRoutes = () => {
         {
           path: '/react-panel',
           element: <ReactPanel />,
+        },
+        {
+          path: '/find-path',
+          element: <FindPath />,
         },
       ],
     },
