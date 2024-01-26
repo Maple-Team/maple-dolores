@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
+import { useMatches } from 'react-router-dom'
 
 // "▓▓▓▓▓▓▓▓▓▓▓░░░░"
 
@@ -24,7 +25,8 @@ export default () => {
 
   const rest = next.diff(current, 'days')
   const progress = Math.floor((rest / 365) * 100)
-
+  const matches = useMatches()
+  console.log(matches)
   return (
     <div>
       <h1 className="py-4 text-[24px]">The rest days of {current.format('YYYY')}</h1>

@@ -4,72 +4,110 @@ import { createRoot } from 'react-dom/client'
 import './main.css'
 import './assets/svg-icons'
 import 'antd/dist/reset.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { reactBridge } from '@garfish/bridge-react-v18'
+import { Skeleton, Spin } from 'antd'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import Root from './routes/root'
+import Dashboard from './pages/Dashboard'
 import ErrorPage from './error-page'
-
-// NOTE pages
 import { RemoteControlCard } from './pages/RemoteControl'
 import { ReactAmap } from './pages/amap'
-import { ReactDemo } from './pages/ReactDemo'
 import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
-import Dashboard from './pages/Dashboard'
+import { ReactDemo } from './pages/ReactDemo'
+import { NestedComponent } from './pages/ReactDemo/NestedComponent'
 
+const loader = () => <Spin spinning />
+
+const rootLoader = loader
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: true,
-      retry: false,
-    },
+    //   queries: {
+    //     refetchOnWindowFocus: true,
+    //     retry: false,
+    //   },
   },
 })
-// TODO 动态路由权限
-const RootComponent = ({ basename }: { basename: string }) => (
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter basename={basename}>
-        <Routes>
-          <Route
-            path="/"
-            element={<Root />}
-            errorElement={<ErrorPage />}
-          >
-            <Route
-              index
-              path="/dashboard"
-              element={<Dashboard />}
-            />
-            <Route
-              path="/remote-control"
-              element={<RemoteControlCard />}
-            />
-            <Route
-              path="/react-amap"
-              element={<ReactAmap />}
-            />
-            <Route
-              path="/react-query"
-              element={<ReactQueryWrapper />}
-            />
-            <Route
-              path="/react-Demo"
-              element={<ReactDemo />}
-            />
-            <Route
-              path="/react-panel"
-              element={<ReactPanel />}
-            />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen />
-    </QueryClientProvider>
-  </StrictMode>
-)
+
+const RootComponent = ({ basename }: { basename: string }) => {
+  const router = createBrowserRouter(
+    [
+      {
+        path: '/',
+        id: 'root',
+        element: <Root />,
+        loader: rootLoader,
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            index: true,
+            id: 'dashboard',
+            path: '/dashboard',
+            element: <Dashboard />,
+            loader,
+          },
+          {
+            id: 'remote-control',
+            path: '/remote-control',
+            element: <RemoteControlCard />,
+            loader,
+          },
+          {
+            id: 'react-amap',
+            path: '/react-amap',
+            element: <ReactAmap />,
+            loader,
+          },
+          {
+            id: 'react-query',
+            path: '/react-query',
+            element: <ReactQueryWrapper />,
+            loader,
+          },
+          {
+            id: 'react-demo',
+            path: '/react-demo',
+            element: <Outlet />,
+            loader,
+            children: [
+              {
+                index: true,
+                element: <ReactDemo />,
+              },
+              {
+                id: 'react-demo/:id',
+                path: '/react-demo/:id',
+                element: <NestedComponent />,
+                loader,
+              },
+            ],
+          },
+          {
+            id: 'react-panel',
+            path: '/react-panel',
+            element: <ReactPanel />,
+            loader,
+          },
+        ],
+      },
+    ],
+    { basename }
+  )
+  return (
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider
+          router={router}
+          fallbackElement={<Skeleton />}
+        />
+        <ReactQueryDevtools initialIsOpen />
+      </QueryClientProvider>
+    </StrictMode>
+  )
+}
+
 export const provider = reactBridge({
   el: '#app',
   rootComponent: RootComponent,
