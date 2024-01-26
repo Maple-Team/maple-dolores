@@ -1,7 +1,7 @@
 const path = require('path')
-const { dev } = require('@liutsing/webpack-config')
+const { dev, getHtmWebpackPlugin } = require('@liutsing/webpack-config')
 const { merge } = require('webpack-merge')
-const { getPublicPath } = require('../../../build/util')
+const { getPublicPath, getPort } = require('../../../build/util')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const appName = 'react18-webpack'
@@ -26,6 +26,7 @@ const config = merge(dev, {
       },
     ],
   },
+  plugins: [getHtmWebpackPlugin(false)],
   optimization: {
     runtimeChunk: 'single',
     splitChunks: {
@@ -61,6 +62,10 @@ const config = merge(dev, {
     globalObject: 'window',
     // 保证子应用的资源路径变为绝对路径
     publicPath: getPublicPath(appName),
+  },
+  devServer: {
+    ...dev.devServer,
+    port: getPort(appName),
   },
 })
 

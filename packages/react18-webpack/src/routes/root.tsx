@@ -1,29 +1,31 @@
 import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-
+import { QueryErrorResetBoundary } from '@tanstack/react-query'
 // import Scrollbar from './scrollbar'
-import { Menu } from 'antd'
+import { Button, Menu } from 'antd'
 import type { ItemType } from 'antd/es/menu/hooks/useItems'
+import { ErrorBoundary } from 'react-error-boundary'
 
 export default () => {
   const nav = useNavigate()
   const items: ItemType[] = [
-    {
-      key: 'hooks-example',
-      label: 'Hooks Example',
-      style: { cursor: 'pointer' },
-      onClick() {
-        nav('/react-hooks')
-      },
-    },
-    {
-      label: 'ToolTip example',
-      key: 'react-tooltip',
-      style: { cursor: 'pointer' },
-      onClick() {
-        nav('/react-tooltip')
-      },
-    },
+    // {
+    //   key: 'hooks-example',
+    //   label: 'Hooks Example',
+    //   style: { cursor: 'pointer' },
+    //   onClick() {
+    //     nav('/react-hooks')
+    //   },
+    // },
+    // {
+    //  FIXME
+    //   label: 'ToolTip example',
+    //   key: 'react-tooltip',
+    //   style: { cursor: 'pointer' },
+    //   onClick() {
+    //     nav('/react-tooltip')
+    //   },
+    // },
     {
       label: 'React Query',
       key: 'react-query',
@@ -40,14 +42,14 @@ export default () => {
         nav('/react-amap')
       },
     },
-    {
-      label: 'Infinite Scroll',
-      key: 'react-infinite-scroll-component',
-      style: { cursor: 'pointer' },
-      onClick() {
-        nav('/react-infinite-scroll-component')
-      },
-    },
+    // {
+    //   label: 'Infinite Scroll',
+    //   key: 'react-infinite-scroll-component',
+    //   style: { cursor: 'pointer' },
+    //   onClick() {
+    //     nav('/react-infinite-scroll-component')
+    //   },
+    // },
     {
       label: 'React Demo',
       key: 'react-demo',
@@ -66,17 +68,31 @@ export default () => {
     },
   ]
   return (
-    <div className="flex h-full">
+    <div className="flex h-screen">
       <aside className="w-[246px]">
         <Menu
           defaultSelectedKeys={['2']}
           items={items}
         />
       </aside>
-      <main className="flex-1 flex flex-col justify-between">
+      <main className="flex-1 flex flex-col justify-between h-full">
         <header className="py-3 px-4">&nbsp;</header>
         <div className="flex-1 px-4 bg-gray-100">
-          <Outlet />
+          <QueryErrorResetBoundary>
+            {({ reset }) => (
+              <ErrorBoundary
+                onReset={reset}
+                fallbackRender={({ resetErrorBoundary }) => (
+                  <div>
+                    There was an error!
+                    <Button onClick={() => resetErrorBoundary()}>Try again</Button>
+                  </div>
+                )}
+              >
+                <Outlet />
+              </ErrorBoundary>
+            )}
+          </QueryErrorResetBoundary>
         </div>
         <footer className="py-3 text-center">footer</footer>
       </main>

@@ -11,11 +11,13 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import Root from './routes/root'
 import ErrorPage from './error-page'
 
+// NOTE pages
 import { RemoteControlCard } from './pages/RemoteControl'
 import { ReactAmap } from './pages/amap'
 import { ReactDemo } from './pages/ReactDemo'
 import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
+import Dashboard from './pages/Dashboard'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,7 +27,7 @@ const queryClient = new QueryClient({
     },
   },
 })
-
+// TODO 动态路由权限
 const RootComponent = ({ basename }: { basename: string }) => (
   <StrictMode>
     <QueryClientProvider client={queryClient}>
@@ -37,16 +39,17 @@ const RootComponent = ({ basename }: { basename: string }) => (
             errorElement={<ErrorPage />}
           >
             <Route
+              index
+              path="/dashboard"
+              element={<Dashboard />}
+            />
+            <Route
               path="/remote-control"
               element={<RemoteControlCard />}
             />
             <Route
               path="/react-amap"
               element={<ReactAmap />}
-            />
-            <Route
-              path="/react-hooks"
-              element={<RemoteControlCard />}
             />
             <Route
               path="/react-query"
@@ -68,13 +71,13 @@ const RootComponent = ({ basename }: { basename: string }) => (
   </StrictMode>
 )
 export const provider = reactBridge({
-  el: '#root',
+  el: '#app',
   rootComponent: RootComponent,
   errorBoundary: (e) => <div>{JSON.stringify(e)}</div>,
 })
 
 if (!window.__GARFISH__) {
-  const container = document.getElementById('root')
+  const container = document.getElementById('app')
   const root = createRoot(container!)
   root.render(<RootComponent basename="/" />)
 }
