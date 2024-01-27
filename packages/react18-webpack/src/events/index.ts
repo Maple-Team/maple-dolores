@@ -1,25 +1,25 @@
-import mitt from 'mitt'
-import type { Message, RemoteControlResult, VehicleResult } from '@/types'
+import type { NoticeType } from 'antd/es/message/interface'
+import type { AxiosError } from 'axios'
+import mitt, { type Emitter } from 'mitt'
 
-interface Events {
-  /**
-   * websocket事件
-   */
-  websocketMsg: Message & {
-    /**
-     * 是否单车
-     */
-    isSingle: boolean
-  }
-
-  /**
-   * 远控结果
-   */
-  remoteControlResult: RemoteControlResult
-  /**
-   * 实时车况
-   */
-  rtStatus: VehicleResult
+/**
+ * 通用事件类型及参数
+ */
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type Events = {
+  SESSION_EXPIRED?: string
+  SHOW_MESSAGE: { message: string; type: NoticeType; key?: string }
+  SHOW_LOADING?: string
+  LOGIN_SUCCESS?: AnyToFix
+  LOGOUT_SUCCESS?: string
+  RESPONSE_ERROR: AxiosError
+  REQUEST_ERROR: AxiosError
+  REDIEECT_LOGIN: string
 }
 
-export const emitter = mitt<Events>()
+/**
+ * 事件管理实例
+ */
+const emitter: Emitter<Events> = mitt<Events>()
+
+export { emitter }

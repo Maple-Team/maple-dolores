@@ -15,7 +15,7 @@ export interface MarkerData {
   }
 }
 
-export const ReactAmap = () => {
+const ReactAmap = () => {
   const count = points.length
   const renderCluster = (clusterCount: number, markers: [MarkerData]) => {
     const defaultColor = ['204,235,197', '168,221,181', '123,204,196', '78,179,211', '43,140,190']
@@ -81,3 +81,4 @@ export const ReactAmap = () => {
     </Map>
   )
 }
+export default ReactAmap

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { QueryErrorResetBoundary } from '@tanstack/react-query'
 // import Scrollbar from './scrollbar'
-import { Button, Menu } from 'antd'
+import { Button, Menu, message } from 'antd'
 import type { ItemType } from 'antd/es/menu/hooks/useItems'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Breadcrumbs } from '@/Components/Breadcrumbs'
+import { emitter } from '@/events'
 
 export default () => {
   const nav = useNavigate()
@@ -68,6 +69,21 @@ export default () => {
       },
     },
   ]
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    emitter.on('SHOW_MESSAGE', ({ message: msg, type, key }) => {
+      message[type]({ content: msg, key })
+    })
+    emitter.on('REDIEECT_LOGIN', (redirect?: string) => {
+      if (!redirect || redirect === '/login') {
+        navigate('/login', { replace: true })
+        return
+      }
+      navigate(`/login?redirect=${redirect}`, { replace: true })
+    })
+  }, [navigate])
+
   return (
     <div className="flex h-screen">
       <aside className="w-[246px]">

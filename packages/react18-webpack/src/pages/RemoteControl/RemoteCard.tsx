@@ -156,3 +156,5 @@ export const RemoteControlCard = memo(() => {
     </div>
   )
 })
+
+export default RemoteControlCard

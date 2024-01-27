@@ -1,38 +1,44 @@
 // import './wdyr'
-import React, { StrictMode } from 'react'
+import React, { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import './main.css'
 import './assets/svg-icons'
 import 'antd/dist/reset.css'
 import { Navigate, Outlet, RouterProvider, createBrowserRouter, redirect } from 'react-router-dom'
-import { Skeleton } from 'antd'
+import { Skeleton, Spin } from 'antd'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import RootLayout from './layouts/rootLayout'
 import Dashboard from './pages/Dashboard'
 import ErrorPage from './error-page'
-import { RemoteControlCard } from './pages/RemoteControl'
-import { ReactAmap } from './pages/amap'
 import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
 import { ReactDemo } from './pages/ReactDemo'
 import { NestedComponent } from './pages/ReactDemo/NestedComponent'
 import Login from './pages/Login'
 import NotFound from './404'
-import { fetchUserInfo } from './http/api'
+import { fetchUserInfo, userInfoQueryKey } from './http'
 
 const queryClient = new QueryClient()
 
+// const RemoteControl = lazy(() => import('./pages/RemoteControl/RemoteCard'))
+// FIXME for test
+const ReactAmap = lazy(() => import('./pages/amap'))
+/**
+ * Each route can define a "loader" function to provide data to the route element before it renders.
+ * @returns
+ */
 const rootLoader = async () => {
   const jwt = localStorage.getItem('jwt')
-  if (!jwt) return redirect('/login')
+  const pathname = window.location.pathname
+  if (!jwt) return redirect(`/login?redirect=${pathname}`)
   // 鉴权，获取用户数据
-  const { data } = await queryClient.fetchQuery(['fetchUserInfo'], fetchUserInfo, {
+  const data = await queryClient.fetchQuery([userInfoQueryKey], fetchUserInfo, {
     staleTime: 10000,
   })
 
-  if (data) return redirect('/login')
-  return null
+  if (!data) return redirect('/login')
+  return data
 }
 
 const RootComponent = ({ basename }: { basename: string }) => {
@@ -59,15 +65,23 @@ const RootComponent = ({ basename }: { basename: string }) => {
             path: '/dashboard',
             element: <Dashboard />,
           },
-          {
-            id: 'remote-control',
-            path: '/remote-control',
-            element: <RemoteControlCard />,
-          },
+          //   {
+          //     id: 'remote-control',
+          //     path: '/remote-control',
+          //     element: (
+          //       <Suspense fallback={<Spin spinning />}>
+          //         <RemoteControl />
+          //       </Suspense>
+          //     ),
+          //   },
           {
             id: 'react-amap',
             path: '/react-amap',
-            element: <ReactAmap />,
+            element: (
+              <Suspense fallback={<Spin spinning />}>
+                <ReactAmap />
+              </Suspense>
+            ),
           },
           {
             id: 'react-query',
