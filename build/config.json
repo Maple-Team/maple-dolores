@@ -14,5 +14,9 @@
   "react18-webpack": {
     "pkgName": "@liutsing/react18-webpack",
     "port": 5043
+  },
+  "nextjs": {
+    "pkgName": "@liutsing/nextjs",
+    "port": 5044
   }
 }

@@ -1,17 +1,18 @@
 import React from 'react'
 import { useRouteError } from 'react-router-dom'
+import { Button, Result } from 'antd'
+import type { AxiosError } from 'axios'
+
+type CustomError = AxiosError | Error
 
 export default function ErrorPage() {
-  const error = useRouteError() as { statusText?: string; message?: string }
-  console.error(error)
-
+  const error = useRouteError() as CustomError
   return (
-    <div id="error-page">
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
-    </div>
+    <Result
+      status={500}
+      title="Sorry, an unexpected error has occurred."
+      subTitle={error.message}
+      extra={<Button type="primary">Back Home</Button>}
+    />
   )
 }

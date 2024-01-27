@@ -1,11 +1,12 @@
-import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosError, AxiosResponse } from 'axios'
 import axios from 'axios'
 
-const instance = axios.create({})
+const instance = axios.create()
 
 instance.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config) => {
     if (config.headers) {
+      // @ts-expect-error: xx
       config.headers = {
         ...config.headers,
         'X-API-VERSION': 'v1',
@@ -24,8 +25,8 @@ instance.interceptors.response.use(
     if (status === 200) return data.data
     else return Promise.reject(data)
   },
-  (e) => {
-    console.error('res error', e)
+  (e: AxiosError) => {
+    return Promise.reject(e)
   }
 )
 

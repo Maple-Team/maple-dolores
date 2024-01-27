@@ -9,4 +9,17 @@ declare interface BaseResponse<T> {
 }
 declare interface Window {
   queryCache: QueryCache
+  __GARFISH__: boolean
+}
+
+declare type HandleData = Omit<Match<AnyToFix, AnyToFix>, 'data' | 'handle'>
+declare interface Handle {
+  crumb: (data: HandleData) => string
+}
+declare interface Match<T, U> {
+  id: string
+  pathname: string
+  params: Params<string>
+  data: T // loader element?
+  handle: U
 }

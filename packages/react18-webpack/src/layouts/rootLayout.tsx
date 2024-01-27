@@ -5,6 +5,7 @@ import { QueryErrorResetBoundary } from '@tanstack/react-query'
 import { Button, Menu } from 'antd'
 import type { ItemType } from 'antd/es/menu/hooks/useItems'
 import { ErrorBoundary } from 'react-error-boundary'
+import { Breadcrumbs } from '@/Components/Breadcrumbs'
 
 export default () => {
   const nav = useNavigate()
@@ -76,7 +77,10 @@ export default () => {
         />
       </aside>
       <main className="flex-1 flex flex-col justify-between h-full">
-        <header className="py-3 px-4">&nbsp;</header>
+        <header className="py-3 px-4 flex min-h-[44px] justify-between">
+          <Breadcrumbs />
+          <div>User Center</div>
+        </header>
         <div className="flex-1 px-4 bg-gray-100">
           <QueryErrorResetBoundary>
             {({ reset }) => (

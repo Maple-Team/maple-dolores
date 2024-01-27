@@ -4,12 +4,11 @@ import { createRoot } from 'react-dom/client'
 import './main.css'
 import './assets/svg-icons'
 import 'antd/dist/reset.css'
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { reactBridge } from '@garfish/bridge-react-v18'
-import { Skeleton, Spin } from 'antd'
+import { Navigate, Outlet, RouterProvider, createBrowserRouter, redirect } from 'react-router-dom'
+import { Skeleton } from 'antd'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import Root from './routes/root'
+import RootLayout from './layouts/rootLayout'
 import Dashboard from './pages/Dashboard'
 import ErrorPage from './error-page'
 import { RemoteControlCard } from './pages/RemoteControl'
@@ -18,18 +17,23 @@ import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
 import { ReactDemo } from './pages/ReactDemo'
 import { NestedComponent } from './pages/ReactDemo/NestedComponent'
+import Login from './pages/Login'
+import NotFound from './404'
+import { fetchUserInfo } from './http/api'
 
-const loader = () => <Spin spinning />
+const queryClient = new QueryClient()
 
-const rootLoader = loader
-const queryClient = new QueryClient({
-  defaultOptions: {
-    //   queries: {
-    //     refetchOnWindowFocus: true,
-    //     retry: false,
-    //   },
-  },
-})
+const rootLoader = async () => {
+  const jwt = localStorage.getItem('jwt')
+  if (!jwt) return redirect('/login')
+  // 鉴权，获取用户数据
+  const { data } = await queryClient.fetchQuery(['fetchUserInfo'], fetchUserInfo, {
+    staleTime: 10000,
+  })
+
+  if (data) return redirect('/login')
+  return null
+}
 
 const RootComponent = ({ basename }: { basename: string }) => {
   const router = createBrowserRouter(
@@ -37,50 +41,58 @@ const RootComponent = ({ basename }: { basename: string }) => {
       {
         path: '/',
         id: 'root',
-        element: <Root />,
+        element: <RootLayout />,
         loader: rootLoader,
         errorElement: <ErrorPage />,
         children: [
           {
             index: true,
+            element: (
+              <Navigate
+                to="/dashboard"
+                replace
+              />
+            ),
+          },
+          {
             id: 'dashboard',
             path: '/dashboard',
             element: <Dashboard />,
-            loader,
           },
           {
             id: 'remote-control',
             path: '/remote-control',
             element: <RemoteControlCard />,
-            loader,
           },
           {
             id: 'react-amap',
             path: '/react-amap',
             element: <ReactAmap />,
-            loader,
           },
           {
             id: 'react-query',
             path: '/react-query',
             element: <ReactQueryWrapper />,
-            loader,
           },
           {
             id: 'react-demo',
             path: '/react-demo',
             element: <Outlet />,
-            loader,
+
+            handle: { crumb: (data: HandleData) => data.id },
             children: [
               {
                 index: true,
                 element: <ReactDemo />,
               },
               {
-                id: 'react-demo/:id',
-                path: '/react-demo/:id',
+                id: ':id',
+                path: ':id',
                 element: <NestedComponent />,
-                loader,
+
+                handle: {
+                  crumb: (data: HandleData) => data.params.id,
+                },
               },
             ],
           },
@@ -88,9 +100,18 @@ const RootComponent = ({ basename }: { basename: string }) => {
             id: 'react-panel',
             path: '/react-panel',
             element: <ReactPanel />,
-            loader,
           },
         ],
+      },
+      {
+        path: '/login',
+        id: 'login',
+        element: <Login />,
+      },
+      {
+        path: '*',
+        id: '404',
+        element: <NotFound />,
       },
     ],
     { basename }
@@ -107,12 +128,6 @@ const RootComponent = ({ basename }: { basename: string }) => {
     </StrictMode>
   )
 }
-
-export const provider = reactBridge({
-  el: '#app',
-  rootComponent: RootComponent,
-  errorBoundary: (e) => <div>{JSON.stringify(e)}</div>,
-})
 
 if (!window.__GARFISH__) {
   const container = document.getElementById('app')
