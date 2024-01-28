@@ -41,6 +41,7 @@ const rootLoader = async () => {
   return data
 }
 
+// TODO add lazy component
 const RootComponent = ({ basename }: { basename: string }) => {
   const router = createBrowserRouter(
     [
@@ -63,6 +64,7 @@ const RootComponent = ({ basename }: { basename: string }) => {
           {
             id: 'dashboard',
             path: '/dashboard',
+            loader: () => ['dashboard loader data'],
             element: <Dashboard />,
           },
           //   {
