@@ -18,6 +18,7 @@ import { NestedComponent } from './pages/ReactDemo/NestedComponent'
 import Login from './pages/Login'
 import NotFound from './404'
 import { fetchUserInfo, userInfoQueryKey } from './http'
+import './i18n/config'
 
 const queryClient = new QueryClient()
 
