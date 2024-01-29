@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useNavigation } from 'react-router-dom'
 import { QueryErrorResetBoundary } from '@tanstack/react-query'
 // import Scrollbar from './scrollbar'
-import { Button, Menu, message } from 'antd'
+import { Button, Menu, Skeleton, message } from 'antd'
 import type { ItemType } from 'antd/es/menu/hooks/useItems'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Breadcrumbs } from '@/Components/Breadcrumbs'
@@ -70,7 +70,7 @@ export default () => {
     },
   ]
   const navigate = useNavigate()
-
+  const navigation = useNavigation()
   useEffect(() => {
     emitter.on('SHOW_MESSAGE', ({ message: msg, type, key }) => {
       message[type]({ content: msg, key })
@@ -109,7 +109,9 @@ export default () => {
                   </div>
                 )}
               >
-                <Outlet />
+                <Skeleton loading={navigation.state === 'loading'}>
+                  <Outlet />
+                </Skeleton>
               </ErrorBoundary>
             )}
           </QueryErrorResetBoundary>

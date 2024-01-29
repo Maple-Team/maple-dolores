@@ -44,6 +44,7 @@ export default () => {
       <hr className="py-5" />
       {/* <p>{t('title', { name: 'John' })}</p> */}
       <p>{t('test1')}</p>
+      <p>测试下</p>
     </div>
   )
 }

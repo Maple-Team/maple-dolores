@@ -13,7 +13,6 @@ import Dashboard from './pages/Dashboard'
 import ErrorPage from './error-page'
 import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
-import { ReactDemo } from './pages/ReactDemo'
 import { NestedComponent } from './pages/ReactDemo/NestedComponent'
 import Login from './pages/Login'
 import NotFound from './404'
@@ -100,13 +99,12 @@ const RootComponent = ({ basename }: { basename: string }) => {
             children: [
               {
                 index: true,
-                element: <ReactDemo />,
+                lazy: () => import('./pages/ReactDemo'),
               },
               {
                 id: ':id',
                 path: ':id',
                 element: <NestedComponent />,
-
                 handle: {
                   crumb: (data: HandleData) => data.params.id,
                 },

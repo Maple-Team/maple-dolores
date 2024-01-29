@@ -7,6 +7,8 @@ type CustomError = AxiosError | Error
 
 export default function ErrorPage() {
   const error = useRouteError() as CustomError
+  console.log(error)
+
   return (
     <Result
       status={500}

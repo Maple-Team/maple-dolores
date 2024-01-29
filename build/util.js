@@ -4,7 +4,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 const getPublicPath = (appName) => {
   const port = portMap[appName].port
   //   const publicPath = portMap[appName].publicPath
-  return `http://localhost:${port}`
+  return `http://localhost:${port}/`
 }
 
 const getPort = (appName) => {
