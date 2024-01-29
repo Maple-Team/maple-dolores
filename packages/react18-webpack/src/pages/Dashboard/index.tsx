@@ -41,8 +41,8 @@ export default () => {
     <div>
       <h1 className="py-4 text-[24px]">The rest days of {current.format('YYYY')}</h1>
       <Progress value={progress} />
-      <hr />
-      <p>{t('title', { name: 'John' })}</p>
+      <hr className="py-5" />
+      {/* <p>{t('title', { name: 'John' })}</p> */}
       <p>{t('test1')}</p>
     </div>
   )
