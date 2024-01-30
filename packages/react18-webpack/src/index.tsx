@@ -40,7 +40,21 @@ const rootLoader = async () => {
   if (!data) return redirect('/login')
   return data
 }
+/**
+ * 已登录的话，则直接跳转
+ * @returns
+ */
+const loginLoader = async () => {
+  const jwt = localStorage.getItem('jwt')
+  if (!jwt) return redirect('/login')
+  // 鉴权，获取用户数据
+  const data = await queryClient.fetchQuery([userInfoQueryKey], fetchUserInfo, {
+    staleTime: 10000,
+  })
 
+  if (!data) return redirect('/login')
+  return redirect('/')
+}
 // TODO add lazy component
 const RootComponent = ({ basename }: { basename: string }) => {
   const router = createBrowserRouter(
@@ -121,6 +135,7 @@ const RootComponent = ({ basename }: { basename: string }) => {
       {
         path: '/login',
         id: 'login',
+        loader: loginLoader,
         element: <Login />,
       },
       {
