@@ -1,74 +1,83 @@
-import React, { useEffect } from 'react'
-import { Outlet, useNavigate, useNavigation } from 'react-router-dom'
+import React, { useEffect, useMemo } from 'react'
+import { Outlet, useLocation, useNavigate, useNavigation } from 'react-router-dom'
 import { QueryErrorResetBoundary } from '@tanstack/react-query'
 // import Scrollbar from './scrollbar'
+import type { MenuProps } from 'antd'
 import { Button, Menu, Result, Skeleton, message } from 'antd'
-import type { ItemType } from 'antd/es/menu/hooks/useItems'
 import { ErrorBoundary } from 'react-error-boundary'
+import type { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems'
 import { Breadcrumbs } from '@/Components/breadcrumbs'
 import { emitter } from '@/events'
 
 export default () => {
   const navigate = useNavigate()
-  const items: ItemType[] = [
-    // {
-    //   key: 'hooks-example',
-    //   label: 'Hooks Example',
-    //   style: { cursor: 'pointer' },
-    //   onClick() {
-    //     nav('/react-hooks')
-    //   },
-    // },
-    // {
-    //  FIXME
-    //   label: 'ToolTip example',
-    //   key: 'react-tooltip',
-    //   style: { cursor: 'pointer' },
-    //   onClick() {
-    //     nav('/react-tooltip')
-    //   },
-    // },
-    {
-      label: 'React Query',
-      key: 'react-query',
-      style: { cursor: 'pointer' },
-      onClick() {
-        navigate('/react-query')
+  const location = useLocation()
+
+  //   const matches = useMatches() as Match<ReactElement, Handle>[]
+  const pathname = location.pathname
+
+  React.useEffect(() => {
+    // https://jasonwatmore.com/react-router-v6-listen-to-location-route-change-without-history-listen
+    // https://stackoverflow.com/questions/70646421/how-to-listen-for-route-change-in-react-router-dom-v6
+    // 监听路由变化
+    console.log('Location changed!', location.pathname)
+  }, [location])
+
+  const items: ItemType<MenuItemType>[] = useMemo(
+    () => [
+      {
+        key: '/dashboard',
+        label: 'Dashboard',
+        onClick() {
+          navigate('/dashboard')
+        },
       },
-    },
-    {
-      label: 'React Amap',
-      key: 'react-amap',
-      style: { cursor: 'pointer' },
-      onClick() {
-        navigate('/react-amap')
+      // {
+      //  FIXME
+      //   label: 'ToolTip example',
+      //   style: { cursor: 'pointer' },
+      //   onClick() {
+      //     nav('/react-tooltip')
+      //   },
+      // },
+      {
+        label: 'React Query',
+        key: '/react-query',
+        onClick() {
+          navigate('/react-query')
+        },
       },
-    },
-    // {
-    //   label: 'Infinite Scroll',
-    //   key: 'react-infinite-scroll-component',
-    //   style: { cursor: 'pointer' },
-    //   onClick() {
-    //     nav('/react-infinite-scroll-component')
-    //   },
-    // },
-    {
-      label: 'React Demo',
-      key: 'react-demo',
-      style: { cursor: 'pointer' },
-      onClick() {
-        navigate('/react-demo')
+      {
+        label: 'React Amap',
+        key: '/react-amap',
+        onClick() {
+          navigate('/react-amap')
+        },
       },
-    },
-    {
-      label: 'React Panel',
-      key: 'react-panel',
-      style: { cursor: 'pointer' },
-      onClick() {
-        navigate('/react-panel')
+      // {
+      //   label: 'Infinite Scroll',
+      //   key: 'react-infinite-scroll-component',
+      //   onClick() {
+      //     nav('/react-infinite-scroll-component')
+      //   },
+      // },
+      {
+        label: 'React Demo',
+        key: '/react-demo',
+        onClick() {
+          navigate('/react-demo')
+        },
       },
-    },
-  ]
+      {
+        label: 'React Panel',
+        key: '/react-panel',
+        onClick() {
+          navigate('/react-panel')
+        },
+      },
+    ],
+    [navigate]
+  )
 
   const navigation = useNavigation()
   useEffect(() => {
@@ -84,12 +93,26 @@ export default () => {
     })
   }, [navigate])
 
+  const onClick: MenuProps['onClick'] = (e) => {
+    console.log('click ', e)
+  }
+  const selectedKeys = useMemo(() => {
+    if (pathname === '/') return ['/dashboard']
+    const keys = items
+      .map((item) => item?.key)
+      .filter((key) => key && pathname.startsWith(key as string))
+      .filter(Boolean) as string[]
+    return keys
+  }, [items, pathname])
+
   return (
     <div className="flex h-screen">
       <aside className="w-[246px]">
         <Menu
-          defaultSelectedKeys={['2']}
           items={items}
+          onClick={onClick}
+          defaultSelectedKeys={['/dashboard']}
+          selectedKeys={selectedKeys}
         />
       </aside>
       <main className="flex-1 flex flex-col justify-between h-full">
