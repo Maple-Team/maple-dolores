@@ -8,6 +8,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import type { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems'
 import { Breadcrumbs } from '@/Components/breadcrumbs'
 import { emitter } from '@/events'
+import { useUserMenus } from '@/http'
 
 export default () => {
   const navigate = useNavigate()
@@ -23,60 +24,63 @@ export default () => {
     console.log('Location changed!', location.pathname)
   }, [location])
 
+  const { data: menus } = useUserMenus()
+
   const items: ItemType<MenuItemType>[] = useMemo(
-    () => [
-      {
-        key: '/dashboard',
-        label: 'Dashboard',
-        onClick() {
-          navigate('/dashboard')
+    () =>
+      [
+        {
+          key: '/dashboard',
+          label: 'Dashboard',
+          onClick() {
+            navigate('/dashboard')
+          },
         },
-      },
-      // {
-      //  FIXME
-      //   label: 'ToolTip example',
-      //   style: { cursor: 'pointer' },
-      //   onClick() {
-      //     nav('/react-tooltip')
-      //   },
-      // },
-      {
-        label: 'React Query',
-        key: '/react-query',
-        onClick() {
-          navigate('/react-query')
+        // {
+        //  FIXME
+        //   label: 'ToolTip example',
+        //   style: { cursor: 'pointer' },
+        //   onClick() {
+        //     nav('/react-tooltip')
+        //   },
+        // },
+        {
+          label: 'React Query',
+          key: '/react-query',
+          onClick() {
+            navigate('/react-query')
+          },
         },
-      },
-      {
-        label: 'React Amap',
-        key: '/react-amap',
-        onClick() {
-          navigate('/react-amap')
+        {
+          label: 'React Amap',
+          key: '/react-amap',
+          onClick() {
+            navigate('/react-amap')
+          },
         },
-      },
-      // {
-      //   label: 'Infinite Scroll',
-      //   key: 'react-infinite-scroll-component',
-      //   onClick() {
-      //     nav('/react-infinite-scroll-component')
-      //   },
-      // },
-      {
-        label: 'React Demo',
-        key: '/react-demo',
-        onClick() {
-          navigate('/react-demo')
+        // {
+        //   label: 'Infinite Scroll',
+        //   key: 'react-infinite-scroll-component',
+        //   onClick() {
+        //     nav('/react-infinite-scroll-component')
+        //   },
+        // },
+        {
+          label: 'React Demo',
+          key: '/react-demo',
+          onClick() {
+            navigate('/react-demo')
+          },
         },
-      },
-      {
-        label: 'React Panel',
-        key: '/react-panel',
-        onClick() {
-          navigate('/react-panel')
+        {
+          label: 'React Panel',
+          key: '/react-panel',
+          onClick() {
+            navigate('/react-panel')
+          },
         },
-      },
-    ],
-    [navigate]
+      ].filter((item) => menus?.includes(item.key)),
+    [navigate, menus]
   )
 
   const navigation = useNavigation()

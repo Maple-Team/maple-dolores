@@ -17,3 +17,11 @@ export const userInfoQueryKey = 'userinfo-query-key'
 export const useUserInfo = () => {
   return useQuery([userInfoQueryKey], fetchUserInfo, { enabled: !!localStorage.getItem('jwt') })
 }
+
+export const fetchUserMenus = (): Promise<string[]> => instance.get('/users/menus')
+export const userMenusQueryKey = 'user-menus-query-key'
+export const useUserMenus = () => {
+  return useQuery(['user-menus-query-key'], fetchUserMenus, {
+    enabled: !!localStorage.getItem('jwt'),
+  })
+}
