@@ -13,7 +13,7 @@ import { useUserMenus } from '@/http'
 export default () => {
   const navigate = useNavigate()
   const location = useLocation()
-
+  console.count('RootLayout')
   //   const matches = useMatches() as Match<ReactElement, Handle>[]
   const pathname = location.pathname
 
@@ -21,7 +21,7 @@ export default () => {
     // https://jasonwatmore.com/react-router-v6-listen-to-location-route-change-without-history-listen
     // https://stackoverflow.com/questions/70646421/how-to-listen-for-route-change-in-react-router-dom-v6
     // 监听路由变化
-    console.log('Location changed!', location.pathname)
+    // console.log('Location changed!', location.pathname)
   }, [location])
 
   const { data: menus } = useUserMenus()
@@ -95,6 +95,13 @@ export default () => {
       }
       navigate(`/login?redirect=${redirect}`, { replace: true })
     })
+    const handler403 = () => {
+      navigate('/403')
+    }
+    emitter.on('REDIRECT_403', handler403)
+    return () => {
+      emitter.off('REDIRECT_403', handler403)
+    }
   }, [navigate])
 
   const onClick: MenuProps['onClick'] = (e) => {

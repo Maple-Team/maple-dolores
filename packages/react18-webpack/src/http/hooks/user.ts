@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-
 import type { UserAccount, UserInfo } from '@liutsing/types-utils'
-import { instance } from './axios'
+import { instance } from '../axios'
 
 export const useLoginMutation = () => {
   return useMutation(['login-mutation-key'], (data: UserAccount) =>
@@ -15,13 +14,11 @@ export const fetchUserInfo = (): Promise<UserInfo> => {
 export const userInfoQueryKey = 'userinfo-query-key'
 
 export const useUserInfo = () => {
-  return useQuery([userInfoQueryKey], fetchUserInfo, { enabled: !!localStorage.getItem('jwt') })
+  return useQuery([userInfoQueryKey], fetchUserInfo)
 }
 
 export const fetchUserMenus = (): Promise<string[]> => instance.get('/users/menus')
 export const userMenusQueryKey = 'user-menus-query-key'
 export const useUserMenus = () => {
-  return useQuery(['user-menus-query-key'], fetchUserMenus, {
-    enabled: !!localStorage.getItem('jwt'),
-  })
+  return useQuery(['user-menus-query-key'], fetchUserMenus)
 }

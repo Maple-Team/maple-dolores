@@ -35,7 +35,7 @@ declare module 'axios' {
 let cancelTokenSource: CancelTokenSource
 const instance = axios.create({
   timeout: API_TIMEOUT,
-  validateStatus: (status) => status >= 200 && status < 500,
+  validateStatus: (status) => (status >= 200 && status < 500) || status === 403,
   headers: {
     Authorization: `Bearer ${getAccessToken()}`,
     'X-API-VERSION': 'v1',
@@ -92,6 +92,11 @@ instance.interceptors.response.use(
     }
 
     const { status, data, message } = response.data
+
+    if (response.status === 403) {
+      emitter.emit('REDIRECT_403')
+      return response.status
+    }
     switch (status) {
       case 200:
       case 201:

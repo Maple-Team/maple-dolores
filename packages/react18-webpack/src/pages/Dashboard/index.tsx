@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLoaderData, useMatches, useRouteLoaderData } from 'react-router-dom'
 
 // "▓▓▓▓▓▓▓▓▓▓▓░░░░"
 
@@ -26,14 +25,15 @@ export default () => {
 
   const rest = next.diff(current, 'days')
   const progress = Math.floor((rest / 365) * 100)
-  const matches = useMatches()
-  console.log(matches)
+  console.count('Dashboard')
+  //   const matches = useMatches()
+  //   console.log(matches)
 
-  const userData = useRouteLoaderData('root')
-  console.log(userData)
+  //   const userData = useRouteLoaderData('root')
+  //   console.log(userData)
 
-  const loaderData = useLoaderData()
-  console.log(loaderData)
+  //   const loaderData = useLoaderData()
+  //   console.log(loaderData)
 
   const { t } = useTranslation()
 

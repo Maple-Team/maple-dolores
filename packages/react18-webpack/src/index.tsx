@@ -35,7 +35,6 @@ const rootLoader = async () => {
   const data = await queryClient.fetchQuery([userInfoQueryKey], fetchUserInfo, {
     staleTime: 10000,
   })
-  console.log(data)
   if (!data) return redirect('/login')
   return data
 }
