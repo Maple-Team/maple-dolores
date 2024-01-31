@@ -31,6 +31,7 @@
   "dependencies": {
     "@antv/g2plot": "^2.4.22",
     "@garfish/bridge-react-v18": "^1.16.3",
+    "@liutsing/enums": "^1.0.3",
     "@liutsing/rc-components": "0.0.2",
     "@pansy/react-amap": "2.15.5",
     "ahooks": "^3.7.5",
@@ -58,7 +59,7 @@
     "@liutsing/eslint-config": "^0.0.10",
     "@liutsing/html-webpack-plugin": "~0.0.2",
     "@liutsing/prettier-config": "^0.0.6",
-    "@liutsing/types-utils": "^0.0.9",
+    "@liutsing/types-utils": "^1.0.2",
     "@liutsing/webpack-config": "link:C:/Users/liuts/T7/base/packages/webpack-config",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@svgr/webpack": "^8.1.0",

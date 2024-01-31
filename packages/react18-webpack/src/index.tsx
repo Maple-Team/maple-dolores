@@ -8,20 +8,20 @@ import { Navigate, Outlet, RouterProvider, createBrowserRouter, redirect } from 
 import { Skeleton, Spin } from 'antd'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import RootLayout from './layouts/rootLayout'
 import Dashboard from './pages/Dashboard'
 import ErrorPage from './error-page'
 import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
-import { NestedComponent } from './pages/ReactDemo/NestedComponent'
 import Login from './pages/Login'
 import NotFound from './404'
 import { fetchUserInfo, userInfoQueryKey } from './http'
 import './i18n/config'
+import RootLayout from './layouts/rootLayout'
+import { NestedComponent } from './pages/ReactDemo/NestedComponent'
 
 const queryClient = new QueryClient()
 
-// const RemoteControl = lazy(() => import('./pages/RemoteControl/RemoteCard'))
+// TODO 动态路由 跟随用户的已分配权限
 // FIXME for test
 const ReactAmap = lazy(() => import('./pages/amap'))
 /**
@@ -36,7 +36,7 @@ const rootLoader = async () => {
   const data = await queryClient.fetchQuery([userInfoQueryKey], fetchUserInfo, {
     staleTime: 10000,
   })
-
+  console.log(data)
   if (!data) return redirect('/login')
   return data
 }
@@ -46,7 +46,7 @@ const rootLoader = async () => {
  */
 const loginLoader = async () => {
   const jwt = localStorage.getItem('jwt')
-  if (!jwt) return redirect('/login')
+  if (!jwt) return null
   // 鉴权，获取用户数据
   const data = await queryClient.fetchQuery([userInfoQueryKey], fetchUserInfo, {
     staleTime: 10000,
@@ -81,15 +81,6 @@ const RootComponent = ({ basename }: { basename: string }) => {
             loader: () => ['dashboard loader data'],
             element: <Dashboard />,
           },
-          //   {
-          //     id: 'remote-control',
-          //     path: '/remote-control',
-          //     element: (
-          //       <Suspense fallback={<Spin spinning />}>
-          //         <RemoteControl />
-          //       </Suspense>
-          //     ),
-          //   },
           {
             id: 'react-amap',
             path: '/react-amap',

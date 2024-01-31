@@ -2,14 +2,14 @@ import React, { useEffect } from 'react'
 import { Outlet, useNavigate, useNavigation } from 'react-router-dom'
 import { QueryErrorResetBoundary } from '@tanstack/react-query'
 // import Scrollbar from './scrollbar'
-import { Button, Menu, Skeleton, message } from 'antd'
+import { Button, Menu, Result, Skeleton, message } from 'antd'
 import type { ItemType } from 'antd/es/menu/hooks/useItems'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Breadcrumbs } from '@/Components/Breadcrumbs'
+import { Breadcrumbs } from '@/Components/breadcrumbs'
 import { emitter } from '@/events'
 
 export default () => {
-  const nav = useNavigate()
+  const navigate = useNavigate()
   const items: ItemType[] = [
     // {
     //   key: 'hooks-example',
@@ -33,7 +33,7 @@ export default () => {
       key: 'react-query',
       style: { cursor: 'pointer' },
       onClick() {
-        nav('/react-query')
+        navigate('/react-query')
       },
     },
     {
@@ -41,7 +41,7 @@ export default () => {
       key: 'react-amap',
       style: { cursor: 'pointer' },
       onClick() {
-        nav('/react-amap')
+        navigate('/react-amap')
       },
     },
     // {
@@ -57,7 +57,7 @@ export default () => {
       key: 'react-demo',
       style: { cursor: 'pointer' },
       onClick() {
-        nav('/react-demo')
+        navigate('/react-demo')
       },
     },
     {
@@ -65,11 +65,11 @@ export default () => {
       key: 'react-panel',
       style: { cursor: 'pointer' },
       onClick() {
-        nav('/react-panel')
+        navigate('/react-panel')
       },
     },
   ]
-  const navigate = useNavigate()
+
   const navigation = useNavigation()
   useEffect(() => {
     emitter.on('SHOW_MESSAGE', ({ message: msg, type, key }) => {
@@ -102,12 +102,18 @@ export default () => {
             {({ reset }) => (
               <ErrorBoundary
                 onReset={reset}
-                fallbackRender={({ resetErrorBoundary }) => (
-                  <div>
-                    There was an error!
-                    <Button onClick={() => resetErrorBoundary()}>Try again</Button>
-                  </div>
-                )}
+                fallbackRender={({ error, resetErrorBoundary }) => {
+                  console.error(error)
+                  // TODO 执行上报等操作
+                  return (
+                    <Result
+                      status={500}
+                      title="内部子路由页面运行报错"
+                      subTitle={error.message} // 页面中抛出的错误
+                      extra={<Button onClick={resetErrorBoundary}>Try again</Button>}
+                    />
+                  )
+                }}
               >
                 <Skeleton loading={navigation.state === 'loading'}>
                   <Outlet />
