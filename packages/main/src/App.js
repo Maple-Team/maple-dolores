@@ -7,9 +7,12 @@ const App = () => {
   return (
     <div className="flex h-screen">
       <aside className="bg-white w-[160px]">
-        <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400 pl-2">
+        <ul className="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400 pl-2">
           {keys.map((k) => (
-            <li key={k}>
+            <li
+              key={k}
+              className="m-0 py-2"
+            >
               <a href={`http://localhost:${apps['main'].port}/${k}`}>{k}</a>
             </li>
           ))}
