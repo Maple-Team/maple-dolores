@@ -2,6 +2,7 @@ import type { BaseResponse } from '@liutsing/types-utils'
 import type { AxiosError, AxiosResponse, CancelTokenSource, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { emitter } from '@/events'
+import { useNotificationStore } from '@/stores/notifications'
 
 const API_TIMEOUT = 30 * 1000
 
@@ -116,13 +117,15 @@ instance.interceptors.response.use(
     if (axios.isCancel(error)) return
 
     const e = error as AxiosError
+
     const message = e.message || '未知错误'
-    emitter.emit('SHOW_MESSAGE', {
-      message,
+    useNotificationStore.getState().addNotification({
       type: 'error',
-      key: message,
+      title: 'Error',
+      message,
     })
-    return Promise.reject(e?.response?.statusText)
+
+    return Promise.reject(e)
   }
 )
 

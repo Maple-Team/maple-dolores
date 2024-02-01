@@ -10,6 +10,8 @@ import { Breadcrumbs } from '@/Components/breadcrumbs'
 import { emitter } from '@/events'
 import { useUserMenus } from '@/http'
 
+message.config({ maxCount: 3 })
+
 export default () => {
   const navigate = useNavigate()
   const location = useLocation()

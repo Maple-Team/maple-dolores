@@ -1,6 +1,8 @@
+import { Button, Divider, Space, message } from 'antd'
 import dayjs from 'dayjs'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNotificationStore } from '@/stores/notifications'
 
 // "▓▓▓▓▓▓▓▓▓▓▓░░░░"
 
@@ -37,14 +39,37 @@ export default () => {
 
   const { t } = useTranslation()
 
+  const { addNotification } = useNotificationStore()
+  const onAddNotification = useCallback(() => {
+    addNotification({
+      title: `test-${Math.random()}`,
+      type: 'info',
+    })
+  }, [addNotification])
+
+  const onAddMessage = useCallback(() => {
+    const content = `${Math.random()}`
+    message.info({ content, key: content })
+  }, [])
+
   return (
     <div>
       <h1 className="py-4 text-[24px]">The rest days of {current.format('YYYY')}</h1>
       <Progress value={progress} />
-      <hr className="py-5" />
+      <Divider />
       {/* <p>{t('title', { name: 'John' })}</p> */}
       <p>{t('test1')}</p>
       <p>测试下</p>
+      <Divider />
+      <Space>
+        <Button
+          onClick={onAddNotification}
+          type="primary"
+        >
+          添加弹窗
+        </Button>
+        <Button onClick={onAddMessage}>添加Message</Button>
+      </Space>
     </div>
   )
 }

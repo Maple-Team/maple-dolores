@@ -14,7 +14,6 @@ export function Breadcrumbs() {
       const { data: _data, handle, ...rest } = match
       return handle.crumb(rest)
     })
-  console.log(matches)
 
   if (crumbs.length === 0) return <i />
   const last = crumbs.pop()

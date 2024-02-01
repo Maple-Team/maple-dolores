@@ -17,6 +17,7 @@ import { fetchUserInfo, fetchUserMenus, userInfoQueryKey, userMenusQueryKey } fr
 import './i18n/config'
 import RootLayout from './layouts/rootLayout'
 import { NestedComponent } from './pages/ReactDemo/NestedComponent'
+import { Notifications } from './Components/Notifications/Notifications'
 
 const queryClient = new QueryClient()
 
@@ -194,6 +195,7 @@ const RootComponent = ({ basename }: { basename: string }) => {
   return (
     <StrictMode>
       <QueryClientProvider client={queryClient}>
+        <Notifications />
         <RouterProvider
           router={router}
           fallbackElement={<Skeleton />}

@@ -67,6 +67,10 @@ const config = merge(dev, {
     ...dev.devServer,
     port: getPort(appName),
   },
+  resolve: {
+    ...dev.resolve,
+    fallback: { 'process/browser': require.resolve('process/browser') },
+  },
 })
 
 module.exports = config
