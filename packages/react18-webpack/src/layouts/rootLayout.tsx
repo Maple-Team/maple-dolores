@@ -3,9 +3,10 @@ import { Outlet, useLocation, useNavigate, useNavigation } from 'react-router-do
 import { QueryErrorResetBoundary } from '@tanstack/react-query'
 // import Scrollbar from './scrollbar'
 import type { MenuProps } from 'antd'
-import { Button, Menu, Result, Skeleton, message } from 'antd'
+import { Button, ConfigProvider, Menu, Result, Skeleton, message } from 'antd'
 import { ErrorBoundary } from 'react-error-boundary'
 import type { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems'
+import { StyleProvider } from '@ant-design/cssinjs'
 import { Breadcrumbs } from '@/Components/breadcrumbs'
 import { emitter } from '@/events'
 import { useUserMenus } from '@/http'
@@ -119,47 +120,51 @@ export default () => {
   }, [items, pathname])
 
   return (
-    <div className="flex h-screen">
-      <aside className="w-[246px]">
-        <Menu
-          items={items}
-          onClick={onClick}
-          defaultSelectedKeys={['/dashboard']}
-          selectedKeys={selectedKeys}
-        />
-      </aside>
-      <main className="flex-1 flex flex-col justify-between h-full">
-        <header className="py-3 px-4 flex min-h-[44px] justify-between">
-          <Breadcrumbs />
-          <div>User Center</div>
-        </header>
-        <div className="flex-1 px-4 bg-gray-100">
-          <QueryErrorResetBoundary>
-            {({ reset }) => (
-              <ErrorBoundary
-                onReset={reset}
-                fallbackRender={({ error, resetErrorBoundary }) => {
-                  console.error(error)
-                  // TODO 执行上报等操作
-                  return (
-                    <Result
-                      status={500}
-                      title="内部子路由页面运行报错"
-                      subTitle={error.message} // 页面中抛出的错误
-                      extra={<Button onClick={resetErrorBoundary}>Try again</Button>}
-                    />
-                  )
-                }}
-              >
-                <Skeleton loading={navigation.state === 'loading'}>
-                  <Outlet />
-                </Skeleton>
-              </ErrorBoundary>
-            )}
-          </QueryErrorResetBoundary>
+    <ConfigProvider>
+      <StyleProvider hashPriority="high">
+        <div className="flex h-screen">
+          <aside className="w-[246px]">
+            <Menu
+              items={items}
+              onClick={onClick}
+              defaultSelectedKeys={['/dashboard']}
+              selectedKeys={selectedKeys}
+            />
+          </aside>
+          <main className="flex-1 flex flex-col justify-between h-full">
+            <header className="py-3 px-4 flex min-h-[44px] justify-between">
+              <Breadcrumbs />
+              <div>User Center</div>
+            </header>
+            <div className="flex-1 px-4 bg-gray-100">
+              <QueryErrorResetBoundary>
+                {({ reset }) => (
+                  <ErrorBoundary
+                    onReset={reset}
+                    fallbackRender={({ error, resetErrorBoundary }) => {
+                      console.error(error)
+                      // TODO 执行上报等操作
+                      return (
+                        <Result
+                          status={500}
+                          title="内部子路由页面运行报错"
+                          subTitle={error.message} // 页面中抛出的错误
+                          extra={<Button onClick={resetErrorBoundary}>Try again</Button>}
+                        />
+                      )
+                    }}
+                  >
+                    <Skeleton loading={navigation.state === 'loading'}>
+                      <Outlet />
+                    </Skeleton>
+                  </ErrorBoundary>
+                )}
+              </QueryErrorResetBoundary>
+            </div>
+            <footer className="py-3 text-center">footer</footer>
+          </main>
         </div>
-        <footer className="py-3 text-center">footer</footer>
-      </main>
-    </div>
+      </StyleProvider>
+    </ConfigProvider>
   )
 }

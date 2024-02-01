@@ -1,4 +1,4 @@
-import { Button, Skeleton, Space } from 'antd'
+import { Button, Divider, Skeleton, Space } from 'antd'
 import React, { useCallback, useState } from 'react'
 
 import { Link, useNavigate, useNavigation } from 'react-router-dom'
@@ -30,14 +30,25 @@ export function Component() {
       <Authorization allowedRoles={[UserRole.USER, UserRole.ADMIN]}>
         <ContentContainer>
           <Space>
-            <Button onClick={onJump}>jump nested component</Button>
+            <Button
+              onClick={onJump}
+              type="primary"
+            >
+              jump nested component
+            </Button>
             <Link to={`/react-demo/${Math.random()}`}>jump nested component</Link>
 
-            <Button onClick={showMsg}>showMsg</Button>
+            <Button
+              onClick={showMsg}
+              type="primary"
+            >
+              showMsg
+            </Button>
 
             <span>{num}</span>
 
             <Button
+              type="primary"
               onClick={() => {
                 setNum((_) => _ + 1)
               }}
@@ -45,6 +56,7 @@ export function Component() {
               increment
             </Button>
           </Space>
+          <Divider />
           <UseImperativeDemo />
           <UseDebugValueDemo />
           <Component1 />
