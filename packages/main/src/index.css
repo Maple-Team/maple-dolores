@@ -19,3 +19,7 @@ h1 {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+li {
+  list-style-type: none;
+}
