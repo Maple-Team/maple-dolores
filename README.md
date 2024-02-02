@@ -3,6 +3,7 @@
 ## Apps
 
 - [Vue3 App](./packages/admin/), 技术栈：garfish + vite@3 + Vue@3 + ant-design-vue@3 + @tanstack/vue-query@4 + tailwindcss@3
+- [React18 App](./packages/react18-webpack/)
 
 ## Resources
 
@@ -50,3 +51,4 @@ export const provider = (props) => {
 ## Terminology
 
 - sandbox
+- 框架原理

@@ -3,20 +3,16 @@
     "pkgName": "@liutsing/main",
     "port": 5040
   },
-  "react17": {
+  "React17": {
     "pkgName": "@liutsing/react17",
     "port": 5041
   },
-  "admin": {
+  "Vue3": {
     "pkgName": "@liutsing/admin",
     "port": 5042
   },
-  "react18-webpack": {
+  "React18-webpack": {
     "pkgName": "@liutsing/react18-webpack",
     "port": 5043
-  },
-  "nextjs": {
-    "pkgName": "@liutsing/nextjs",
-    "port": 5044
   }
 }
