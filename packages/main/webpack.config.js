@@ -14,6 +14,14 @@ module.exports = {
   devServer: {
     port: getPort(appName),
     historyApiFallback: true,
+    headers: { 'X-Upstream': 'http://localhost:4004', 'Access-Control-Allow-Origin': '*' },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4004',
+        secure: false,
+        changeOrigin: true, // NOTE 很重要
+      },
+    },
   },
   optimization: {
     splitChunks: {

@@ -2,6 +2,7 @@ const path = require('path')
 const { dev, getHtmWebpackPlugin } = require('@liutsing/webpack-config')
 const { merge } = require('webpack-merge')
 const { getPublicPath, getPort } = require('../../../build/util')
+const webpack = require('webpack')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const appName = 'react18-webpack'
@@ -26,7 +27,12 @@ const config = merge(dev, {
       },
     ],
   },
-  plugins: [getHtmWebpackPlugin(false)],
+  plugins: [
+    getHtmWebpackPlugin(false),
+    new webpack.BannerPlugin({
+      banner: 'react18',
+    }),
+  ],
   optimization: {
     runtimeChunk: 'single',
     splitChunks: {

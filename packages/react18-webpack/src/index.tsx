@@ -8,6 +8,7 @@ import { Navigate, Outlet, RouterProvider, createBrowserRouter, redirect } from 
 import { Button, Result, Skeleton, Spin } from 'antd'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { reactBridge } from '@garfish/bridge-react-v18'
 import Dashboard from './pages/Dashboard'
 import ErrorPage from './error-page'
 import ReactPanel from './pages/panel'
@@ -72,10 +73,10 @@ const menuLoader = async (path: string) => {
 }
 
 const RootComponent = ({ basename }: { basename: string }) => {
+  const newBaseName = basename.startsWith('/') ? basename : `/${basename}`
   const onBackHome = useCallback(() => {
-    location.href = '/'
-  }, [])
-
+    location.href = newBaseName
+  }, [newBaseName])
   const router = createBrowserRouter(
     [
       {
@@ -190,8 +191,10 @@ const RootComponent = ({ basename }: { basename: string }) => {
         ),
       },
     ],
-    { basename }
+    { basename: newBaseName }
   )
+  console.log({ newBaseName }, router)
+
   return (
     <StrictMode>
       <QueryClientProvider client={queryClient}>
@@ -205,6 +208,12 @@ const RootComponent = ({ basename }: { basename: string }) => {
     </StrictMode>
   )
 }
+
+export const provider = reactBridge({
+  el: '#app',
+  rootComponent: RootComponent,
+  errorBoundary: () => <ErrorPage />,
+})
 
 if (!window.__GARFISH__) {
   const container = document.getElementById('app')

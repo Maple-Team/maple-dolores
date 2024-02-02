@@ -59,7 +59,7 @@ export default () => {
       <Divider />
       {/* <p>{t('title', { name: 'John' })}</p> */}
       <p>{t('test1')}</p>
-      <p>测试下</p>
+      <p>测试下123</p>
       <Divider />
       <Space>
         <Button
