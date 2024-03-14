@@ -31,6 +31,13 @@ module.exports = {
         version: '^7.20.6',
       },
     ],
+    [
+      require('./plugins/auto-i18n'),
+      {
+        outputDir: './src/i18n/cn',
+        i18nConfigFile: 'i18n\\config.ts',
+      },
+    ],
   ].filter(Boolean),
   env: {
     test: {

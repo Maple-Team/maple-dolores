@@ -1,12 +1,11 @@
 import { message } from 'antd'
 import React, { useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useLoginMutation } from '@/http'
-import { instance } from '@/http/axios'
+// import { useNavigate } from 'react-router-dom'
+import { instance, useLoginMutation } from '@/http'
 
-const Login = () => {
+function Login() {
   const { mutate } = useLoginMutation()
-  const navigate = useNavigate()
+  //   const navigate = useNavigate()
 
   const onSubmit = useCallback(
     (e: { preventDefault: () => void }) => {
@@ -25,12 +24,12 @@ const Login = () => {
             localStorage.setItem('jwt', data.accessToken)
             // FIXME FOR react-router loader 时机问题
             instance.defaults.headers.Authorization = `Bearer ${jwt}`
-            navigate('/')
+            // navigate('/')
           },
         }
       )
     },
-    [mutate, navigate]
+    [mutate]
   )
 
   return (
@@ -85,13 +84,13 @@ const Login = () => {
                 className="mr-1"
                 type="checkbox"
               />
-              <span>Remember Me</span>
+              <span>记住我</span>
             </label>
             <a
               className="text-blue-600 hover:text-blue-700 hover:underline hover:underline-offset-4"
               href="#"
             >
-              Forgot Password?
+              忘记密码？
             </a>
           </div>
           <div className="text-center md:text-left">
@@ -99,16 +98,16 @@ const Login = () => {
               className="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white uppercase rounded text-xs tracking-wider"
               type="submit"
             >
-              Login
+              登录
             </button>
           </div>
           <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-left">
-            Don&apos;t have an account?{' '}
+            还没有账号？{' '}
             <a
               className="text-red-600 hover:underline hover:underline-offset-4"
               href="#"
             >
-              Register
+              注册
             </a>
           </div>
         </form>

@@ -1,7 +1,7 @@
 import { Button, Divider, Space, message } from 'antd'
 import dayjs from 'dayjs'
 import React, { useCallback, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
+// import { useTranslation } from 'react-i18next'
 import { useNotificationStore } from '@/stores/notifications'
 
 // "▓▓▓▓▓▓▓▓▓▓▓░░░░"
@@ -37,7 +37,7 @@ export default () => {
   //   const loaderData = useLoaderData()
   //   console.log(loaderData)
 
-  const { t } = useTranslation()
+  //   const { t } = useTranslation()
 
   const { addNotification } = useNotificationStore()
   const onAddNotification = useCallback(() => {
@@ -58,7 +58,6 @@ export default () => {
       <Progress value={progress} />
       <Divider />
       {/* <p>{t('title', { name: 'John' })}</p> */}
-      <p>{t('test1')}</p>
       <p>测试下123</p>
       <Divider />
       <Space>

@@ -21,6 +21,9 @@ const config = merge(dev, {
         use: [
           {
             loader: 'babel-loader',
+            options: {
+              cacheDirectory: false, // 这里禁止缓存
+            },
           },
         ],
         sideEffects: true,
@@ -67,11 +70,13 @@ const config = merge(dev, {
     // 修改不规范的代码格式，避免逃逸沙箱
     globalObject: 'window',
     // 保证子应用的资源路径变为绝对路径
-    publicPath: getPublicPath(appName),
+    // publicPath: getPublicPath(appName),
+    publicPath: '/',
   },
   devServer: {
     ...dev.devServer,
-    port: getPort(appName),
+    // port: getPort(appName),
+    port: 4000,
   },
   resolve: {
     ...dev.resolve,

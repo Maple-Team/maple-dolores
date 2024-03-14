@@ -6,5 +6,6 @@
   },
   "userMessagesUnread_one": "You have {{count}} unread message.",
   "userMessagesUnread_other": "You have {{count}} unread messages.",
-  "test1": "test text"
+  "test1": "test text",
+  "记住我":"remember me"
 }
