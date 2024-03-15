@@ -1,13 +1,14 @@
 import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import detector from 'i18next-browser-languagedetector'
 
 import type { HttpBackendOptions } from 'i18next-http-backend'
 import enTranslation from './en/translation.json'
-import cnTranslation from './cn/translation.json'
+import cnTranslation from './cn'
 
-i18next
-  .use(detector)
+// console.log(cnTranslation)
+
+const i18n = i18next
+  //   .use(detector)
   //   .use(HttpApi)
   .use(initReactI18next)
   .init<HttpBackendOptions>({
@@ -25,7 +26,7 @@ i18next
     // if you see an error like: "Argument of type 'DefaultTFuncReturn' is not assignable to parameter of type xyz"
     // set returnNull to false (and also in the i18next.d.ts options)
     // returnNull: false,
-    fallbackLng: 'en',
+    fallbackLng: 'cn',
     // backend: {
     //   // backends: [LocalStorageBackend, HttpBackend] 支持多数据源：https://github.com/i18next/react-i18next/blob/master/example/react-localstorage/src/i18n.js
     //   // 动态拉取远端资源，相比写在本地，部署更加灵活，维护方便，相当于提取公共三方组件
@@ -37,3 +38,5 @@ i18next
     //   // 触发请求
     // },
   })
+
+export default i18n

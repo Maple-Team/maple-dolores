@@ -69,6 +69,7 @@
     "@liutsing/webpack-config": "link:C:/Users/liuts/T7/base/packages/webpack-config",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@svgr/webpack": "^8.1.0",
+    "@types/webpack-env": "^1.18.0",
     "@types/lodash": "^4.14.191",
     "@types/lodash-es": "^4.17.6",
     "@types/svg-sprite-loader": "^3.9.5",

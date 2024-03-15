@@ -1,9 +1,35 @@
+const fse = require('fs-extra')
+const path = require('path')
+const { md5 } = require('@liutsing/utils')
+// pnpx rimraf .\node_modules\.cache\babel-loader;pnpm run dev
+/**
+ * 是否为汉字
+ * @param {*} text
+ * @returns
+ */
 function isHans(text) {
   return text && /\p{Script=Han}/u.test(text)
+}
+/**
+ * 收集存在的key
+ * @param {*} file
+ * @param {*} value
+ * @returns
+ */
+function save(file, value) {
+  const allText = file.get('allText')
+  allText.push({
+    value,
+  })
+
+  file.set('allText', allText)
 }
 
 module.exports = function ({ types: t, template }, options) {
   return {
+    pre(file) {
+      file.set('allText', [])
+    },
     visitor: {
       Program: {
         enter(path, state) {
@@ -61,7 +87,11 @@ module.exports = function ({ types: t, template }, options) {
             // 符合条件才插入
             const useTranslationStatement = t.variableDeclaration('const', [
               t.variableDeclarator(
-                t.objectPattern([t.objectProperty(t.identifier('t'), t.identifier('t'))]),
+                t.objectPattern([
+                  t.objectProperty(t.identifier('t'), t.identifier('t')),
+                  // 导入
+                  t.objectProperty(t.identifier('i18n'), t.identifier('i18n')),
+                ]),
                 t.callExpression(t.identifier('useTranslation'), [])
               ),
             ])
@@ -78,10 +108,33 @@ module.exports = function ({ types: t, template }, options) {
           const expressionContainer = t.jsxExpressionContainer(t.callExpression(t.identifier('t'), [identifier]))
           // 替换文本节点为JSXExpressionContainer节点
           path.replaceWith(expressionContainer)
-
-          //   save(state.file, i18nKey)
+          save(state.file, i18nKey)
         }
       },
+    },
+    post(file) {
+      const allText = file.get('allText')
+
+      const intlData = allText.reduce((obj, item) => {
+        obj[item.value] = item.value
+        return obj
+      }, {})
+
+      // 文件内容被覆盖
+      if (Object.keys(intlData).length) {
+        const f = file.path.hub.file
+        // 获取文件的绝对路径
+        const absolutePath = f.opts.filename
+        console.log(Object.keys(intlData).length, absolutePath)
+        // TODO 字段重复处理策略
+        const content = JSON.stringify(intlData, null, 4)
+        fse.ensureDirSync(options.outputDir)
+        //   console.log(content, path.join(options.outputDir, 'zh_CN.json'))
+        fse.writeFileSync(path.join(options.outputDir, `${md5(absolutePath)}.json`), content)
+        // TODO 数据上传
+        // TODO 翻译
+        // fse.writeFileSync(path.join(options.outputDir, 'en_US.js'), content)
+      }
     },
   }
 }

@@ -1,5 +1,5 @@
-import { message } from 'antd'
-import React, { useCallback } from 'react'
+import { Select, message } from 'antd'
+import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { instance, useLoginMutation } from '@/http'
 
@@ -31,6 +31,12 @@ function Login() {
     },
     [mutate, navigate]
   )
+  const [language, setLanguage] = useState<'cn' | 'en'>('cn')
+  const onLanguageChange = useCallback((v: 'cn' | 'en') => {
+    setLanguage(v)
+    // @ts-expect-error: xx
+    i18n.changeLanguage(v)
+  }, [])
 
   return (
     <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
@@ -41,6 +47,27 @@ function Login() {
         />
       </div>
       <div className="md:w-1/3 max-w-sm">
+        <div>
+          <Select
+            className="w-[120px]"
+            placeholder="选择语言"
+            value={language}
+            onChange={onLanguageChange}
+          >
+            <Select.Option
+              value="cn"
+              key="cn"
+            >
+              中文
+            </Select.Option>
+            <Select.Option
+              value="en"
+              key="en"
+            >
+              英文
+            </Select.Option>
+          </Select>
+        </div>
         <form onSubmit={onSubmit}>
           {/* <div className="text-center md:text-left">
           <label className="mr-1">Sign in with</label>
