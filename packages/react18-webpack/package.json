@@ -11,7 +11,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=development webpack --config config/webpack.dev.js",
+    "build": "cross-env NODE_ENV=development webpack --config config/webpack.prod.js",
     "dev": "cross-env NODE_ENV=development webpack serve  --config config/webpack.dev.js",
     "dev:speed": "cross-env NODE_ENV=development webpack serve  --config config/webpack.dev.speed.js",
     "stats": "webpack --config config/webpack.stats.js",

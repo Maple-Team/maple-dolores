@@ -1,0 +1,87 @@
+function isHans(text) {
+  return text && /\p{Script=Han}/u.test(text)
+}
+
+module.exports = function ({ types: t, template }, options) {
+  return {
+    visitor: {
+      Program: {
+        enter(path, state) {
+          state.hasUseTranslationImport = false
+          const file = path.hub.file
+          // 获取文件的绝对路径
+          const absolutePath = file.opts.filename
+          const isI18nConfigFile = absolutePath.endsWith(options.i18nConfigFile)
+          if (isI18nConfigFile) return
+          // 检查是否已经导入了 react-i18next 中的 useTranslation
+          path.node.body.forEach((node) => {
+            if (t.isImportDeclaration(node) && node.source.value === 'react-i18next') {
+              node.specifiers.forEach((specifier) => {
+                if (specifier.imported && specifier.imported.name === 'useTranslation') {
+                  state.hasUseTranslationImport = true
+                }
+              })
+            }
+          })
+        },
+        exit(path) {
+          let hasUseTranslationImport =
+            path.scope.hasBinding('useTranslation') || path.scope.hasBinding('initReactI18next')
+          // 如果没有导入过，插入新的导入声明
+          if (!hasUseTranslationImport) {
+            const importAst = template.ast(`import { useTranslation } from 'react-i18next'`)
+            path.node.body.unshift(importAst)
+          }
+        },
+      },
+      ReturnStatement(path, state) {
+        const parentFunction = path.findParent((p) => p.isFunctionDeclaration())
+        if (parentFunction) {
+          let hasUseTranslationDeclaration = false
+          let hasTCallexpression = false
+          path.traverse({
+            VariableDeclarator(declaratorPath) {
+              // 判断是否插入了 const { t } = useTranslation()
+              if (
+                t.isIdentifier(declaratorPath.node.id, { name: 't' }) &&
+                t.isIdentifier(declaratorPath.node.init) &&
+                t.isCallExpression(declaratorPath.node.init.callee, { name: 'useTranslation' })
+              ) {
+                hasUseTranslationDeclaration = true
+              }
+            },
+            CallExpression(declaratorPath) {
+              // 判断是否调用了t('xxx')
+              if (t.isIdentifier(declaratorPath.node.callee, { name: 't' })) {
+                hasTCallexpression = true
+              }
+            },
+          })
+          if (!hasUseTranslationDeclaration && hasTCallexpression) {
+            // 符合条件才插入
+            const useTranslationStatement = t.variableDeclaration('const', [
+              t.variableDeclarator(
+                t.objectPattern([t.objectProperty(t.identifier('t'), t.identifier('t'))]),
+                t.callExpression(t.identifier('useTranslation'), [])
+              ),
+            ])
+            parentFunction.node.body.body.unshift(useTranslationStatement)
+          }
+        }
+      },
+      JSXText(path, state) {
+        const i18nKey = path.node.value.trim()
+
+        if (isHans(i18nKey)) {
+          //   path.node.value = api.template.ast(`{ t('${i18nKey}') }`)
+          const identifier = t.identifier(`"${i18nKey}"`)
+          const expressionContainer = t.jsxExpressionContainer(t.callExpression(t.identifier('t'), [identifier]))
+          // 替换文本节点为JSXExpressionContainer节点
+          path.replaceWith(expressionContainer)
+
+          //   save(state.file, i18nKey)
+        }
+      },
+    },
+  }
+}

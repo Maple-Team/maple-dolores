@@ -3,7 +3,7 @@
     "pkgName": "@liutsing/main",
     "port": 5040
   },
-  "React17": {
+  "react17": {
     "pkgName": "@liutsing/react17",
     "port": 5041
   },
@@ -11,7 +11,7 @@
     "pkgName": "@liutsing/admin",
     "port": 5042
   },
-  "React18-webpack": {
+  "react18-webpack": {
     "pkgName": "@liutsing/react18-webpack",
     "port": 5043
   }

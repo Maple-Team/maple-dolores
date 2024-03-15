@@ -1,11 +1,11 @@
 import { message } from 'antd'
 import React, { useCallback } from 'react'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { instance, useLoginMutation } from '@/http'
 
 function Login() {
   const { mutate } = useLoginMutation()
-  //   const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const onSubmit = useCallback(
     (e: { preventDefault: () => void }) => {
@@ -24,12 +24,12 @@ function Login() {
             localStorage.setItem('jwt', data.accessToken)
             // FIXME FOR react-router loader 时机问题
             instance.defaults.headers.Authorization = `Bearer ${jwt}`
-            // navigate('/')
+            navigate('/')
           },
         }
       )
     },
-    [mutate]
+    [mutate, navigate]
   )
 
   return (

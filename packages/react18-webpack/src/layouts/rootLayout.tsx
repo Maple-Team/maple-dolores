@@ -149,7 +149,7 @@ export default () => {
                           status={500}
                           title="内部子路由页面运行报错"
                           subTitle={error.message} // 页面中抛出的错误
-                          extra={<Button onClick={resetErrorBoundary}>Try again</Button>}
+                          extra={<Button onClick={resetErrorBoundary}>再次尝试</Button>}
                         />
                       )
                     }}
@@ -161,7 +161,7 @@ export default () => {
                 )}
               </QueryErrorResetBoundary>
             </div>
-            <footer className="py-3 text-center">footer</footer>
+            <footer className="py-3 text-center">底部</footer>
           </main>
         </div>
       </StyleProvider>

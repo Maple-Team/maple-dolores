@@ -8,7 +8,8 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 const appName = 'react18-webpack'
 
 const config = merge(dev, {
-  devtool: 'cheap-module-source-map',
+  //   devtool: 'cheap-module-source-map',
+  devtool: false,
   entry: path.resolve(__dirname, '../src/index.tsx'),
   experiments: {
     lazyCompilation: false,
@@ -22,7 +23,9 @@ const config = merge(dev, {
           {
             loader: 'babel-loader',
             options: {
+              // working?
               cacheDirectory: false, // 这里禁止缓存
+              cacheCompression: false,
             },
           },
         ],
@@ -70,13 +73,11 @@ const config = merge(dev, {
     // 修改不规范的代码格式，避免逃逸沙箱
     globalObject: 'window',
     // 保证子应用的资源路径变为绝对路径
-    // publicPath: getPublicPath(appName),
-    publicPath: '/',
+    publicPath: getPublicPath(appName),
   },
   devServer: {
     ...dev.devServer,
-    // port: getPort(appName),
-    port: 4000,
+    port: getPort(appName),
   },
   resolve: {
     ...dev.resolve,
