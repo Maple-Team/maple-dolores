@@ -25,7 +25,7 @@ function save(file, value) {
 
   file.set('allText', allText)
 }
-const flag = 'rootLayout.tsx'
+const flag = 'Login\\index.tsx'
 
 module.exports = function ({ types: t, template }, options) {
   return {
@@ -137,16 +137,24 @@ module.exports = function ({ types: t, template }, options) {
           //
           console.log(
             !!matchedParent,
+            matchedParent.type,
             matchedParent.parent.type,
             t.isExportDefaultDeclaration(matchedParent.parent),
             matchedParent.node.start,
             matchedParent.node.end
           )
         }
-        // 箭头函数组件根元素：t.isExportDefaultDeclaration(matchedParent.parent.type)
-        if (!!matchedParent && t.isExportDefaultDeclaration(matchedParent.parent)) {
+        // 箭头函数默认导出组件： 根元素：t.isExportDefaultDeclaration(matchedParent.parent.type)
+        // FIXME 箭头函数组件导出组件： 根元素：t.isExportDefaultDeclaration(matchedParent.parent.type)
+        // 函数声明类组件：
+        if (
+          !!matchedParent &&
+          // 箭头函数组件根元素
+          ((t.isExportDefaultDeclaration(matchedParent.parent) && t.isArrowFunctionExpression(matchedParent)) ||
+            (t.isFunctionDeclaration(matchedParent) && t.isProgram(matchedParent.parent)))
+        ) {
           let hasUseTranslationDeclaration = false
-          let hasTCallexpression = false
+          let hasTCallexpression = true
           path.traverse({
             VariableDeclarator(declaratorPath) {
               // 判断是否插入了 const { t } = useTranslation()
@@ -167,13 +175,13 @@ module.exports = function ({ types: t, template }, options) {
             },
           })
           if (debug) {
-            console.log(absolutePath)
-            console.log({
-              matchedParentScope: matchedParent.scope.hasBinding('useTranslation'),
-              pathScope: path.scope.hasBinding('useTranslation'),
-              hasTCallexpression, // false? -> true
-              hasUseTranslationDeclaration, // -> false
-            })
+            // console.log(absolutePath)
+            // console.log({
+            //   matchedParentScope: matchedParent.scope.hasBinding('useTranslation'),
+            //   pathScope: path.scope.hasBinding('useTranslation'),
+            //   hasTCallexpression, // false? -> true
+            //   hasUseTranslationDeclaration, // -> false
+            // })
           }
           if (
             !hasUseTranslationDeclaration &&
