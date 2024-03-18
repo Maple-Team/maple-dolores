@@ -34,7 +34,7 @@ function Login() {
   const [language, setLanguage] = useState<'cn' | 'en'>('cn')
   const onLanguageChange = useCallback((v: 'cn' | 'en') => {
     setLanguage(v)
-    // @ts-expect-error: xx
+    // @ts-expect-error: 动态插件注入的
     i18n.changeLanguage(v)
   }, [])
 
