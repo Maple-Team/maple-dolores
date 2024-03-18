@@ -41,7 +41,7 @@ module.exports = {
     [
       require('./plugins/insert-i18n'),
       {
-        outputDir: './src/i18n/cn',
+        outputDir: './src/i18n/zh_CN',
         i18nConfigFile: 'i18n\\config.ts',
       },
     ],

@@ -1,6 +1,7 @@
 const fse = require('fs-extra')
 const path = require('path')
 const { md5 } = require('@liutsing/utils')
+
 // pnpx rimraf .\node_modules\.cache\babel-loader;pnpm run dev
 /**
  * 是否为汉字
@@ -60,7 +61,7 @@ module.exports = function ({ types: t, template }, options) {
           }
         },
       },
-      ReturnStatement(path, state) {
+      ReturnStatement(path) {
         const parentFunction = path.findParent((p) => p.isFunctionDeclaration())
         if (parentFunction) {
           let hasUseTranslationDeclaration = false
@@ -84,7 +85,7 @@ module.exports = function ({ types: t, template }, options) {
             },
           })
           if (!hasUseTranslationDeclaration && hasTCallexpression) {
-            // 符合条件才插入
+            // 符合条件才插入: 有t('xxx')调用
             const useTranslationStatement = t.variableDeclaration('const', [
               t.variableDeclarator(
                 t.objectPattern([
@@ -100,15 +101,63 @@ module.exports = function ({ types: t, template }, options) {
         }
       },
       JSXText(path, state) {
+        if (path.node.skipTransform) {
+          return
+        }
         const i18nKey = path.node.value.trim()
 
         if (isHans(i18nKey)) {
-          //   path.node.value = api.template.ast(`{ t('${i18nKey}') }`)
           const identifier = t.identifier(`"${i18nKey}"`)
           const expressionContainer = t.jsxExpressionContainer(t.callExpression(t.identifier('t'), [identifier]))
           // 替换文本节点为JSXExpressionContainer节点
           path.replaceWith(expressionContainer)
           save(state.file, i18nKey)
+          path.node.skipTransform = true
+          path.skip()
+        }
+      },
+      StringLiteral(path, state) {
+        if (path.node.skipTransform) {
+          return
+        }
+        const i18nKey = path.node.value.trim()
+        if (!isHans(i18nKey)) {
+          return
+        }
+        // console.log('StringLiteral', i18nKey)
+        save(state.file, i18nKey)
+
+        const parent = path.parent
+        // message.info('xxx')
+        if (t.isCallExpression(parent)) {
+          if (t.isMemberExpression(parent.callee)) {
+            const identifier = t.identifier(`"${i18nKey}"`)
+            const expressionContainer = t.callExpression(t.identifier('t'), [identifier])
+            path.replaceWith(expressionContainer)
+            path.node.skipTransform = true
+            path.skip()
+          } else if (t.isIdentifier(parent.callee) && parent.callee.name === 't') {
+            // console.log()
+          } else {
+            console.log(i18nKey, 'parent.callee: isMemberExpression, parent: callExpression ===未转化===')
+          }
+        } else if (t.isJSXAttribute(parent)) {
+          const identifier = t.identifier(`"${i18nKey}"`)
+          const expressionContainer = t.jsxExpressionContainer(t.callExpression(t.identifier('t'), [identifier]))
+          path.replaceWith(expressionContainer)
+          path.node.skipTransform = true
+          path.skip()
+        } else {
+          fse.writeFile(
+            './no.log',
+            JSON.stringify({ key: i18nKey, type: parent.type }) + '\r\n',
+            { flag: 'a+' },
+            (e) => {
+              if (e) {
+                console.error(e)
+              }
+            }
+          )
         }
       },
     },
