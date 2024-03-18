@@ -170,6 +170,45 @@ module.exports = function ({ types: t, template }, options) {
           path.node.body.body.unshift(useTranslationStatement)
         }
       },
+      ArrowFunctionExpression(path) {
+        const blockStatement = path.node.body
+
+        // 确保 body 是一个 BlockStatement 类型
+        if (!t.isBlockStatement(blockStatement)) {
+          return
+        }
+
+        const file = path.hub.file
+        // 获取文件的绝对路径
+        const absolutePath = file.opts.filename
+        const hasBindingT = path.scope.hasBinding('t')
+
+        let isValidJSXElement = false
+        path.traverse({
+          // 针对ArrowFunctionExpression下的 ReturnStatement
+          ReturnStatement(declaratorPath) {
+            const argument = declaratorPath.node.argument
+            if (argument && t.isJSXElement(argument)) {
+              isValidJSXElement = true
+            }
+          },
+        })
+        // 如果没有找到声明，我们添加一个新的声明
+        if (!hasBindingT && isValidJSXElement) {
+          const useTranslationStatement = t.variableDeclaration('const', [
+            t.variableDeclarator(
+              t.objectPattern([
+                t.objectProperty(t.identifier('t'), t.identifier('t')),
+                t.objectProperty(t.identifier('i18n'), t.identifier('i18n')),
+              ]),
+              t.callExpression(t.identifier('useTranslation'), [])
+            ),
+          ])
+
+          // 将声明添加到函数体的顶部
+          path.node.body.body.unshift(useTranslationStatement)
+        }
+      },
       //   ReturnStatement(path) {
       //     const file = path.hub.file
       //     // 获取文件的绝对路径
