@@ -19,6 +19,7 @@ module.exports = {
         importSource: '@welldone-software/why-did-you-render',
       },
     ],
+    require('./presets/index'),
     '@babel/preset-typescript',
   ],
   plugins: [
@@ -38,13 +39,13 @@ module.exports = {
     //     i18nConfigFile: 'i18n\\config.ts',
     //   },
     // ],
-    [
-      require('./plugins/insert-i18n'),
-      {
-        outputDir: './src/i18n/zh_CN',
-        i18nConfigFile: 'i18n\\config.ts',
-      },
-    ],
+    // [
+    //   require('./plugins/insert-i18n'),
+    //   {
+    //     outputDir: './src/i18n/zh_CN',
+    //     i18nConfigFile: 'i18n\\config.ts',
+    //   },
+    // ],
   ].filter(Boolean),
   env: {
     test: {

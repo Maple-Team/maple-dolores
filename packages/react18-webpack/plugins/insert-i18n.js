@@ -128,30 +128,31 @@ module.exports = function ({ types: t, template }, options) {
         const file = path.hub.file
         // 获取文件的绝对路径
         const absolutePath = file.opts.filename
-        let debug = false
+        let debug = true
         if (absolutePath.endsWith(flag)) {
           debug = true
         }
+
         const matchedParent = path.findParent((p) => p.isFunctionDeclaration() || p.isArrowFunctionExpression())
         if (debug && matchedParent) {
           //
           console.log(
-            !!matchedParent,
+            absolutePath,
             matchedParent.type,
             matchedParent.parent.type,
             t.isExportDefaultDeclaration(matchedParent.parent),
-            matchedParent.node.start,
-            matchedParent.node.end
+            path.node.argument && path.node.argument.type
           )
         }
         // 箭头函数默认导出组件： 根元素：t.isExportDefaultDeclaration(matchedParent.parent.type)
         // FIXME 箭头函数组件导出组件： 根元素：t.isExportDefaultDeclaration(matchedParent.parent.type)
-        // 函数声明类组件：
+        // 函数声明类组件： 根元素：t.isProgram(matchedParent.parent)
         if (
           !!matchedParent &&
           // 箭头函数组件根元素
           ((t.isExportDefaultDeclaration(matchedParent.parent) && t.isArrowFunctionExpression(matchedParent)) ||
-            (t.isFunctionDeclaration(matchedParent) && t.isProgram(matchedParent.parent)))
+            (t.isFunctionDeclaration(matchedParent) && t.isProgram(matchedParent.parent))) &&
+          path.node.argument
         ) {
           let hasUseTranslationDeclaration = false
           let hasTCallexpression = true
@@ -175,13 +176,13 @@ module.exports = function ({ types: t, template }, options) {
             },
           })
           if (debug) {
-            // console.log(absolutePath)
-            // console.log({
-            //   matchedParentScope: matchedParent.scope.hasBinding('useTranslation'),
-            //   pathScope: path.scope.hasBinding('useTranslation'),
-            //   hasTCallexpression, // false? -> true
-            //   hasUseTranslationDeclaration, // -> false
-            // })
+            console.log(absolutePath)
+            console.log({
+              matchedParentScope: matchedParent.scope.hasBinding('useTranslation'),
+              pathScope: path.scope.hasBinding('useTranslation'),
+              hasTCallexpression, // false? -> true
+              hasUseTranslationDeclaration, // -> false
+            })
           }
           if (
             !hasUseTranslationDeclaration &&
