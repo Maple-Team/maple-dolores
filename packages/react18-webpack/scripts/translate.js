@@ -37,16 +37,16 @@ const translates = (key) => {
 
 // eslint-disable-next-line import/newline-after-import
 ;(async () => {
-  const cnTranslationFiles = readdirSync(path.resolve(__dirname, '../src/i18n/zh-cn/')).filter((file) =>
+  const cnTranslationFiles = readdirSync(path.resolve(__dirname, '../src/i18n/zh_CN')).filter((file) =>
     file.endsWith('json')
   )
 
   let cnTranslation = {}
   cnTranslationFiles.forEach((file) => {
-    cnTranslation = { ...cnTranslation, ...require(path.resolve(__dirname, '../src/i18n/zh-cn', file)) }
+    cnTranslation = { ...cnTranslation, ...require(path.resolve(__dirname, '../src/i18n/zh_CN', file)) }
   })
 
-  console.log('中文语言包', cnTranslation)
+  //   console.log('中文语言包', cnTranslation)
 
   const enTranslationMap = {}
   const twTranslationMap = {}
@@ -69,7 +69,7 @@ const translates = (key) => {
     }
   )
   writeFile(
-    path.resolve(__dirname, '../src/i18n/zh-tw/translation.json'),
+    path.resolve(__dirname, '../src/i18n/zh_TW/translation.json'),
     JSON.stringify(twTranslationMap, null, 2),
     (e) => {
       if (e) {

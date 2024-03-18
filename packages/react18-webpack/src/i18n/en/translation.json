@@ -1,11 +1,20 @@
 {
-  "title": "Welcome {{name}}, to react using react-i18next fully type-safe",
-  "description": {
-    "part1": "This is a simple example.",
-    "part2": "😉"
-  },
-  "userMessagesUnread_one": "You have {{count}} unread message.",
-  "userMessagesUnread_other": "You have {{count}} unread messages.",
-  "test1": "test text",
-  "记住我":"remember me"
+  "返回": "return",
+  "测试下123": "Test under 123",
+  "添加弹窗": "Add a pop-up",
+  "添加Message": "添加Message",
+  "中文": "Chinese",
+  "英文": "English",
+  "记住我": "Remember me",
+  "忘记密码？": "Forgot your password?",
+  "登录": "login",
+  "还没有账号？": "Don't have an account yet?",
+  "注册": "enroll",
+  "再次尝试": "Try again",
+  "底部": "bottom",
+  "额外的底部附加内容": "Extra bottom extras",
+  "左侧实际内容区域": "The actual content area on the left",
+  "顶部附加内容": "Additional content on top",
+  "右侧实际内容区域": "The actual content area on the right",
+  "实际的内容区域": "The actual content area"
 }

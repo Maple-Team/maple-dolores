@@ -1,7 +1,9 @@
 import { Select, message } from 'antd'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import type { LanguageKey } from '../../i18n/type'
 import { instance, useLoginMutation } from '@/http'
+import { LanguageNameMap } from '@/i18n/constant'
 
 function Login() {
   const { mutate } = useLoginMutation()
@@ -26,13 +28,17 @@ function Login() {
             instance.defaults.headers.Authorization = `Bearer ${jwt}`
             navigate('/')
           },
+          onError(error) {
+            // TODO 补充处理动态变量
+            message.error(error as string)
+          },
         }
       )
     },
     [mutate, navigate]
   )
-  const [language, setLanguage] = useState<'cn' | 'en'>('cn')
-  const onLanguageChange = useCallback((v: 'cn' | 'en') => {
+  const [language, setLanguage] = useState<LanguageKey>('zh_CN')
+  const onLanguageChange = useCallback((v: LanguageKey) => {
     setLanguage(v)
     // @ts-expect-error: 动态插件注入的
     i18n.changeLanguage(v)
@@ -50,22 +56,19 @@ function Login() {
         <div>
           <Select
             className="w-[120px]"
-            placeholder="选择语言"
             value={language}
             onChange={onLanguageChange}
           >
-            <Select.Option
-              value="cn"
-              key="cn"
-            >
-              中文
-            </Select.Option>
-            <Select.Option
-              value="en"
-              key="en"
-            >
-              英文
-            </Select.Option>
+            {Object.keys(LanguageNameMap).map((key) => {
+              return (
+                <Select.Option
+                  value={key}
+                  key={key}
+                >
+                  {LanguageNameMap[key as LanguageKey]}
+                </Select.Option>
+              )
+            })}
           </Select>
         </div>
         <form onSubmit={onSubmit}>
@@ -97,13 +100,13 @@ function Login() {
             className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded"
             type="text"
             id="username"
-            placeholder="Email Address/Phone Number"
+            placeholder="请输入用户名"
           />
           <input
             className="text-sm w-full px-4 py-2 border border-solid border-gray-300 rounded mt-4"
             type="password"
             id="password"
-            placeholder="Password"
+            placeholder="请输入密码"
           />
           <div className="mt-4 flex justify-between font-semibold text-sm">
             <label className="flex text-slate-500 hover:text-slate-600 cursor-pointer">
