@@ -1,15 +1,17 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Outlet, useLocation, useNavigate, useNavigation } from 'react-router-dom'
 import { QueryErrorResetBoundary } from '@tanstack/react-query'
 // import Scrollbar from './scrollbar'
 import type { MenuProps } from 'antd'
-import { Button, ConfigProvider, Menu, Result, Skeleton, message } from 'antd'
+import { Button, ConfigProvider, Menu, Result, Select, Skeleton, message } from 'antd'
 import { ErrorBoundary } from 'react-error-boundary'
 import type { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems'
 import { StyleProvider } from '@ant-design/cssinjs'
 import { Breadcrumbs } from '@/Components/breadcrumbs'
 import { emitter } from '@/events'
 import { useUserMenus } from '@/http'
+import { LanguageNameMap } from '@/i18n/constant'
+import type { LanguageKey } from '@/i18n/type'
 
 message.config({ maxCount: 3 })
 
@@ -119,6 +121,13 @@ export default () => {
     return keys
   }, [items, pathname])
 
+  const [language, setLanguage] = useState<LanguageKey>('zh_CN')
+  const onLanguageChange = useCallback((v: LanguageKey) => {
+    setLanguage(v)
+    // @ts-expect-error: 动态插件注入的
+    i18n.changeLanguage(v)
+  }, [])
+
   return (
     <ConfigProvider>
       <StyleProvider hashPriority="high">
@@ -134,7 +143,25 @@ export default () => {
           <main className="flex-1 flex flex-col justify-between h-full">
             <header className="py-3 px-4 flex min-h-[44px] justify-between">
               <Breadcrumbs />
-              <div>用户中心</div>
+              <div className="flex items-center">
+                <Select
+                  className="w-[120px] mr-5"
+                  value={language}
+                  onChange={onLanguageChange}
+                >
+                  {Object.keys(LanguageNameMap).map((key) => {
+                    return (
+                      <Select.Option
+                        value={key}
+                        key={key}
+                      >
+                        {LanguageNameMap[key as LanguageKey]}
+                      </Select.Option>
+                    )
+                  })}
+                </Select>
+                <span>用户中心</span>
+              </div>
             </header>
             <div className="flex-1 px-4 bg-gray-100">
               <QueryErrorResetBoundary>
