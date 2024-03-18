@@ -82,3 +82,8 @@ const translates = (key) => {
 })()
 
 // TODO 监听原始录入
+
+// (async ()=>{
+//    const res =  await _translate("远程驾驶", "zh-Hant")
+//    console.log(res)
+// })()
