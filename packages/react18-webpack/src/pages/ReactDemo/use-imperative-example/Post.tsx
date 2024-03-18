@@ -22,7 +22,7 @@ export const Post = forwardRef((props, ref: ForwardedRef<{ scrollAndFocusAddComm
   return (
     <>
       <article>
-        <p>Welcome to my blog!</p>
+        <p>欢迎访问我的博客</p>
       </article>
       <CommentList ref={CommentListRef} />
       <AddComment ref={AddCommentRef} />

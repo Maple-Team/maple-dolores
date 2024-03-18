@@ -168,18 +168,15 @@ export default () => {
                 {({ reset }) => (
                   <ErrorBoundary
                     onReset={reset}
-                    fallbackRender={({ error, resetErrorBoundary }) => {
-                      console.error(error)
-                      // TODO 执行上报等操作
-                      return (
-                        <Result
-                          status={500}
-                          title="内部子路由页面运行报错"
-                          subTitle={error.message} // 页面中抛出的错误
-                          extra={<Button onClick={resetErrorBoundary}>刷新重试</Button>}
-                        />
-                      )
-                    }}
+                    fallbackRender={({ error, resetErrorBoundary }) => (
+                      // FIXME 移除内部的箭头函数显式return
+                      <Result
+                        status={500}
+                        title="内部子路由页面运行报错"
+                        subTitle={error.message} // 页面中抛出的错误
+                        extra={<Button onClick={resetErrorBoundary}>刷新重试</Button>}
+                      />
+                    )}
                   >
                     <Skeleton loading={navigation.state === 'loading'}>
                       <Outlet />

@@ -12,7 +12,7 @@ export default function ErrorPage() {
       status={500}
       title="根路由组件渲染出错"
       subTitle={error.data}
-      extra={<Button type="primary">Back Home</Button>}
+      extra={<Button type="primary">返回首页</Button>}
     />
   )
 }

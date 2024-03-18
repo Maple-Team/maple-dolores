@@ -9,7 +9,7 @@ export const UseImperativeDemo = () => {
   }, [])
   return (
     <div>
-      <button onClick={handleClick}>write a comment</button>
+      <button onClick={handleClick}>添加一个评论</button>
       <Post ref={postRef} />
     </div>
   )

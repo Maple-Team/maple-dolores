@@ -184,9 +184,16 @@ module.exports = function ({ types: t, template }, options) {
         }
 
         // 确保在组件根目录下的ArrowFunctionExpression 内部的箭头函数都是小写开头
-        if (parentId && parentId.name && /^[a-z]/.test(parentId.name)) {
+        if (
+          (!t.isCallExpression(parent) && parent.callee && parent.callee.name !== 'forwardRef') ||
+          (parentId && parentId.name && /^[a-z]/.test(parentId.name))
+        ) {
           return
         }
+
+        // if (absolutePath.endsWith('Post.tsx')) {
+        //   console.log(parent, '===================') // CallExpression
+        // }
 
         const hasBindingT = path.scope.hasBinding('t')
 
@@ -195,11 +202,14 @@ module.exports = function ({ types: t, template }, options) {
           // 针对ArrowFunctionExpression下的 ReturnStatement
           ReturnStatement(declaratorPath) {
             const argument = declaratorPath.node.argument
-            if (argument && t.isJSXElement(argument)) {
+            if (argument && (t.isJSXElement(argument) || t.isJSXFragment(argument))) {
               isValidJSXElement = true
             }
           },
         })
+        // if (absolutePath.endsWith('Post.tsx')) {
+        //   console.log('====================', hasBindingT, isValidJSXElement)
+        // }
         // 如果没有找到声明，我们添加一个新的声明
         if (!hasBindingT && isValidJSXElement) {
           const useTranslationStatement = t.variableDeclaration('const', [

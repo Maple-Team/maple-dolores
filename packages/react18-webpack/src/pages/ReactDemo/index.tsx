@@ -34,15 +34,15 @@ export function Component() {
               onClick={onJump}
               type="primary"
             >
-              jump nested component
+              点击跳转嵌套组件
             </Button>
-            <Link to={`/react-demo/${Math.random()}`}>jump nested component</Link>
+            <Link to={`/react-demo/${Math.random()}`}>元素跳转嵌套组件</Link>
 
             <Button
               onClick={showMsg}
               type="primary"
             >
-              showMsg
+              显示消息
             </Button>
 
             <span>{num}</span>
@@ -53,7 +53,7 @@ export function Component() {
                 setNum((_) => _ + 1)
               }}
             >
-              increment
+              增加
             </Button>
           </Space>
           <Divider />
