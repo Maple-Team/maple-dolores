@@ -195,3 +195,32 @@ export default () => {
     </ConfigProvider>
   )
 }
+
+// i18n-auto测试用
+export function Login() {
+  return (
+    <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
+      {Object.keys(LanguageNameMap).map((key) => {
+        return (
+          <Select.Option
+            value={key}
+            key={key}
+          >
+            你好呀
+          </Select.Option>
+        )
+      })}
+    </section>
+  )
+}
+// i18n-auto测试用
+export const Foo = () => {
+  return <div>你好吗</div>
+}
+
+// i18n-auto测试用
+// TODO 待确定是否有react-hooks中含国际化的需求
+export const useFoo = () => {
+  const a = '你好不'
+  return [a]
+}

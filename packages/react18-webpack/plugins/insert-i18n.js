@@ -172,15 +172,22 @@ module.exports = function ({ types: t, template }, options) {
       },
       ArrowFunctionExpression(path) {
         const blockStatement = path.node.body
+        const parent = path.parent
+        const file = path.hub.file
+        // 获取文件的绝对路径
+        const absolutePath = file.opts.filename
+        const parentId = parent.id
 
         // 确保 body 是一个 BlockStatement 类型
         if (!t.isBlockStatement(blockStatement)) {
           return
         }
 
-        const file = path.hub.file
-        // 获取文件的绝对路径
-        const absolutePath = file.opts.filename
+        // 确保在组件根目录下的ArrowFunctionExpression 内部的箭头函数都是小写开头
+        if (parentId && parentId.name && /^[a-z]/.test(parentId.name)) {
+          return
+        }
+
         const hasBindingT = path.scope.hasBinding('t')
 
         let isValidJSXElement = false
