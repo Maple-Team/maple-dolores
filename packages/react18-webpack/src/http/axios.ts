@@ -118,7 +118,7 @@ instance.interceptors.response.use(
 
     const e = error as AxiosError
 
-    const message = e.message || '未知错误'
+    const message = e.message || 'unKnown error'
     useNotificationStore.getState().addNotification({
       type: 'error',
       title: 'Error',

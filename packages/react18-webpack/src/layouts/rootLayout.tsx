@@ -134,7 +134,7 @@ export default () => {
           <main className="flex-1 flex flex-col justify-between h-full">
             <header className="py-3 px-4 flex min-h-[44px] justify-between">
               <Breadcrumbs />
-              <div>User Center</div>
+              <div>用户中心</div>
             </header>
             <div className="flex-1 px-4 bg-gray-100">
               <QueryErrorResetBoundary>

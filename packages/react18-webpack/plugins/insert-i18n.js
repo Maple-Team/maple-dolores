@@ -25,6 +25,7 @@ function save(file, value) {
 
   file.set('allText', allText)
 }
+const flag = 'rootLayout.tsx'
 
 module.exports = function ({ types: t, template }, options) {
   return {
@@ -32,6 +33,7 @@ module.exports = function ({ types: t, template }, options) {
       file.set('allText', [])
     },
     visitor: {
+      // 处理导入代码：import { useTranslation } from 'react-i18next'
       Program: {
         enter(path, state) {
           state.hasUseTranslationImport = false
@@ -60,45 +62,6 @@ module.exports = function ({ types: t, template }, options) {
             path.node.body.unshift(importAst)
           }
         },
-      },
-      ReturnStatement(path) {
-        const parentFunction = path.findParent((p) => p.isFunctionDeclaration())
-        if (parentFunction) {
-          let hasUseTranslationDeclaration = false
-          let hasTCallexpression = false
-          path.traverse({
-            VariableDeclarator(declaratorPath) {
-              // 判断是否插入了 const { t } = useTranslation()
-              if (
-                t.isIdentifier(declaratorPath.node.id, { name: 't' }) &&
-                t.isIdentifier(declaratorPath.node.init) &&
-                t.isCallExpression(declaratorPath.node.init.callee, { name: 'useTranslation' })
-              ) {
-                hasUseTranslationDeclaration = true
-              }
-            },
-            CallExpression(declaratorPath) {
-              // 判断是否调用了t('xxx')
-              if (t.isIdentifier(declaratorPath.node.callee, { name: 't' })) {
-                hasTCallexpression = true
-              }
-            },
-          })
-          if (!hasUseTranslationDeclaration && hasTCallexpression) {
-            // 符合条件才插入: 有t('xxx')调用
-            const useTranslationStatement = t.variableDeclaration('const', [
-              t.variableDeclarator(
-                t.objectPattern([
-                  t.objectProperty(t.identifier('t'), t.identifier('t')),
-                  // 导入
-                  t.objectProperty(t.identifier('i18n'), t.identifier('i18n')),
-                ]),
-                t.callExpression(t.identifier('useTranslation'), [])
-              ),
-            ])
-            parentFunction.node.body.body.unshift(useTranslationStatement)
-          }
-        }
       },
       JSXText(path, state) {
         if (path.node.skipTransform) {
@@ -160,6 +123,82 @@ module.exports = function ({ types: t, template }, options) {
           )
         }
       },
+
+      ReturnStatement(path) {
+        const file = path.hub.file
+        // 获取文件的绝对路径
+        const absolutePath = file.opts.filename
+        let debug = false
+        if (absolutePath.endsWith(flag)) {
+          debug = true
+        }
+        const matchedParent = path.findParent((p) => p.isFunctionDeclaration() || p.isArrowFunctionExpression())
+        if (debug && matchedParent) {
+          //
+          console.log(
+            !!matchedParent,
+            matchedParent.parent.type,
+            t.isExportDefaultDeclaration(matchedParent.parent),
+            matchedParent.node.start,
+            matchedParent.node.end
+          )
+        }
+        // 箭头函数组件根元素：t.isExportDefaultDeclaration(matchedParent.parent.type)
+        if (!!matchedParent && t.isExportDefaultDeclaration(matchedParent.parent)) {
+          let hasUseTranslationDeclaration = false
+          let hasTCallexpression = false
+          path.traverse({
+            VariableDeclarator(declaratorPath) {
+              // 判断是否插入了 const { t } = useTranslation()
+              if (
+                t.isIdentifier(declaratorPath.node.id, { name: 't' }) &&
+                t.isIdentifier(declaratorPath.node.init) &&
+                t.isCallExpression(declaratorPath.node.init.callee, { name: 'useTranslation' })
+              ) {
+                hasUseTranslationDeclaration = true
+              }
+            },
+            CallExpression(declaratorPath) {
+              // 判断是否调用了t('xxx')
+              // FIXME 需要解决还没有提取转化的场景
+              if (t.isIdentifier(declaratorPath.node.callee, { name: 't' })) {
+                hasTCallexpression = true
+              }
+            },
+          })
+          if (debug) {
+            console.log(absolutePath)
+            console.log({
+              matchedParentScope: matchedParent.scope.hasBinding('useTranslation'),
+              pathScope: path.scope.hasBinding('useTranslation'),
+              hasTCallexpression, // false? -> true
+              hasUseTranslationDeclaration, // -> false
+            })
+          }
+          if (
+            !hasUseTranslationDeclaration &&
+            hasTCallexpression &&
+            !matchedParent.scope.hasBinding('useTranslation') &&
+            !matchedParent.scope.hasBinding('t')
+          ) {
+            // 条件：有t('xxx')调用
+            // 符合条件才插入代码： const { t } = useTranslation()
+            const useTranslationStatement = t.variableDeclaration('const', [
+              t.variableDeclarator(
+                t.objectPattern([
+                  t.objectProperty(t.identifier('t'), t.identifier('t')),
+                  // 导入i18n用于更新语言用
+                  t.objectProperty(t.identifier('i18n'), t.identifier('i18n')),
+                ]),
+                t.callExpression(t.identifier('useTranslation'), [])
+              ),
+            ])
+            matchedParent.node.body.body.unshift(useTranslationStatement)
+            hasUseTranslationDeclaration = true
+            console.count(`${absolutePath}-ReturnStatement-执行次数`)
+          }
+        }
+      },
     },
     post(file) {
       const allText = file.get('allText')
@@ -174,7 +213,7 @@ module.exports = function ({ types: t, template }, options) {
         const f = file.path.hub.file
         // 获取文件的绝对路径
         const absolutePath = f.opts.filename
-        console.log(Object.keys(intlData).length, absolutePath)
+        // console.log(Object.keys(intlData).length, absolutePath)
         // TODO 字段重复处理策略
         const content = JSON.stringify(intlData, null, 4)
         fse.ensureDirSync(options.outputDir)
