@@ -1,7 +1,7 @@
 import { Button, Divider, Space, message } from 'antd'
 import dayjs from 'dayjs'
 import React, { useCallback, useMemo } from 'react'
-// import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { useNotificationStore } from '@/stores/notifications'
 
 // "▓▓▓▓▓▓▓▓▓▓▓░░░░"
@@ -51,14 +51,16 @@ export default () => {
     const content = `${Math.random()}`
     message.info({ content, key: content })
   }, [])
-
+  const { t } = useTranslation()
   return (
     <div>
-      <h1 className="py-4 text-[24px]">The rest days of {current.format('YYYY')}</h1>
+      <h1 className="py-4 text-[24px]"> {t('current-year-progress', { year: current.format('YYYY') })}</h1>
       <Progress value={progress} />
       <Divider />
       {/* <p>{t('title', { name: 'John' })}</p> */}
-      <p>测试下123</p>
+      <p>测试下</p>
+      <p>{t('keyWithCount', { count: 1 })}</p>
+      <p>{t('keyWithCount', { count: 2 })}</p>
       <Divider />
       <Space>
         <Button

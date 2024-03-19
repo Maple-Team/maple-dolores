@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-mutable-exports
 let cache: { [key: string]: unknown } = {}
 
 function importAll(r: __WebpackModuleApi.RequireContext) {
@@ -8,4 +7,8 @@ function importAll(r: __WebpackModuleApi.RequireContext) {
 }
 importAll(require.context('.', true, /\.json$/))
 
-export default cache
+const resources = {
+  translation: cache,
+} as const
+
+export default resources

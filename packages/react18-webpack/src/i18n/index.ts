@@ -4,9 +4,15 @@ import { initReactI18next } from 'react-i18next'
 import type { HttpBackendOptions } from 'i18next-http-backend'
 import enTranslation from './en/translation.json'
 import twTranslation from './zh_TW/translation.json'
-import cnTranslation from './zh_CN'
+import zh_CN from './zh_CN'
 
 // TODO webpack忽略国际化的json文件
+declare module 'i18next' {
+  // Extend CustomTypeOptions
+  interface CustomTypeOptions {
+    resources: typeof zh_CN
+  }
+}
 
 const i18n = i18next
   //   .use(detector)
@@ -21,7 +27,7 @@ const i18n = i18next
         translation: enTranslation,
       },
       zh_CN: {
-        translation: cnTranslation,
+        ...zh_CN,
       },
       zh_TW: {
         translation: twTranslation,
