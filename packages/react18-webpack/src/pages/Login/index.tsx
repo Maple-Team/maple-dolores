@@ -1,6 +1,7 @@
 import { Select, message } from 'antd'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import type { LanguageKey } from '../../i18n/type'
 import { instance, useLoginMutation } from '@/http'
 import { LanguageNameMap } from '@/i18n/constant'
@@ -8,7 +9,8 @@ import { LanguageNameMap } from '@/i18n/constant'
 function Login() {
   const { mutate } = useLoginMutation()
   const navigate = useNavigate()
-
+  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+  const { t, i18n } = useTranslation()
   const onSubmit = useCallback(
     (e: { preventDefault: () => void }) => {
       e.preventDefault()
@@ -38,11 +40,13 @@ function Login() {
     [mutate, navigate]
   )
   const [language, setLanguage] = useState<LanguageKey>('zh_CN')
-  const onLanguageChange = useCallback((v: LanguageKey) => {
-    setLanguage(v)
-    // @ts-expect-error: 动态插件注入的
-    i18n.changeLanguage(v)
-  }, [])
+  const onLanguageChange = useCallback(
+    (v: LanguageKey) => {
+      setLanguage(v)
+      i18n.changeLanguage(v)
+    },
+    [i18n]
+  )
 
   return (
     <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">

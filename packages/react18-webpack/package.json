@@ -13,7 +13,8 @@
   "scripts": {
     "build": "cross-env NODE_ENV=development webpack --config config/webpack.dev.js",
     "dev": "cross-env NODE_ENV=development webpack serve  --config config/webpack.dev.js",
-    "prebuild1": "node scripts/translate.js",
+    "prebuild": "node scripts/translate.js",
+    "translate": "node scripts/translate.js",
     "dev:speed": "cross-env NODE_ENV=development webpack serve  --config config/webpack.dev.speed.js",
     "stats": "webpack --config config/webpack.stats.js",
     "temp": "webpack --config config/webpack.temp.js",
