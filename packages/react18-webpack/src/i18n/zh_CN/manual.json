@@ -1,0 +1,5 @@
+{
+  "current-year-progress": "{{year}}进度",
+  "keyWithCount_one": "{{count}} 个",
+  "keyWithCount_other": "{{count}} 个"
+}
