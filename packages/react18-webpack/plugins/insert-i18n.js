@@ -1,4 +1,4 @@
-const fse = require('fs-extra')
+const fs = require('fs')
 const path = require('path')
 const { md5 } = require('@liutsing/utils')
 

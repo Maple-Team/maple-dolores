@@ -1,6 +1,7 @@
 const { translate } = require('bing-translate-api')
 const { writeFile, readdirSync } = require('node:fs')
 const path = require('path')
+// npm i @azure-rest/ai-translation-text
 
 /**
  * 翻译
