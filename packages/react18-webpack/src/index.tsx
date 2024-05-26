@@ -130,6 +130,7 @@ const RootComponent = ({ basename }: { basename: string }) => {
             children: [
               {
                 index: true,
+                // NOTE 懒加载-> 拆包
                 lazy: () => import('./pages/ReactDemo'),
               },
               {
