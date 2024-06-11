@@ -7,18 +7,14 @@ export const Post = forwardRef((props, ref: ForwardedRef<{ scrollAndFocusAddComm
   const CommentListRef = useRef<ElementRef<typeof CommentList>>(null)
   const AddCommentRef = useRef<ElementRef<typeof AddComment>>(null)
 
-  useImperativeHandle(
-    ref,
-    () => {
-      return {
-        scrollAndFocusAddComment() {
-          CommentListRef.current?.scrollToBottom()
-          AddCommentRef.current?.focus()
-        },
-      }
-    },
-    []
-  )
+  useImperativeHandle(ref, () => {
+    return {
+      scrollAndFocusAddComment() {
+        CommentListRef.current?.scrollToBottom()
+        AddCommentRef.current?.focus()
+      },
+    }
+  }, [])
   return (
     <>
       <article>

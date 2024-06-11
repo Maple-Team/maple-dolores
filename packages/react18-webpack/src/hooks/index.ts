@@ -1,6 +1,6 @@
 import type { RemoteControlResult, SendCommandParams, VehicleResult } from '@liutsing/types-utils'
 import { useQuery } from '@tanstack/react-query'
-import { axios } from '@/http'
+import { instance } from '@/http'
 import { remoteCommandTypeEnum, vehicleDeviceSwitchStateEnum } from '@/enums/remote-control'
 
 const Api = {
@@ -15,7 +15,7 @@ const Api = {
  * @returns
  */
 export const sendRemoteCommand = (data: SendCommandParams) => {
-  return axios.post<BaseResponse<string>, string, SendCommandParams>(Api.sendControlCommand, data)
+  return instance.post<BaseResponse<string>, string, SendCommandParams>(Api.sendControlCommand, data)
 }
 
 export const closeShoutBeaconRequest = (vin?: string) => {
@@ -40,7 +40,7 @@ export const closeShoutBeaconRequest = (vin?: string) => {
 export const useLatestVehicleResultQuery = (vin?: string) =>
   useQuery(
     ['getLatestTrackingQueryKey', vin],
-    (): Promise<VehicleResult> => axios.get(Api.getLatestTracking, { params: { vin } }),
+    (): Promise<VehicleResult> => instance.get(Api.getLatestTracking, { params: { vin } }),
     {
       enabled: !!vin,
     }
@@ -55,7 +55,7 @@ export const useLatestVehicleResultQuery = (vin?: string) =>
 export const useFetchCommandResult = (timeout: number, commandId?: string | null) => {
   return useQuery(
     ['fetchRemoteCommandResultKey', commandId],
-    () => axios.get<AnyToFix, RemoteControlResult>(Api.fetchControlResult, { params: { commandId } }),
+    () => instance.get<AnyToFix, RemoteControlResult>(Api.fetchControlResult, { params: { commandId } }),
     {
       enabled: !!commandId && timeout === 0,
       staleTime: Infinity,
