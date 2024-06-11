@@ -9,6 +9,7 @@ import { Button, Result, Skeleton, Spin } from 'antd'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { reactBridge } from '@garfish/bridge-react-v18'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import ErrorPage from './error-page'
 import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
@@ -19,9 +20,14 @@ import Login from './pages/Login'
 import { Notifications } from './Components/Notifications/Notifications'
 import Dashboard from './pages/Dashboard'
 import { NestedComponent } from './pages/ReactDemo/NestedComponent'
+import Graphql from './pages/Graphql'
 
 const queryClient = new QueryClient()
-
+const apolloClient = new ApolloClient({
+  // from env
+  uri: 'http://localhost:4003/graphql',
+  cache: new InMemoryCache(),
+})
 // TODO 动态路由 跟随用户的已分配权限
 // FIXME for test
 const ReactAmap = lazy(() => import('./pages/amap'))
@@ -149,6 +155,13 @@ const RootComponent = ({ basename }: { basename: string }) => {
             path: '/react-panel',
             element: <ReactPanel />,
           },
+
+          {
+            id: 'graphql-demo',
+            path: '/graphql',
+            // loader: () => menuLoader('/graphql'),
+            element: <Graphql />,
+          },
           {
             path: '/403',
             id: '403',
@@ -202,26 +215,28 @@ const RootComponent = ({ basename }: { basename: string }) => {
 
   return (
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <Notifications />
-        <RouterProvider
-          router={router}
-          fallbackElement={<Skeleton />}
-        />
-        <ReactQueryDevtools initialIsOpen />
-      </QueryClientProvider>
+      <ApolloProvider client={apolloClient}>
+        <QueryClientProvider client={queryClient}>
+          <Notifications />
+          <RouterProvider
+            router={router}
+            fallbackElement={<Skeleton />}
+          />
+          <ReactQueryDevtools initialIsOpen />
+        </QueryClientProvider>
+      </ApolloProvider>
     </StrictMode>
   )
 }
 
 export const provider = reactBridge({
-  el: '#app',
+  el: '#root',
   rootComponent: RootComponent,
   errorBoundary: () => <ErrorPage />,
 })
 
 if (!window.__GARFISH__) {
-  const container = document.getElementById('app')
+  const container = document.getElementById('root')
   const root = createRoot(container!)
   root.render(<RootComponent basename="/" />)
 }

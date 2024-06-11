@@ -84,6 +84,13 @@ export default () => {
             navigate('/react-panel')
           },
         },
+        {
+          label: 'Graphql Demo',
+          key: '/graphql',
+          onClick() {
+            navigate('/graphql')
+          },
+        },
       ].filter((item) => menus?.includes(item.key)),
     [navigate, menus]
   )
