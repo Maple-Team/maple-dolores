@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { reactBridge } from '@garfish/bridge-react-v18'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { StyleProvider } from '@ant-design/cssinjs'
 import ErrorPage from './error-page'
 import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
@@ -217,11 +218,13 @@ const RootComponent = ({ basename }: { basename: string }) => {
     <StrictMode>
       <ApolloProvider client={apolloClient}>
         <QueryClientProvider client={queryClient}>
-          <Notifications />
-          <RouterProvider
-            router={router}
-            fallbackElement={<Skeleton />}
-          />
+          <StyleProvider hashPriority="high">
+            <Notifications />
+            <RouterProvider
+              router={router}
+              fallbackElement={<Skeleton />}
+            />
+          </StyleProvider>
           <ReactQueryDevtools initialIsOpen />
         </QueryClientProvider>
       </ApolloProvider>
