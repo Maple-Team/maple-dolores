@@ -91,6 +91,13 @@ export default () => {
             navigate('/graphql')
           },
         },
+        {
+          label: 'Socket.io Chat',
+          key: '/socket-io-chat',
+          onClick() {
+            navigate('/socket-io-chat')
+          },
+        },
       ].filter((item) => menus?.includes(item.key)),
     [navigate, menus]
   )

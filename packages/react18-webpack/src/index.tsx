@@ -22,6 +22,7 @@ import { Notifications } from './Components/Notifications/Notifications'
 import Dashboard from './pages/Dashboard'
 import { NestedComponent } from './pages/ReactDemo/NestedComponent'
 import Graphql from './pages/Graphql'
+import SocketIoChat from './pages/socket.io-chat'
 
 const queryClient = new QueryClient()
 const apolloClient = new ApolloClient({
@@ -156,7 +157,6 @@ const RootComponent = ({ basename }: { basename: string }) => {
             path: '/react-panel',
             element: <ReactPanel />,
           },
-
           {
             id: 'graphql-demo',
             path: '/graphql',
@@ -164,19 +164,24 @@ const RootComponent = ({ basename }: { basename: string }) => {
             element: <Graphql />,
           },
           {
+            id: 'socket.io-chat',
+            path: '/socket-io-chat',
+            element: <SocketIoChat />,
+          },
+          {
             path: '/403',
             id: '403',
             element: (
               <Result
                 status={403}
-                //   title="403 无权限"
-                //   subTitle="您无权限访问该路由地址"
+                title="403 无权限"
+                subTitle="您无权限访问该路由地址"
                 extra={
                   <Button
                     type="primary"
                     onClick={onBackHome}
                   >
-                    {/* 返回 */}
+                    返回
                   </Button>
                 }
               />

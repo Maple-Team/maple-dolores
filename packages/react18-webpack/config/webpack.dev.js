@@ -8,8 +8,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 const appName = 'react18-webpack'
 
 const config = merge(dev, {
-  //   devtool: 'cheap-module-source-map',
-  devtool: false,
+  devtool: 'cheap-module-source-map',
   entry: path.resolve(__dirname, '../src/index.tsx'),
   experiments: {
     lazyCompilation: false,
@@ -77,6 +76,7 @@ const config = merge(dev, {
   },
   devServer: {
     ...dev.devServer,
+    historyApiFallback: true,
     port: getPort(appName),
   },
   resolve: {

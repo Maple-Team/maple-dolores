@@ -23,3 +23,12 @@ declare interface Match<T, U> {
   data: T // loader element?
   handle: U
 }
+
+interface Message {
+  id: string
+  room: string
+  message: string
+  username: string
+  messageType: 'CLIENT' | 'SERVER'
+  createdAt: Date
+}

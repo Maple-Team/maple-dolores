@@ -17,7 +17,7 @@ const Progress = ({ value }: { value: number }) => {
   return (
     <div className="flex">
       <div className="mr-1">{data.reverse()}</div>
-      <span>{value}%</span>
+      <span>{100 - value}%</span>
     </div>
   )
 }
@@ -26,6 +26,7 @@ export default () => {
   const next = dayjs(dayjs().add(1, 'year').format('YYYY'))
 
   const rest = next.diff(current, 'days')
+  console.log(rest)
   const progress = Math.floor((rest / 365) * 100)
   console.count('Dashboard')
   //   const matches = useMatches()
