@@ -9,7 +9,6 @@ export const useSocket = (room: string, username: string) => {
 
   const sendData = useCallback(
     (payload: { message: string }) => {
-      debugger
       socket?.emit('chat-message', {
         room,
         message: payload.message,
@@ -21,7 +20,8 @@ export const useSocket = (room: string, username: string) => {
   )
 
   useEffect(() => {
-    const socketBaseUrl = process.env.API_URL || 'http://localhost:4003'
+    // 指明socket.io的命名空间
+    const socketBaseUrl = process.env.API_URL || 'http://localhost:4003/default'
     console.log('[ socketBaseUrl ] >', socketBaseUrl, new Date().toLocaleTimeString())
     if (!socketBaseUrl) return
     const s = io(socketBaseUrl, {
