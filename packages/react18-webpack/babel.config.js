@@ -1,4 +1,5 @@
 module.exports = {
+  sourceType: 'unambiguous',
   presets: [
     process.env.NODE_ENV === 'development'
       ? '@babel/preset-env'
@@ -7,18 +8,19 @@ module.exports = {
           {
             useBuiltIns: 'usage',
             corejs: '3.26.1',
-            exclude: [],
-            targets: {},
+            modules: false,
           },
         ],
-    [
-      '@babel/preset-react',
-      {
-        runtime: 'automatic',
-        development: process.env.NODE_ENV === 'development',
-        importSource: '@welldone-software/why-did-you-render',
-      },
-    ],
+    process.env.NODE_ENV === 'development'
+      ? [
+          '@babel/preset-react',
+          {
+            runtime: 'automatic',
+            development: process.env.NODE_ENV === 'development',
+            importSource: '@welldone-software/why-did-you-render',
+          },
+        ]
+      : '@babel/preset-react',
     require('./presets/index'),
     '@babel/preset-typescript',
   ],

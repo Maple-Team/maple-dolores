@@ -1,18 +1,16 @@
 const path = require('path')
-const { dev, getHtmWebpackPlugin } = require('@liutsing/webpack-config')
+const { dev } = require('@liutsing/webpack-config')
 const { merge } = require('webpack-merge')
 const { getPublicPath, getPort } = require('../../../build/util')
 const webpack = require('webpack')
+const base = require('./webpack.base')
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const appName = 'react18-webpack'
 
-const config = merge(dev, {
-  devtool: 'cheap-module-source-map',
+const config = merge(base, dev, {
   entry: path.resolve(__dirname, '../src/index.tsx'),
-  experiments: {
-    lazyCompilation: false,
-  },
+  devtool: 'cheap-module-source-map',
   module: {
     rules: [
       {
@@ -33,34 +31,33 @@ const config = merge(dev, {
     ],
   },
   plugins: [
-    getHtmWebpackPlugin(false),
     new webpack.BannerPlugin({
       banner: 'react18',
     }),
   ],
   optimization: {
     runtimeChunk: 'single',
-    splitChunks: {
-      chunks: 'all',
-      minSize: 20000,
-      minRemainingSize: 0,
-      minChunks: 1,
-      maxAsyncRequests: 30,
-      maxInitialRequests: 30,
-      enforceSizeThreshold: 50000,
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10,
-          reuseExistingChunk: true,
-        },
-        default: {
-          priority: 20,
-          minChunks: 6,
-          reuseExistingChunk: true,
-        },
-      },
-    },
+    // splitChunks: {
+    //   chunks: 'all',
+    //   minSize: 20000,
+    //   minRemainingSize: 0,
+    //   minChunks: 1,
+    //   maxAsyncRequests: 30,
+    //   maxInitialRequests: 30,
+    //   enforceSizeThreshold: 50000,
+    //   cacheGroups: {
+    //     vendors: {
+    //       test: /[\\/]node_modules[\\/]/,
+    //       priority: -10,
+    //       reuseExistingChunk: true,
+    //     },
+    //     default: {
+    //       priority: 20,
+    //       minChunks: 6,
+    //       reuseExistingChunk: true,
+    //     },
+    //   },
+    // },
   },
   output: {
     // 开发环境设置 true 将会导致热更新失效
@@ -78,10 +75,6 @@ const config = merge(dev, {
     ...dev.devServer,
     historyApiFallback: true,
     port: getPort(appName),
-  },
-  resolve: {
-    ...dev.resolve,
-    fallback: { 'process/browser': require.resolve('process/browser') },
   },
 })
 
