@@ -38,6 +38,7 @@ const translates = (key) => {
 
 // eslint-disable-next-line import/newline-after-import
 ;(async () => {
+    return
   const cnTranslationFiles = readdirSync(path.resolve(__dirname, '../src/i18n/zh_CN')).filter((file) =>
     file.endsWith('json')
   )

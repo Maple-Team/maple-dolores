@@ -2,13 +2,18 @@ import { Select, message } from 'antd'
 import React, { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { uniqueId } from 'lodash-es'
 import type { LanguageKey } from '../../i18n/type'
+import leftImg from './image.png'
 import { instance, useLoginMutation } from '@/http'
 import { LanguageNameMap } from '@/i18n/constant'
 
 function Login() {
   const { mutate } = useLoginMutation()
   const navigate = useNavigate()
+  const id = uniqueId()
+  console.log(id)
+
   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
   const { t, i18n } = useTranslation()
   const onSubmit = useCallback(
@@ -52,14 +57,14 @@ function Login() {
     <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
       <div className="md:w-1/3 max-w-sm">
         <img
-          src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          src={leftImg}
           alt="Sample image"
         />
       </div>
       <div className="md:w-1/3 max-w-sm">
-        <div>
+        <div className="text-right">
           <Select
-            className="w-[120px]"
+            className="w-[120px] !mb-10"
             value={language}
             onChange={onLanguageChange}
           >
