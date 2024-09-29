@@ -29,19 +29,19 @@ install-job:
     stage: install
     tags:
         - nodejs
-    image: mapleimage123/node:20-alpine3.19
+    image: node:20-alpine3.19
     script:
         - time pnpm install
 # test-job:
 #     stage: test
-#     image: mapleimage123/node:20-alpine3.19
+#     image: node:20-alpine3.19
 #     script:
 #         - npm install
 #         - npm test
 
 build-job:
     stage: build
-    image: mapleimage123/node:20-alpine3.19
+    image: node:20-alpine3.19
     tags:
         - nodejs
     script:
