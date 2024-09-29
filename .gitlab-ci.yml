@@ -24,7 +24,7 @@ install-job:
         - nodejs
     image: mapleimage123/node:20-alpine3.19
     script:
-        - pnpm install
+        - time pnpm install
 # test-job:
 #     stage: test
 #     image: mapleimage123/node:20-alpine3.19
@@ -39,7 +39,8 @@ build-job:
         - nodejs
     script:
         - cd packages/react18-webpack
-        - npm run build
+        - time pnpm install
+        - time pnpm run build
     artifacts:
         paths:
             - packages/react18-webpack/dist
