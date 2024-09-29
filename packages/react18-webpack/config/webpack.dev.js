@@ -18,6 +18,12 @@ const config = merge(base, dev, {
         exclude: /node_modules/,
         use: [
           {
+            loader: 'thread-loader',
+            options: {
+              workers: require('os').cpus().length,
+            },
+          },
+          {
             loader: 'babel-loader',
             options: {
               // working?

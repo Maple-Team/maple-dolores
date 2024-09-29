@@ -26,14 +26,15 @@ const config = {
       },
       {
         test: /\.(png|jpg|gif)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            },
-          },
-        ],
+        type: 'asset/resource',
+        // use: [
+        //   {
+        //     loader: 'url-loader',
+        //     options: {
+        //       limit: 8192,
+        //     },
+        //   },
+        // ],
       },
     ],
   },
