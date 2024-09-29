@@ -19,7 +19,7 @@ cache:
     policy: pull-push
 
 install-job:
-    stage: test
+    stage: install
     image: mapleimage123/node:20-alpine3.19
     script:
         - pnpm install
