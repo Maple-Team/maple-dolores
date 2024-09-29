@@ -1,4 +1,2 @@
 *.log
-.env.local
-*.css.d.ts
-*.less.d.ts
+.env.local 
