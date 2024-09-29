@@ -20,6 +20,8 @@ cache:
 
 install-job:
     stage: install
+    tags:
+        - nodejs
     image: mapleimage123/node:20-alpine3.19
     script:
         - pnpm install
@@ -33,9 +35,14 @@ install-job:
 build-job:
     stage: build
     image: mapleimage123/node:20-alpine3.19
+    tags:
+        - nodejs
     script:
-        - cd packages/react-webpack
+        - cd packages/react18-webpack
         - npm run build
+    artifacts:
+        paths:
+            - packages/react18-webpack/dist
 # build-docker-image-job:
 #     stage: image
 #     image: docker:19.03.12
