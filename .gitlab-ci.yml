@@ -9,13 +9,20 @@ variables:
     IMAGE_NAME: development
     IMAGE_TAG: latest
 
+before_script:
+    - corepack enable
+    - corepack prepare --activate
+    - pnpm config set store-dir .pnpm-store
+    # - pnpm config set @scope:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
+    # - pnpm config set -- //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
+
 cache:
     key:
         files:
             - pnpm-lock.yaml
             - package.json
     paths:
-        - node_modules/
+        - .pnpm-store
     policy: pull-push
 
 install-job:
