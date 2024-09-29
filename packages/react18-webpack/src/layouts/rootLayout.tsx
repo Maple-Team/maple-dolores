@@ -7,7 +7,7 @@ import { Button, ConfigProvider, Menu, Result, Select, Skeleton, message } from 
 import { ErrorBoundary } from 'react-error-boundary'
 import type { ItemType, MenuItemType } from 'antd/es/menu/hooks/useItems'
 import { StyleProvider } from '@ant-design/cssinjs'
-import { Breadcrumbs } from '@/Components/breadcrumbs'
+import { Breadcrumbs } from '@/Components'
 import { emitter } from '@/events'
 import { useUserMenus } from '@/http'
 import { LanguageNameMap } from '@/i18n/constant'
@@ -77,13 +77,13 @@ export default () => {
             navigate('/react-demo')
           },
         },
-        {
-          label: 'React Panel',
-          key: '/react-panel',
-          onClick() {
-            navigate('/react-panel')
-          },
-        },
+        // {
+        //   label: 'React Panel',
+        //   key: '/react-panel',
+        //   onClick() {
+        //     navigate('/react-panel')
+        //   },
+        // },
         {
           label: 'Graphql Demo',
           key: '/graphql',

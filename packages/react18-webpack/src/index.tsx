@@ -12,7 +12,7 @@ import { reactBridge } from '@garfish/bridge-react-v18'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import { StyleProvider } from '@ant-design/cssinjs'
 import ErrorPage from './error-page'
-import ReactPanel from './pages/panel'
+// import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
 import { fetchUserInfo, fetchUserMenus, userInfoQueryKey, userMenusQueryKey } from './http'
 import './i18n'
@@ -151,12 +151,12 @@ const RootComponent = ({ basename }: { basename: string }) => {
               },
             ],
           },
-          {
-            id: 'react-panel',
-            loader: () => menuLoader('/react-panel'),
-            path: '/react-panel',
-            element: <ReactPanel />,
-          },
+          //   {
+          //     id: 'react-panel',
+          //     loader: () => menuLoader('/react-panel'),
+          //     path: '/react-panel',
+          //     element: <ReactPanel />,
+          //   },
           {
             id: 'graphql-demo',
             path: '/graphql',
