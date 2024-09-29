@@ -2,31 +2,38 @@ stages:
     - install
     # - test
     - build
-    # - image
+    - image
     # - deploy
 
 variables:
     IMAGE_NAME: development
     IMAGE_TAG: latest
 
-before_script:
-    - corepack enable
-    - corepack prepare --activate
-    - pnpm config set store-dir .pnpm-store
+# 配置复用
+.webpack-stage:
+    before_script:
+        - corepack enable
+        - corepack prepare --activate
+        - pnpm config set store-dir .pnpm-store
     # - pnpm config set @scope:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
     # - pnpm config set -- //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
-
-cache:
-    key:
-        files:
-            - pnpm-lock.yaml
-            - package.json
-    paths:
-        - .pnpm-store
-    policy: pull-push
+    cache:
+        key:
+            files:
+                - pnpm-lock.yaml
+        paths:
+            - .pnpm-store
+        policy: pull-push
 
 install-job:
+    extends: .webpack-stage
     stage: install
+    before_script:
+        - corepack enable
+        - corepack prepare --activate
+        - pnpm config set store-dir .pnpm-store
+    # - pnpm config set @scope:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
+    # - pnpm config set -- //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
     tags:
         - nodejs
     image: node:20-alpine3.19
@@ -41,6 +48,7 @@ install-job:
 
 build-job:
     stage: build
+    extends: .webpack-stage
     image: node:20-alpine3.19
     tags:
         - nodejs
@@ -48,25 +56,28 @@ build-job:
         - cd packages/react18-webpack
         - time pnpm install
         - time pnpm run build
+        - mv dist ../../
     artifacts:
         paths:
-            - packages/react18-webpack/dist
-# build-docker-image-job:
-#     stage: image
-#     image: docker:19.03.12
-#     services:
-#         - docker:19.03.12-dind
-#     script:
-#         - docker info
-#         - |
-#             if [ "$CI_COMMIT_BRANCH" == "main" ]; then
-#             export IMAGE_NAME=production
-#             elif [ "$CI_COMMIT_BRANCH" == "development" ]; then
-#             export IMAGE_NAME=staging
-#             else
-#             echo "Skipping Docker image build for branch $CI_COMMIT_BRANCH"
-#             exit 0
-#             fi
-#         - docker build -t $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA .
-#         - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-#         - docker push $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+            - dist
+
+build-docker-image-job:
+    dependencies:
+        - build-job
+    stage: image
+    image: docker:27.3-dind
+    services:
+        - docker:27.3-dind
+    script:
+        - ls -al
+        - docker info
+        - |
+            if [ "$CI_COMMIT_BRANCH" == "main" ]; then
+            export IMAGE_NAME=production
+            else
+            export IMAGE_NAME=staging
+            fi
+        - version=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
+        - docker build -t $USER_DOCKER_NS/$CI_PROJECT_PATH_SLUG-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA .
+        - docker login -u $USER_DOCKER_REGISTRY_USER -p $USER_DOCKER_REGISTRY_PASSWORD $USER_DOCKER_REGISTRY
+        - docker push $USER_DOCKER_NS/$CI_PROJECT_PATH_SLUG-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA
