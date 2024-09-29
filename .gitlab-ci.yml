@@ -1,52 +1,31 @@
+include:
+    - .gitlab-ci.common.yml
+
 stages:
     - install
     # - test
+    # - lint
     - build
     - image
     # - deploy
 
-variables:
-    IMAGE_NAME: development
-    IMAGE_TAG: latest
-
-# 配置复用
-.webpack-stage:
-    before_script:
-        - corepack enable
-        - corepack prepare --activate
-        - pnpm config set store-dir .pnpm-store
-    # - pnpm config set @scope:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
-    # - pnpm config set -- //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
-    cache:
-        key:
-            files:
-                - pnpm-lock.yaml
-        paths:
-            - .pnpm-store
-        policy: pull-push
-
 install-job:
     extends: .webpack-stage
     stage: install
-    before_script:
-        - corepack enable
-        - corepack prepare --activate
-        - pnpm config set store-dir .pnpm-store
-    # - pnpm config set @scope:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
-    # - pnpm config set -- //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
     tags:
         - nodejs
     image: node:20-alpine3.19
     script:
         - time pnpm install
-# test-job:
-#     stage: test
-#     image: node:20-alpine3.19
-#     script:
-#         - npm install
-#         - npm test
+    rules:
+        - changes:
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - packages/**/*
 
-build-job:
+# sub package 构建部署处理
+build-react18-webpack-job:
     stage: build
     extends: .webpack-stage
     image: node:20-alpine3.19
@@ -60,24 +39,16 @@ build-job:
     artifacts:
         paths:
             - dist
+    rules:
+        - changes:
+              - packages/react18-webpack/**/*
 
-build-docker-image-job:
+build-react18-webpack-image-job:
     dependencies:
-        - build-job
-    stage: image
-    image: docker:27.3-dind
-    services:
-        - docker:27.3-dind
-    script:
-        - ls -al
-        - docker info
-        - |
-            if [ "$CI_COMMIT_BRANCH" == "main" ]; then
-            export IMAGE_NAME=production
-            else
-            export IMAGE_NAME=staging
-            fi
-        - version=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
-        - docker build -t $USER_DOCKER_NS/$CI_PROJECT_PATH_SLUG-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA .
-        - docker login -u $USER_DOCKER_REGISTRY_USER -p $USER_DOCKER_REGISTRY_PASSWORD $USER_DOCKER_REGISTRY
-        - docker push $USER_DOCKER_NS/$CI_PROJECT_PATH_SLUG-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA
+        - build-react18-webpack-job
+    variables:
+        SUB_PACKAGE: react18-webpack
+    extends: .docker-build-stage
+    rules:
+        - changes:
+              - packages/react18-webpack/**/*
