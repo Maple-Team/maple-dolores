@@ -1,5 +1,4 @@
-include:
-    - .gitlab-ci.common.yml
+include: ".common.gitlab-ci.yml"
 
 stages:
     - install
@@ -8,6 +7,7 @@ stages:
     - build
     - image
     # - deploy
+    - notify
 
 install-job:
     extends: .webpack-stage
@@ -36,9 +36,13 @@ build-react18-webpack-job:
         - time pnpm install
         - time pnpm run build
         - mv dist ../../
+        # 输出版本号给下一步骤使用
+        - APP_VERSION=$(node -p -e "require('./package.json').version")
+        - echo "$APP_VERSION" > ../../version.txt
     artifacts:
         paths:
             - dist
+            - version.txt
     rules:
         - changes:
               - packages/react18-webpack/**/*
@@ -52,3 +56,30 @@ build-react18-webpack-image-job:
     rules:
         - changes:
               - packages/react18-webpack/**/*
+
+notify-success:
+    stage: notify
+    needs:
+        - job: build-react18-webpack-image-job
+          optional: false
+        # 多个job
+    rules:
+        - when: on_success
+    script:
+        - >
+            curl -X POST -H "Content-Type: application/json"
+            -d '{"msg_type":"text","content":{"text":"Web APP 构建成功"}}'
+            https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
+
+notify-failure:
+    stage: notify
+    needs:
+        - job: build-react18-webpack-image-job
+          optional: false
+    rules:
+        - when: on_failure
+    script:
+        - >
+            curl -X POST -H "Content-Type: application/json"
+            -d '{"msg_type":"text","content":{"text":"Web APP 构建失败"}}'
+            https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce

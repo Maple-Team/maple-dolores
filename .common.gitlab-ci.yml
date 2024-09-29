@@ -2,6 +2,7 @@
 .webpack-stage:
     before_script:
         - corepack enable
+        # corepack prepare pnpm@latest-9 --activate
         - corepack prepare --activate
         - pnpm config set store-dir .pnpm-store
     # 私有仓库配置
@@ -35,13 +36,8 @@
             else
             export IMAGE_NAME=staging
             fi
-        # tag标记2：子应用的版本号
-        - cd packages/$SUB_PACKAGE
-        - ls -al
-        - sleep 10
-        - version=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
+        - version=$(cat version.txt)
         - echo $version
-        - cd ../../
         # 构建镜像
         - docker build -t $USER_DOCKER_NS/$CI_PROJECT_PATH_SLUG-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA .
         # docker login
