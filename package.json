@@ -2,6 +2,7 @@
   "name": "@maple/colorful",
   "version": "0.0.1",
   "private": true,
+  "packageManager": "pnpm@9.9.0",
   "scripts": {
     "bootstrap": "pnpm i",
     "deploy": "nx run-many --target=deploy --all",
