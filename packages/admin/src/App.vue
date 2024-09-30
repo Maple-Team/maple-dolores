@@ -29,7 +29,7 @@ const links = ref<string[]>(_links)
     </a-menu>
   </aside>
   <main class="main">
-    <RouterView class="content" />
+    <RouterView class="content overflow-auto" />
     <footer>powered by Vue + Typescript + Vite + Antd</footer>
   </main>
 </template>
