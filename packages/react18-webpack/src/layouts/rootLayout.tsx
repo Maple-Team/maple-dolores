@@ -107,7 +107,7 @@ export default () => {
     emitter.on('SHOW_MESSAGE', ({ message: msg, type, key }) => {
       message[type]({ content: msg, key })
     })
-    emitter.on('REDIEECT_LOGIN', (redirect?: string) => {
+    emitter.on('REDIRECT_LOGIN', (redirect?: string) => {
       if (!redirect || redirect === '/login') {
         navigate('/login', { replace: true })
         return

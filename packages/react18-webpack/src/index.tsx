@@ -15,7 +15,7 @@ import ErrorPage from './error-page'
 // import ReactPanel from './pages/panel'
 import { ReactQueryWrapper } from './pages/ReactQueryWrapper'
 import { fetchUserInfo, fetchUserMenus, userInfoQueryKey, userMenusQueryKey } from './http'
-import './i18n'
+import i18n2 from './i18n'
 import RootLayout from './layouts/rootLayout'
 import Login from './pages/Login'
 import { Notifications } from './Components/Notifications/Notifications'
@@ -23,6 +23,9 @@ import Dashboard from './pages/Dashboard'
 import { NestedComponent } from './pages/ReactDemo/NestedComponent'
 import Graphql from './pages/Graphql'
 import SocketIoChat from './pages/socket.io-chat'
+
+// FIXME tree-shaking
+console.log(i18n2)
 
 const queryClient = new QueryClient()
 const apolloClient = new ApolloClient({

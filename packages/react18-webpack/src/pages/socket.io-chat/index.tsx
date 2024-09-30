@@ -20,7 +20,7 @@ export default function SocketIoChat() {
         <Login
           setRoom={setRoom}
           setUsername={setUserName}
-          setIsLoggedin={setIsLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
         />
       )}
     </ThemeProvider>

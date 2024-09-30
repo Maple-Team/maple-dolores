@@ -48,5 +48,6 @@ const i18n = i18next
     //   // 触发请求
     // },
   })
+console.log('i18n', i18n)
 
 export default i18n

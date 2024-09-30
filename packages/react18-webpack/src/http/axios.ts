@@ -87,7 +87,7 @@ instance.interceptors.response.use(
         const redirect = location.pathname
         setRefreshToken('')
         setAccessToken('')
-        emitter.emit('REDIEECT_LOGIN', redirect)
+        emitter.emit('REDIRECT_LOGIN', redirect)
         return
       }
     }
