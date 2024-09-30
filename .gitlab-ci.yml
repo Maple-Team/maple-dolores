@@ -6,15 +6,15 @@ stages:
     # - lint
     - build
     - image
-    # - deploy
+    - deploy
     - notify
 
 install-job:
-    extends: .webpack-stage
+    extends: .pnpm-config
     stage: install
     tags:
         - nodejs
-    image: node:20-alpine3.19
+    image: mapleimage123/node:20-alpine3.19
     script:
         - time pnpm install
     rules:
@@ -23,12 +23,19 @@ install-job:
               - pnpm-lock.yaml
               - pnpm-workspace.yaml
               - packages/**/*
+    cache:
+        key:
+            files:
+                - pnpm-lock.yaml
+        paths:
+            - .pnpm-store
+        policy: pull-push
 
 # sub package 构建部署处理
 build-react18-webpack-job:
     stage: build
-    extends: .webpack-stage
-    image: node:20-alpine3.19
+    extends: .pnpm-config
+    image: mapleimage123/node:20-alpine3.19
     tags:
         - nodejs
     script:
@@ -46,6 +53,13 @@ build-react18-webpack-job:
     rules:
         - changes:
               - packages/react18-webpack/**/*
+    cache:
+        key:
+            files:
+                - pnpm-lock.yaml
+        paths:
+            - .pnpm-store
+        policy: pull
 
 build-react18-webpack-image-job:
     dependencies:
@@ -57,10 +71,28 @@ build-react18-webpack-image-job:
         - changes:
               - packages/react18-webpack/**/*
 
+deploy-react18-webpack-job:
+    stage: deploy
+    tags:
+        - docker
+    image: docker:27.3-dind
+    variables:
+        port: 7080
+        container_name: react18-webpack
+    needs:
+        - job: build-react18-webpack-image-job
+          optional: false
+    script:
+        - image=$(cat image.txt)
+        - echo $image
+        - docker stop $container_name || true
+        - docker rm $container_name || true
+        - docker run --name $container_name --network maple-network -d -p $port:80 $image
+
 notify-success:
     stage: notify
     needs:
-        - job: build-react18-webpack-image-job
+        - job: deploy-react18-webpack-job
           optional: false
         # 多个job
     rules:
@@ -68,18 +100,18 @@ notify-success:
     script:
         - >
             curl -X POST -H "Content-Type: application/json"
-            -d '{"msg_type":"text","content":{"text":"Web APP 构建成功"}}'
+            -d '{"msg_type":"text","content":{"text":"Web APP 部署成功"}}'
             https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
 
 notify-failure:
     stage: notify
     needs:
-        - job: build-react18-webpack-image-job
+        - job: deploy-react18-webpack-job
           optional: false
     rules:
         - when: on_failure
     script:
         - >
             curl -X POST -H "Content-Type: application/json"
-            -d '{"msg_type":"text","content":{"text":"Web APP 构建失败"}}'
+            -d '{"msg_type":"text","content":{"text":"Web APP 部署失败"}}'
             https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
