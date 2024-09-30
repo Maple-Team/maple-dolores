@@ -6,7 +6,7 @@ stages:
     # - lint
     - build
     - image
-    # - deploy
+    - deploy
     - notify
 
 install-job:
@@ -57,10 +57,27 @@ build-react18-webpack-image-job:
         - changes:
               - packages/react18-webpack/**/*
 
+deploy-react18-webpack-job:
+    stage: deploy
+    tags:
+        - docker
+    variables:
+        port: 7080
+        container_name: react18-webpack
+    needs:
+        - job: build-react18-webpack-image-job
+          optional: false
+    script:
+        - image=$(cat image.txt)
+        - echo $image
+        - docker stop $container_name || true
+        - docker --rm $container_name || true
+        - docker run --name $container_name -d -p $port:80 $image
+
 notify-success:
     stage: notify
     needs:
-        - job: build-react18-webpack-image-job
+        - job: deploy-react18-webpack-job
           optional: false
         # 多个job
     rules:
@@ -68,18 +85,18 @@ notify-success:
     script:
         - >
             curl -X POST -H "Content-Type: application/json"
-            -d '{"msg_type":"text","content":{"text":"Web APP 构建成功"}}'
+            -d '{"msg_type":"text","content":{"text":"Web APP 部署成功"}}'
             https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
 
 notify-failure:
     stage: notify
     needs:
-        - job: build-react18-webpack-image-job
+        - job: deploy-react18-webpack-job
           optional: false
     rules:
         - when: on_failure
     script:
         - >
             curl -X POST -H "Content-Type: application/json"
-            -d '{"msg_type":"text","content":{"text":"Web APP 构建失败"}}'
+            -d '{"msg_type":"text","content":{"text":"Web APP 部署失败"}}'
             https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce

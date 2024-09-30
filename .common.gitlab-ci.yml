@@ -18,6 +18,8 @@
 
 # 公用的构建镜像配置
 .docker-build-stage:
+    tags:
+        - docker
     stage: image
     image: docker:27.3-dind
     services:
@@ -39,8 +41,13 @@
         - version=$(cat version.txt)
         - echo $version
         # 构建镜像
-        - docker build -t $USER_DOCKER_NS/$CI_PROJECT_PATH_SLUG-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA .
+        - docker build -t $USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA .
         # docker login
-        - docker login -u $USER_DOCKER_REGISTRY_USER -p $USER_DOCKER_REGISTRY_PASSWORD $USER_DOCKER_REGISTRY
+        # - docker login -u $USER_DOCKER_REGISTRY_USER -p $USER_DOCKER_REGISTRY_PASSWORD $USER_DOCKER_REGISTRY
         # 镜像推送
-        - docker push $USER_DOCKER_NS/$CI_PROJECT_PATH_SLUG-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA
+        # - docker push $USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA
+        - image_name=$USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA
+        - echo "$image_name" > image.txt
+    artifacts:
+        paths:
+            - image.txt
