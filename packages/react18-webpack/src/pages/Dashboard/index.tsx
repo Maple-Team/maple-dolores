@@ -6,17 +6,17 @@ import { useNotificationStore } from '@/stores/notifications'
 
 // "▓▓▓▓▓▓▓▓▓▓▓░░░░"
 
-const unpassed = '▓'
+const unPassed = '▓'
 const passed = '░'
 
 const Progress = ({ value }: { value: number }) => {
   const data: string[] = useMemo(
-    () => Array.from({ length: 50 }, (_, i) => (i < value / 2 ? passed : unpassed)),
+    () => Array.from({ length: 50 }, (_, i) => (i < value / 2 ? passed : unPassed)).reverse(),
     [value]
   )
   return (
     <div className="flex">
-      <div className="mr-1">{data.reverse()}</div>
+      <div className="mr-1">{data}</div>
       <span>{100 - value}%</span>
     </div>
   )

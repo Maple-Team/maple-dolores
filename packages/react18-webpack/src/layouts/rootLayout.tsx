@@ -135,9 +135,10 @@ export default () => {
     return keys
   }, [items, pathname])
 
-  const [language, setLanguage] = useState<LanguageKey>('zh_CN')
+  const [language, setLanguage] = useState<LanguageKey>((localStorage.getItem('language') as LanguageKey) || 'zh_CN')
   const onLanguageChange = useCallback((v: LanguageKey) => {
     setLanguage(v)
+    localStorage.setItem('language', v)
     // @ts-expect-error: 动态插件注入的
     i18n.changeLanguage(v)
   }, [])
