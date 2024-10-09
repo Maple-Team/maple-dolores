@@ -20,7 +20,7 @@ module.exports = merge(base, prod, {
   optimization: {
     usedExports: true,
     sideEffects: true,
-    minimize: false,
+    minimize: true,
     splitChunks: {
       chunks: 'all',
       minSize: 1000,

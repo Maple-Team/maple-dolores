@@ -10,11 +10,11 @@ stages:
     - notify
 
 install-job:
-    extends: .webpack-stage
+    extends: .pnpm-config
     stage: install
     tags:
         - nodejs
-    image: node:20-alpine3.19
+    image: mapleimage123/node:20-alpine3.19
     script:
         - time pnpm install
     rules:
@@ -23,12 +23,19 @@ install-job:
               - pnpm-lock.yaml
               - pnpm-workspace.yaml
               - packages/**/*
+    cache:
+        key:
+            files:
+                - pnpm-lock.yaml
+        paths:
+            - .pnpm-store
+        policy: pull-push
 
 # sub package 构建部署处理
 build-react18-webpack-job:
     stage: build
-    extends: .webpack-stage
-    image: node:20-alpine3.19
+    extends: .pnpm-config
+    image: mapleimage123/node:20-alpine3.19
     tags:
         - nodejs
     script:
@@ -46,6 +53,13 @@ build-react18-webpack-job:
     rules:
         - changes:
               - packages/react18-webpack/**/*
+    cache:
+        key:
+            files:
+                - pnpm-lock.yaml
+        paths:
+            - .pnpm-store
+        policy: pull
 
 build-react18-webpack-image-job:
     dependencies:
@@ -61,6 +75,7 @@ deploy-react18-webpack-job:
     stage: deploy
     tags:
         - docker
+    image: docker:27.3-dind
     variables:
         port: 7080
         container_name: react18-webpack
@@ -71,8 +86,8 @@ deploy-react18-webpack-job:
         - image=$(cat image.txt)
         - echo $image
         - docker stop $container_name || true
-        - docker --rm $container_name || true
-        - docker run --name $container_name -d -p $port:80 $image
+        - docker rm $container_name || true
+        - docker run --name $container_name --network maple-network -d -p $port:80 $image
 
 notify-success:
     stage: notify

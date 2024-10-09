@@ -44,9 +44,10 @@ function Login() {
     },
     [mutate, navigate]
   )
-  const [language, setLanguage] = useState<LanguageKey>('zh_CN')
+  const [language, setLanguage] = useState<LanguageKey>((localStorage.getItem('language') as LanguageKey) || 'zh_CN')
   const onLanguageChange = useCallback(
     (v: LanguageKey) => {
+      localStorage.setItem('language', v)
       setLanguage(v)
       i18n.changeLanguage(v)
     },
@@ -64,7 +65,7 @@ function Login() {
       <div className="md:w-1/3 max-w-sm">
         <div className="text-right">
           <Select
-            className="w-[120px] !mb-10"
+            className="w-[120px] !mb-10 text-left"
             value={language}
             onChange={onLanguageChange}
           >

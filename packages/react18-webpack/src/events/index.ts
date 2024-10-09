@@ -14,7 +14,7 @@ export type Events = {
   LOGOUT_SUCCESS?: string
   RESPONSE_ERROR: AxiosError
   REQUEST_ERROR: AxiosError
-  REDIEECT_LOGIN: string
+  REDIRECT_LOGIN: string
   REDIRECT_403: void
 }
 

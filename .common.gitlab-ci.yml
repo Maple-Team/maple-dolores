@@ -1,5 +1,5 @@
 # 配置复用
-.webpack-stage:
+.pnpm-config:
     before_script:
         - corepack enable
         # corepack prepare pnpm@latest-9 --activate
@@ -8,13 +8,6 @@
     # 私有仓库配置
     # - pnpm config set @scope:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
     # - pnpm config set -- //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
-    cache:
-        key:
-            files:
-                - pnpm-lock.yaml
-        paths:
-            - .pnpm-store
-        policy: pull-push
 
 # 公用的构建镜像配置
 .docker-build-stage:

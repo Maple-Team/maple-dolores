@@ -21,6 +21,7 @@ const i18n = i18next
   .init<HttpBackendOptions>({
     // load: 'languageOnly', //  NOTE 后端文件映射关系?
     // lng: 'en', // if you're using a language detector, do not define the lng option
+    lng: localStorage.getItem('language') || 'zh_CN',
     debug: true,
     resources: {
       en: {

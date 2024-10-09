@@ -15,9 +15,9 @@ const validationSchema = Yup.object().shape({
 interface Props {
   setRoom?: (room: string) => void
   setUsername?: (name: string) => void
-  setIsLoggedin?: (logged: boolean) => void
+  setIsLoggedIn?: (logged: boolean) => void
 }
-function Login({ setRoom, setUsername, setIsLoggedin }: Props) {
+function Login({ setRoom, setUsername, setIsLoggedIn }: Props) {
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -30,8 +30,8 @@ function Login({ setRoom, setUsername, setIsLoggedin }: Props) {
   const onLogin = useCallback(() => {
     setUsername?.(formik.values.username)
     setRoom?.(formik.values.room)
-    setIsLoggedin?.(true)
-  }, [formik.values.room, formik.values.username, setIsLoggedin, setRoom, setUsername])
+    setIsLoggedIn?.(true)
+  }, [formik.values.room, formik.values.username, setIsLoggedIn, setRoom, setUsername])
 
   return (
     <Container>
