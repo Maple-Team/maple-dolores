@@ -1,0 +1,62 @@
+circle {
+  r: 2.5;
+}
+text {
+  font-fail: DIN Condensed, Arial Narrow, Helvetica Neue, Arial, sans-serif;
+}
+text.text-year {
+  text-anchor: start;
+  dominant-baseline: middle;
+  font-size: 18px;
+  fill: #fff;
+}
+text.text-percent {
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-size: 24px;
+  fill: #ff0000;
+}
+text.text-progress {
+  text-anchor: end;
+  dominant-baseline: middle;
+  font-size: 18px;
+  fill: #aaff55;
+}
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    r: 2.5;
+  }
+  25% {
+    opacity: 1;
+    r: 3.5;
+  }
+  75% {
+    opacity: 1;
+    r: 3.5;
+  }
+  100% {
+    opacity: 1;
+    r: 2.5;
+  }
+}
+.blink {
+  opacity: 0;
+  animation: blink 1s linear infinite;
+}
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.8s linear;
+  animation-fill-mode: forwards;
+}

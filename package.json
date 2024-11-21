@@ -8,7 +8,8 @@
     "deploy": "nx run-many --target=deploy --all",
     "lint": "nx run-many --target=lint --all",
     "dev": "cross-env NODE_ENV=development nx run-many --target=dev --all --parallel=10",
-    "script:dev": "cross-env NODE_ENV=development tsx ./scripts/dev.ts"
+    "script:dev": "cross-env NODE_ENV=development tsx ./scripts/dev.ts",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "prettier": "@liutsing/prettier-config",
   "dependencies": {

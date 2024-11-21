@@ -1,33 +1,11 @@
 import { Button, Divider, Space, message } from 'antd'
-import dayjs from 'dayjs'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import dayjs from 'dayjs'
+import { Progress } from './progress'
 import { useNotificationStore } from '@/stores/notifications'
 
-// "▓▓▓▓▓▓▓▓▓▓▓░░░░"
-
-const unPassed = '▓'
-const passed = '░'
-
-const Progress = ({ value }: { value: number }) => {
-  const data: string[] = useMemo(
-    () => Array.from({ length: 50 }, (_, i) => (i < value / 2 ? passed : unPassed)).reverse(),
-    [value]
-  )
-  return (
-    <div className="flex">
-      <div className="mr-1">{data}</div>
-      <span>{100 - value}%</span>
-    </div>
-  )
-}
 export default () => {
-  const current = dayjs(dayjs().format('YYYY-MM-DD'))
-  const next = dayjs(dayjs().add(1, 'year').format('YYYY'))
-
-  const rest = next.diff(current, 'days')
-  console.log(rest)
-  const progress = Math.floor((rest / 365) * 100)
   console.count('Dashboard')
   //   const matches = useMatches()
   //   console.log(matches)
@@ -53,10 +31,12 @@ export default () => {
     message.info({ content, key: content })
   }, [])
   const { t } = useTranslation()
+  const current = dayjs(dayjs().format('YYYY-MM-DD'))
+
   return (
     <div>
       <h1 className="py-4 text-[24px]"> {t('current-year-progress', { year: current.format('YYYY') })}</h1>
-      <Progress value={progress} />
+      <Progress />
       <Divider />
       {/* <p>{t('title', { name: 'John' })}</p> */}
       <p>测试下</p>
