@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/vue-query'
 import { values } from 'lodash-es'
 import type { Ref } from 'vue'
-import type { BaseList, BaseResponse } from '@liutsing/types-utils'
+import type { BaseList, BaseParams, BaseResponse } from '@liutsing/types-utils'
 import type { LzzModel, LzzResponse } from './type'
 import { request } from '@/utils'
 
@@ -18,10 +18,10 @@ export const useListQuery = () => {
     },
   })
 }
-export const fetchListWithPagination = async (params: Params<LzzModel>) => {
+export const fetchListWithPagination = async (params: BaseParams<LzzModel>) => {
   return request<BaseList<LzzModel>>({ url: '/lzz/pages', params })
 }
-type NewParams = Omit<Params<LzzModel>, 'current'> & { current: Ref<number> }
+type NewParams = Omit<BaseParams<LzzModel>, 'current'> & { current: Ref<number> }
 export const usePaginationQuery = (params: NewParams) => {
   const { current, ...rest } = params
   return useQuery(['lzz-pagination-key', params], () => fetchListWithPagination({ current: current.value, ...rest }), {

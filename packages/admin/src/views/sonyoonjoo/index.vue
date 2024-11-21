@@ -1,61 +1,43 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref, toRaw } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
-import { useQuery } from '@tanstack/vue-query'
+import { reactive, ref, toRaw } from 'vue'
+import { RouterLink } from 'vue-router'
 import type { BaseList } from '@liutsing/types-utils'
+import { useInfiniteQuery, useQuery } from '@tanstack/vue-query'
 import type { SonYoonJoo } from './type'
-import { fetchCategory, fetchList } from './api'
+import { fetchList, fetchYearCategory } from './api'
 
 const searchKey = 'sonyoonjoo-list'
 
 const modelRef = reactive<Partial<SonYoonJoo>>({})
-const { query } = useRoute()
-const { page } = query as { page?: number }
-const current = ref<number>(page || 1)
+const current = ref<number>(1)
 const pageSize = ref<number>(50)
 const path = ref<string>()
 const year = ref<number>()
+// const threshold = 20
 
-const handler = (e: Event) => {
-  console.log(e, 'e')
-}
-const containerRef = ref(null)
-onMounted(() => {
-  const ele = containerRef.value as unknown as HTMLDivElement
-  console.log(ele, ele.scrollHeight)
-  ele.addEventListener('scroll', handler)
-})
-onUnmounted(() => {
-  const ele = containerRef.value as unknown as HTMLDivElement
-  ele?.removeEventListener('scroll', handler)
-})
-
-const { data, error } = useQuery<BaseList<SonYoonJoo>>(
-  [
-    searchKey,
-    {
-      current: toRaw(current),
-      pageSize: toRaw(pageSize),
-      path: toRaw(path),
-      year: toRaw(year),
-    },
-  ],
-  fetchList,
-  {
-    refetchOnWindowFocus: true,
-    select: (data) => {
+const { data, isFetching, error, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
+  useInfiniteQuery<BaseList<SonYoonJoo>>({
+    queryKey: [searchKey],
+    queryFn: fetchList,
+    getNextPageParam: (last) => {
       return {
-        ...data,
-        records: data.records.map(({ path, ...rest }) => ({
-          ...rest,
-          path,
-          title: path.split('/').pop()?.split('_').pop(),
-        })),
+        page: last.pagination.current + 1,
+        pageSize: pageSize.value,
       }
     },
+    // refetchOnWindowFocus: true,
     networkMode: 'offlineFirst',
-  }
-)
+    staleTime: 30 * 1000,
+  })
+const handler = () => {
+  // console.log(e.target)
+  //   const { scrollHeight, clientHeight, scrollTop } = e.target as HTMLDivElement
+  //   if (scrollHeight - clientHeight - scrollTop <= threshold) {
+  //     if (isFetching.value) return
+  //     current.value++
+  //   }
+}
+
 const onSubmit = () => {
   const data = toRaw(modelRef)
   year.value = data.year
@@ -68,10 +50,20 @@ const handleReset = () => {
   path.value = undefined
 }
 
-const { data: categories } = useQuery<number[]>(['sonyoonjoo-category'], fetchCategory, {
+const { data: years } = useQuery<number[]>(['sonyoonjoo-year-category'], fetchYearCategory, {
   refetchOnWindowFocus: true,
   networkMode: 'offlineFirst',
 })
+// const realRecords = computed(() => {
+//   console.log(data.value?.pages)
+//   const records = data.value?.pages.reduce((prev: SonYoonJoo[], curr) => [...prev, ...curr.records], [])
+
+//   return records
+// })
+const handleNext = (e: MouseEvent) => {
+  e.stopPropagation()
+  fetchNextPage()
+}
 </script>
 
 <template>
@@ -81,7 +73,7 @@ const { data: categories } = useQuery<number[]>(['sonyoonjoo-category'], fetchCa
         <a-form-item label="年份">
           <a-select v-model:value="modelRef.year">
             <a-select-option
-              v-for="category in categories"
+              v-for="category in years"
               :key="category"
               :value="category"
             >
@@ -112,49 +104,57 @@ const { data: categories } = useQuery<number[]>(['sonyoonjoo-category'], fetchCa
           </a-button>
         </a-form-item>
       </a-col>
-      <a-col :span="6">
-        <a-select v-model:value="current">
-          <a-select-option
-            v-for="index in Array.from({ length: data?.pagination.total || 0 }, (_, i) => i + 1)"
-            :key="index"
-            :value="index"
-          >
-            第{{ index }}页
-          </a-select-option>
-        </a-select>
-      </a-col>
     </a-row>
   </a-form>
-  <template v-if="error"> {{ JSON.stringify(error) }}</template>
-  <template v-else>
-    <div class="max-h-[700px] overflow-auto h-full pr-4">
-      <div
-        ref="containerRef"
-        class="columns-3xs"
-      >
-        <div
-          v-for="item in data?.records"
-          :key="item._id"
-          class="mb-2"
+  <span v-if="isLoading">Loading...</span>
+  <span v-else-if="isError">Error: {{ JSON.stringify(error) }}</span>
+  <a-spin
+    :spinning="isFetching"
+    :delay="200"
+    v-else-if="data"
+  >
+    <span v-if="isFetching && !isFetchingNextPage">Fetching...</span>
+    <div
+      class="max-h-[calc(100vh-90px)] overflow-auto pr-4"
+      @scroll="handler"
+    >
+      <div class="columns-3xs h-full overflow-auto">
+        <template
+          v-for="group in data.pages"
+          :key="group.pagination.current"
         >
-          <RouterLink
-            :to="`/sonyoonjoo/${item._id}`"
-            class="relative block"
+          <div
+            v-for="item in group.records"
+            :key="item._id"
+            class="mb-2"
           >
-            <img
-              :src="`http://localhost:4091${item.path}/${item.images?.[0]}`"
-              :alt="`${item.title}, ${item.year}, ${item.date}`"
-              :title="`${item.title}, ${item.year}, ${item.date}`"
-              class=""
-            />
-            <p
-              class="absolute bottom-0 mb-0 left-1/2 -translate-x-1/2 w-full text-white opacity-0 parent-hover:opacity-1"
+            <RouterLink
+              :to="`/sonyoonjoo/${item._id}`"
+              class="relative block"
             >
-              {{ item.title }}
-            </p>
-          </RouterLink>
-        </div>
+              <img
+                :src="`http://localhost:4091${item.path}/${item.images?.[0]}`"
+                :alt="`${item.path?.split('/').pop()}, ${item.year}, ${item.date}`"
+                :title="`${item.path?.split('/').pop()}, ${item.year}, ${item.date}`"
+                class=""
+              />
+              <p
+                class="absolute bottom-0 mb-0 left-1/2 -translate-x-1/2 w-full text-white opacity-0 parent-hover:opacity-1"
+              >
+                {{ item.title }}
+              </p>
+            </RouterLink>
+          </div>
+        </template>
       </div>
     </div>
-  </template>
+    <button
+      @click="handleNext"
+      :disabled="!hasNextPage || isFetchingNextPage"
+    >
+      <span v-if="isFetchingNextPage">Loading more...</span>
+      <span v-else-if="hasNextPage">Load More</span>
+      <span v-else>Nothing more to load</span>
+    </button>
+  </a-spin>
 </template>

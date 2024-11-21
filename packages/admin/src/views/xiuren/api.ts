@@ -7,13 +7,13 @@ export const fetchList = async (params: AnyToFix) => {
 }
 
 export const fetchDetail = async (id?: string) => {
-  return request<Meitu>({ url: `/meitulu/${id}` })
+  return request<Meitu>({ url: `/meitulu/${id!}` })
 }
 export const fetchPrevAndNext = async (id?: string) => {
   return request<{
     prev?: Meitu
     next?: Meitu
-  }>({ url: `/meitulu/nav/${id}` })
+  }>({ url: `/meitulu/nav/${id!}` })
 }
 
 export const fetchTags = async () => {
