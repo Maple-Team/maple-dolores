@@ -59,7 +59,10 @@ instance.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-let promise: Promise<boolean> | null
+/**
+ * 控制唯一的刷新token请求的标记
+ */
+let refreshPromise: Promise<boolean> | null
 instance.interceptors.response.use(
   async (response: AxiosResponse<BaseResponse<AnyToFix>>) => {
     if (response.config.isDownloadReq) return response
@@ -99,8 +102,7 @@ instance.interceptors.response.use(
       return response.status
     }
     switch (status) {
-      case 200:
-      case 201:
+      case 0:
         return data
       // 其他的业务码
       default:
@@ -146,9 +148,9 @@ function getRefreshToken() {
   return localStorage.getItem('token') || ''
 }
 async function refreshToken() {
-  if (promise) return promise
+  if (refreshPromise) return refreshPromise
   // eslint-disable-next-line @typescript-eslint/no-misused-promises, no-async-promise-executor
-  promise = new Promise<boolean>(async (resolve) => {
+  refreshPromise = new Promise<boolean>(async (resolve) => {
     const res: boolean = await instance.get('/auth/refresh', {
       headers: {
         Authorization: `Bearer ${getRefreshToken()}`,
@@ -158,8 +160,8 @@ async function refreshToken() {
     resolve(res)
   })
 
-  promise.finally(() => {
-    promise = null
+  refreshPromise.finally(() => {
+    refreshPromise = null
   })
-  return promise
+  return refreshPromise
 }
