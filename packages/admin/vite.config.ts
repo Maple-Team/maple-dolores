@@ -7,6 +7,7 @@ import eslintPlugin from 'vite-plugin-eslint'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import { getPort } from '../../build/util'
 import { name } from './package.json'
+import { HtmlPluginInjectScript } from './plugin'
 
 const port = getPort(name)
 
@@ -24,6 +25,7 @@ export default ({ mode }) => {
         targets: ['defaults', 'not IE 11'],
       }),
       isProd ? null : eslintPlugin(),
+      HtmlPluginInjectScript(),
     ].filter(Boolean),
     resolve: {
       alias: [
