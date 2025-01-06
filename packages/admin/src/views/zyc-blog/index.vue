@@ -32,9 +32,7 @@ const { isLoading, data, error } = useQuery<BaseList<Blog>>({
       category,
     },
   ],
-  networkMode: 'offlineFirst',
   queryFn: fetchList,
-  refetchOnWindowFocus: true,
 })
 
 const onSubmit = () => {
@@ -77,8 +75,6 @@ const handleReset = () => {
 const { data: categories } = useQuery<string[]>({
   queryKey: ['zyc-blog-category'],
   queryFn: fetchCategory,
-  refetchOnWindowFocus: true,
-  networkMode: 'offlineFirst',
 })
 </script>
 

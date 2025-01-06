@@ -18,14 +18,12 @@ const { isLoading, data: record } = useQuery<Blog>({
   queryKey: ['zyc-blog-detail', id],
   queryFn: fetchDetail,
   enabled: !!id.value,
-  networkMode: 'offlineFirst',
 })
 
 const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Blog; next?: Blog }>({
   queryKey: ['zyc-blog-nav', id],
   queryFn: fetchPrevAndNext,
   enabled: !!id.value,
-  networkMode: 'offlineFirst',
 })
 
 onMounted(() => {
