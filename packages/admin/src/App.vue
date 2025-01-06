@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { capitalize } from '@liutsing/utils'
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 import { links as _links, routerMap } from '@/utils'
+
 // import { useNotification } from '@/hooks'
 
 // useNotification()
@@ -30,7 +32,8 @@ const links = ref<string[]>(_links)
   </aside>
   <main class="main">
     <RouterView />
-    <footer>powered by Vue + Typescript + Vite + Antd</footer>
+    <footer>Powered by Vue + Typescript + Vite + Antd</footer>
+    <VueQueryDevtools />
   </main>
 </template>
 
