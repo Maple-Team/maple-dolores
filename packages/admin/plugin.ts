@@ -4,7 +4,7 @@ import type { Plugin } from 'vite'
 import dayjs from 'dayjs'
 import { version } from '../../package.json'
 
-// TODO 优化这里
+// TODO 适配CICD环境
 const hash = ChildProcess.execSync('git rev-parse HEAD').toString().trim().substring(0, 8)
 const currentGitBranch = ChildProcess.execSync('git rev-parse --abbrev-ref HEAD').toString().trim()
 writeFileSync('./public/version.json', JSON.stringify({ hash, branch: currentGitBranch }))

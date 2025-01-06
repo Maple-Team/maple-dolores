@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { onMounted, onUnmounted, ref, toRaw, unref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import { fetchDetail, fetchPrevAndNext } from '../zyc-blog/api'
 import type { Blog } from './type'
@@ -14,20 +14,17 @@ const id = ref<string>()
 
 id.value = params.id as string
 
-// key值关键
-const { isLoading, data: record } = useQuery<Blog>(['zyc-blog-detail', toRaw(id)], () => fetchDetail(unref(id)), {
-  enabled: !!unref(id),
-  networkMode: 'offlineFirst',
+const { isLoading, data: record } = useQuery<Blog>({
+  queryKey: ['zyc-blog-detail', id],
+  queryFn: fetchDetail,
+  enabled: !!id.value,
 })
-// key值关键
-const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Blog; next?: Blog }>(
-  ['zyc-blog-nav', toRaw(id)],
-  () => fetchPrevAndNext(unref(id)),
-  {
-    enabled: !!unref(id),
-    networkMode: 'offlineFirst',
-  }
-)
+
+const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Blog; next?: Blog }>({
+  queryKey: ['zyc-blog-nav', id],
+  queryFn: fetchPrevAndNext,
+  enabled: !!id.value,
+})
 
 onMounted(() => {
   // window.addEventListener(

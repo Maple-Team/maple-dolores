@@ -21,23 +21,19 @@ const content = ref<string>()
 const title = ref<string>()
 const category = ref<string>()
 
-const { isLoading, data, error } = useQuery<BaseList<Blog>>(
-  [
+const { isLoading, data, error } = useQuery<BaseList<Blog>>({
+  queryKey: [
     searchKey,
     {
-      current: toRaw(current),
-      pageSize: toRaw(pageSize),
-      content: toRaw(content),
-      title: toRaw(title),
-      category: toRaw(category),
+      current,
+      pageSize,
+      content,
+      title,
+      category,
     },
   ],
-  fetchList,
-  {
-    refetchOnWindowFocus: true,
-    networkMode: 'offlineFirst',
-  }
-)
+  queryFn: fetchList,
+})
 
 const onSubmit = () => {
   const data = toRaw(modelRef)
@@ -76,9 +72,9 @@ const handleReset = () => {
   category.value = undefined
 }
 
-const { data: categories } = useQuery<string[]>(['zyc-blog-category'], fetchCategory, {
-  refetchOnWindowFocus: true,
-  networkMode: 'offlineFirst',
+const { data: categories } = useQuery<string[]>({
+  queryKey: ['zyc-blog-category'],
+  queryFn: fetchCategory,
 })
 </script>
 
@@ -114,6 +110,7 @@ const { data: categories } = useQuery<string[]>(['zyc-blog-category'], fetchCate
             type="primary"
             @click.prevent="onSubmit"
             htmlType="submit"
+            :loading="isLoading"
           >
             查找
           </a-button>

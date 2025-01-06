@@ -10,6 +10,7 @@ declare module 'axios' {
      * 是否有前缀
      */
     noPrefix?: boolean
+    isDownloadReq?: boolean
   }
 }
 
@@ -35,9 +36,9 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
+    if (response.config.isDownloadReq) return response
     const { status, data } = response.data as BaseResponse<AnyToFix>
-    // TODO handle download data
-    if (status !== 200) {
+    if (status !== 0) {
       // TODO handle business exception
     } else {
       return data
@@ -45,7 +46,7 @@ api.interceptors.response.use(
   },
   (error: AxiosError) => {
     emitter.emit('RESPONSE_ERROR', error)
-    return Promise.reject(error)
+    throw error
   }
 )
 
