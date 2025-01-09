@@ -14,11 +14,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'www.javbus.com',
-        port: '',
-        pathname: '/**',
-        search: '',
-        // fixme proxy
+        hostname: 'www.baidu.com',
       },
     ],
   },
