@@ -10,6 +10,18 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.javbus.com',
+        port: '',
+        pathname: '/**',
+        search: '',
+        // fixme proxy
+      },
+    ],
+  },
 }
 
 export default nextConfig
