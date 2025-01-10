@@ -40,3 +40,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - [templates](https://vercel.com/templates?utm_source=next-site&utm_medium=navbar&utm_campaign=next_site_nav_templates&framework=next.js&type=blog)
 - [example - nextjs-commerce](https://vercel.com/templates/next.js/nextjs-commerce)
 - [example - medusa](https://vercel.com/templates/next.js/medusa)
+- [squoosh](https://github.com/GoogleChromeLabs/squoosh)
+- [sharp](https://www.npmjs.com/package/sharp)
+- [nextjs 中文](https://www.nextjs.cn/docs/api-reference/next/image)
+- [nextjs](https://nextjs.org/docs/app/api-reference/components/link)
