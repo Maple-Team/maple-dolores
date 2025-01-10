@@ -6,7 +6,6 @@ import { request } from '@/utils'
 export const fetchList = async (context: QueryFunctionContext) => {
   const { queryKey, signal } = context
   // @https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation#manual-cancellation
-  console.log(queryKey)
   return request<BaseList<Blog>>({ url: '/zyc-blog', params: queryKey[1], signal })
 }
 
