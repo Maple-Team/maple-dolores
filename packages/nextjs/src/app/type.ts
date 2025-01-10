@@ -11,3 +11,8 @@ export interface Video {
   director?: string
   comments?: string
 }
+
+export interface Actress {
+  name: string
+  avatar?: string
+}
