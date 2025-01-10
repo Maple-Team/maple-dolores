@@ -22,9 +22,11 @@ export default function Home() {
     <>
       <div className="flex gap-4 flex-wrap columns-3xs sm:columns-2 md:columns-3">
         {data?.records?.map(({ code, title, thumb }) => (
-          <Link href={`/${code}`}>
+          <Link
+            href={`/${code}`}
+            key={code}
+          >
             <Card
-              key={code}
               src={thumb}
               title={title}
               otherInfo={''}
