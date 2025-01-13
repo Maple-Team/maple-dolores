@@ -3,9 +3,12 @@ import type { UserAccount, UserInfo } from '@liutsing/types-utils'
 import { instance } from '../axios'
 
 export const useLoginMutation = () => {
-  return useMutation(['login-mutation-key'], (data: UserAccount) =>
-    instance.post<AnyToFix, Partial<UserInfo> & { accessToken: string }>('/auth/login', data)
-  )
+  return useMutation({
+    mutationFn: (account: UserAccount) => {
+      return instance.post<AnyToFix, Partial<UserInfo> & { accessToken: string }>('/auth/login', account)
+    },
+    mutationKey: ['login-mutation-key'],
+  })
 }
 
 export const fetchUserInfo = (): Promise<UserInfo> => {
@@ -14,11 +17,17 @@ export const fetchUserInfo = (): Promise<UserInfo> => {
 export const userInfoQueryKey = 'userinfo-query-key'
 
 export const useUserInfo = () => {
-  return useQuery([userInfoQueryKey], fetchUserInfo)
+  return useQuery({
+    queryKey: [userInfoQueryKey],
+    queryFn: fetchUserInfo,
+  })
 }
 
 export const fetchUserMenus = (): Promise<string[]> => instance.get('/users/menus')
 export const userMenusQueryKey = 'user-menus-query-key'
 export const useUserMenus = () => {
-  return useQuery(['user-menus-query-key'], fetchUserMenus)
+  return useQuery({
+    queryKey: [userMenusQueryKey],
+    queryFn: fetchUserMenus,
+  })
 }

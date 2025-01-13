@@ -13,10 +13,10 @@
   "scripts": {
     "build-script": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
     "build": "pnpm run build-script",
-    "dev": "cross-env NODE_ENV=development webpack serve  --config config/webpack.dev.js",
+    "dev": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
     "prebuild": "pnpm run build-script && node scripts/translate.js",
     "translate": "node scripts/translate.js",
-    "dev:speed": "cross-env NODE_ENV=development webpack serve  --config config/webpack.dev.speed.js",
+    "dev:speed": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.speed.js",
     "stats": "webpack --config config/webpack.stats.js",
     "temp": "webpack --config config/webpack.temp.js",
     "lint": "eslint .",

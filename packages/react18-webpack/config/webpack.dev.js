@@ -9,7 +9,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 const appName = 'react18-webpack'
 
 const config = merge(base, dev, {
-  entry: path.resolve(__dirname, '../src/index.tsx'),
+  entry: path.resolve(__dirname, '../src/main.tsx'),
   devtool: 'cheap-module-source-map',
   module: {
     rules: [

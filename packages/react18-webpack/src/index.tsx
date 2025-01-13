@@ -1,6 +1,5 @@
 // import './wdyr'
 import React, { StrictMode, Suspense, lazy, useCallback } from 'react'
-import { createRoot } from 'react-dom/client'
 import './main.css'
 import './assets/svg-icons'
 import 'antd/dist/reset.css'
@@ -8,7 +7,6 @@ import { Navigate, Outlet, RouterProvider, createBrowserRouter, redirect } from 
 import { Button, Result, Skeleton, Spin } from 'antd'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { reactBridge } from '@garfish/bridge-react-v18'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import { StyleProvider } from '@ant-design/cssinjs'
 import ErrorPage from './error-page'
@@ -30,7 +28,7 @@ console.log(i18n2)
 const queryClient = new QueryClient()
 const apolloClient = new ApolloClient({
   // from env
-  uri: 'http://localhost:4003/graphql',
+  uri: `http://${process.env.API_URL}/graphql`,
   cache: new InMemoryCache(),
 })
 // TODO 动态路由 跟随用户的已分配权限
@@ -46,9 +44,11 @@ const rootLoader = async () => {
   if (!jwt) return redirect(`/login?redirect=${pathname}`)
 
   // 鉴权，获取用户数据
-  const data = await queryClient.fetchQuery([userInfoQueryKey], fetchUserInfo, {
-    staleTime: 10000,
+  const data = await queryClient.fetchQuery({
+    queryKey: [userInfoQueryKey, jwt],
+    queryFn: fetchUserInfo,
   })
+
   if (!data) return redirect('/login')
   return data
 }
@@ -60,8 +60,9 @@ const loginLoader = async () => {
   const jwt = localStorage.getItem('jwt')
   if (!jwt) return null
   // 鉴权，获取用户数据
-  const data = await queryClient.fetchQuery([userInfoQueryKey], fetchUserInfo, {
-    staleTime: 10000,
+  const data = await queryClient.fetchQuery({
+    queryKey: [userInfoQueryKey],
+    queryFn: fetchUserInfo,
   })
 
   if (!data) return redirect('/login')
@@ -75,8 +76,9 @@ const loginLoader = async () => {
  */
 const menuLoader = async (path: string) => {
   // 鉴权，获取用户数据
-  const data = await queryClient.fetchQuery([userMenusQueryKey], fetchUserMenus, {
-    staleTime: 10000,
+  const data = await queryClient.fetchQuery({
+    queryKey: [userMenusQueryKey],
+    queryFn: fetchUserMenus,
   })
   // 子嵌套路由问题，数据数组打平
   // 动态路由走数据权限，拦截返回码，展示特定的页面
@@ -84,7 +86,7 @@ const menuLoader = async (path: string) => {
   return null
 }
 
-const RootComponent = ({ basename }: { basename: string }) => {
+export const RootComponent = ({ basename }: { basename: string }) => {
   // TODO 这个函数注入 const {t} = useTranslation()
   const newBaseName = basename.startsWith('/') ? basename : `/${basename}`
   const onBackHome = useCallback(() => {
@@ -238,16 +240,4 @@ const RootComponent = ({ basename }: { basename: string }) => {
       </ApolloProvider>
     </StrictMode>
   )
-}
-
-export const provider = reactBridge({
-  el: '#root',
-  rootComponent: RootComponent,
-  errorBoundary: () => <ErrorPage />,
-})
-
-if (!window.__GARFISH__) {
-  const container = document.getElementById('root')
-  const root = createRoot(container!)
-  root.render(<RootComponent basename="/" />)
 }
