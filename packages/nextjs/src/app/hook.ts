@@ -9,9 +9,9 @@ export const fetchList = async ({ queryKey }: QueryFunctionContext) => {
 
 const videoListQueryKey = 'videoListQueryKey'
 
-export const useSearchList = (page: number, pageSize: number) =>
+export const useSearchList = (page: number, pageSize: number, actress?: string) =>
   useQuery({
-    queryKey: [videoListQueryKey, { page, pageSize }],
+    queryKey: [videoListQueryKey, { page, pageSize, actress }],
     queryFn: fetchList,
     networkMode: 'offlineFirst',
     staleTime: 30 * 1000,
