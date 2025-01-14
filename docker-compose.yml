@@ -1,0 +1,12 @@
+services:
+  dolores-react18:
+    image: maple/react-18:latest
+    container_name: dolores-react18
+    ports:
+      - 9080:80
+    networks:
+      - maple-network
+networks:
+  maple-network:
+    name: maple-network
+    external: true

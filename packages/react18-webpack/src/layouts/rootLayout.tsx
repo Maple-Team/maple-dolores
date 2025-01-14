@@ -98,6 +98,13 @@ export default () => {
             navigate('/socket-io-chat')
           },
         },
+        {
+          label: 'Dynamic Render',
+          key: '/dynamic-render',
+          onClick() {
+            navigate('/dynamic-render')
+          },
+        },
       ].filter((item) => menus?.includes(item.key)),
     [navigate, menus]
   )
@@ -124,7 +131,7 @@ export default () => {
   }, [navigate])
 
   const onClick: MenuProps['onClick'] = (e) => {
-    console.log('click ', e)
+    // console.log('click ', e)
   }
   const selectedKeys = useMemo(() => {
     if (pathname === '/') return ['/dashboard']

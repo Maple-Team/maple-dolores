@@ -21,6 +21,7 @@ import Dashboard from './pages/Dashboard'
 import { NestedComponent } from './pages/ReactDemo/NestedComponent'
 import Graphql from './pages/Graphql'
 import SocketIoChat from './pages/socket.io-chat'
+import DynamicRender from './pages/dynamic-render'
 
 // FIXME tree-shaking
 console.log(i18n2)
@@ -172,6 +173,11 @@ export const RootComponent = ({ basename }: { basename: string }) => {
             id: 'socket.io-chat',
             path: '/socket-io-chat',
             element: <SocketIoChat />,
+          },
+          {
+            id: 'dynamic-render',
+            path: '/dynamic-render',
+            element: <DynamicRender />,
           },
           {
             path: '/403',

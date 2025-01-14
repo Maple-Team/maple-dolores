@@ -8,7 +8,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
  * @type {import('webpack').Configuration}
  */
 module.exports = merge(base, prod, {
-  entry: path.resolve(__dirname, '../src/index.tsx'),
+  entry: path.resolve(__dirname, '../src/main.tsx'),
   output: {
     clean: {
       dry: true,

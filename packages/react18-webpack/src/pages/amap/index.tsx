@@ -1,5 +1,6 @@
 import React from 'react'
-import { Map, MarkerCluster } from '@pansy/react-amap'
+import { Map, MarkerCluster } from '@liutsing/react-amap'
+// import { Map, MarkerCluster } from '@pansy/react-amap'
 import points from './marker.json'
 
 interface Lnglat {
@@ -14,7 +15,12 @@ export interface MarkerData {
     originData: MarkerData[]
   }
 }
-
+// 隐藏默认的marker图标
+// AMap.Marker.prototype._createDefaultInnerDom = () =>{
+//     const i = document.createElement('i')
+//     return i
+// }
+// 但还是会出现元素先销毁后重建的效果
 const ReactAmap = () => {
   const count = points.length
   const renderCluster = (clusterCount: number, markers: [MarkerData]) => {
