@@ -11,7 +11,7 @@ const { query } = useRoute()
 const { page } = query as { page?: number }
 const current = ref<number>(page || 1)
 const pageSize = ref<number>(10 * 100)
-const type = ref<Timeline['type']>()
+const type = ref<Timeline['type']>('')
 const handleChange = (e: Timeline['type']) => {
   type.value = e
 }
@@ -36,15 +36,17 @@ const todayRecords = computed(() => data.value?.records.filter(({ date }) => dat
       <a-spin :spinning="isLoading" />
     </template>
     <template v-else>
-      <a-select
-        v-model:value="type"
-        class="!mb-3 w-[120px]"
-        @change="(e) => handleChange(e as 'timeline'|'treehole')"
-      >
-        <a-select-option value="">All</a-select-option>
-        <a-select-option value="timeline">Timeline</a-select-option>
-        <a-select-option value="treehole">Treehole</a-select-option>
-      </a-select>
+      <div class="!sticky top-2 text-right z-[9999]">
+        <a-select
+          v-model:value="type"
+          class="!mb-3 w-[120px] text-left"
+          @change="(e) => handleChange(e as Timeline['type'])"
+        >
+          <a-select-option value="">All</a-select-option>
+          <a-select-option value="timeline">Timeline</a-select-option>
+          <a-select-option value="treehole">Treehole</a-select-option>
+        </a-select>
+      </div>
       <a-timeline>
         <a-timeline-item v-if="todayRecords?.length">
           <p class="text-blue-500">

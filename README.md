@@ -52,10 +52,3 @@ export const provider = (props) => {
 
 - sandbox
 - 框架原理
-
-## Deploy
-
-```sh
-docker build . --tag maple/react-18:latest
-docker-compose up -d
-```
