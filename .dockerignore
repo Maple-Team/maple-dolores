@@ -1,0 +1,17 @@
+# .dockerignore (in the monorepo root)
+
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+dist
+**/node_modules
+
+# https://github.com/vercel/next.js/blob/canary/examples/with-docker/.dockerignore
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+README.md
+.next
+.git

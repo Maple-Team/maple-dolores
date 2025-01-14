@@ -52,3 +52,9 @@ export const provider = (props) => {
 
 - sandbox
 - 框架原理
+
+## Deploy
+
+```sh
+docker build -f packages/nextjs/Dockerfile --no-cache . --target runner --tag maple-nestjs:latest --progress=plain
+```
