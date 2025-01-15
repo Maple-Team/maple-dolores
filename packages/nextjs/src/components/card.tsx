@@ -1,8 +1,8 @@
 import { Video } from '@/app/type'
 import Image from 'next/image'
-import {map} from '@/utils/contant'
+import { map } from '@/utils/contant'
 
-export const Card = ({ title, tags, code, previews }: Video) => {
+export const Card = ({ title, tags, code }: Video) => {
   const [ser, no] = code.toLowerCase().split('-')
   // @ts-expect-error: xx
   const prefix = map[ser]

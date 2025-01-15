@@ -17,11 +17,11 @@ export default function ActressList() {
             const encodeUrl = encodeURIComponent(`http://localhost:60462/${avatar}` || '')
             const src = `http://localhost:4003/api/proxy?url=${encodeUrl}&responseType=arraybuffer`
             return (
-              <Link href={`/actress/${name}`}>
-                <div
-                  key={name}
-                  className="flex flex-col items-center justify-center gap-2 hover:shadow-lg"
-                >
+              <Link
+                href={`/actress/${name}`}
+                key={name}
+              >
+                <div className="flex flex-col items-center justify-center gap-2 hover:shadow-lg">
                   <Image
                     src={src}
                     alt={name}

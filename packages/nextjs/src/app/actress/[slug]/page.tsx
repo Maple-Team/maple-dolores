@@ -41,7 +41,7 @@ export default function VideoDetail() {
         ))}
       </div>
       <Pagination
-        totalPages={Math.ceil(data?.pagination.total || 0 / pageSize)}
+        totalPages={Math.ceil((data?.pagination.total || 0) / pageSize)}
         currentPage={page}
         onPageChange={onPageChange}
         pageSize={pageSize}

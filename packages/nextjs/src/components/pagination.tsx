@@ -95,7 +95,7 @@ export const Pagination = ({ totalPages, currentPage, onPageChange, pageSize }: 
 
   return (
     <div className="pagination">
-      <span className="mr-1">共{totalPages}页</span>
+      <span className="mr-1">共{totalPages}条</span>
       <button
         onClick={handlePrevPage}
         disabled={page === 1}

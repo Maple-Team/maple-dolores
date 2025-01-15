@@ -8,6 +8,7 @@ import { useVideoDetail } from './hook'
 import Image from 'next/image'
 import { LoadingContainer } from '@/components'
 import { map } from '@/utils/contant'
+import Link from 'next/link'
 
 export default function VideoDetail() {
   const params = useParams()
@@ -34,11 +35,23 @@ export default function VideoDetail() {
           height={554}
           width={824}
         />
-        <div className="col-span-3">
-          <p>{data?.code}</p>
-          <p>{data?.title}</p>
+        <div className="col-span-3 text-blue-500">
+          <p>識別碼: {data?.code}</p>
+          <p>發行日期: {data?.releaseDate?.toLocaleDateString()}</p>
           <p>{data?.tags}</p>
-          <p>{data?.actresses}</p>
+          <p>
+            演員:{' '}
+            {data?.actresses?.map((actress: string) => {
+              return (
+                <Link
+                  href={`/actress/${actress}`}
+                  key={actress}
+                >
+                  {actress}
+                </Link>
+              )
+            })}
+          </p>
         </div>
         {data?.previews?.map((url: string) => {
           const previewUrl = `http://localhost:4003/api/proxy?url=${encodeURIComponent(url)}&responseType=arraybuffer`
