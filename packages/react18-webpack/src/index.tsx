@@ -145,7 +145,7 @@ export const RootComponent = ({ basename }: { basename: string }) => {
               {
                 index: true,
                 // NOTE 懒加载-> 拆包
-                lazy: () => import('./pages/ReactDemo'),
+                lazy: () => import('./pages/ReactDemo/pro-table'),
               },
               {
                 id: ':id',

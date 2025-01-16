@@ -32,6 +32,8 @@
   "lint-staged": "eslint --fix",
   "prettier": "@liutsing/prettier-config",
   "dependencies": {
+    "@ant-design/pro-form": "^2.31.3",
+    "@ant-design/pro-table": "^3.18.3",
     "@antv/g2plot": "^2.4.22",
     "@apollo/client": "^3.10.4",
     "@emotion/react": "^11.11.4",
