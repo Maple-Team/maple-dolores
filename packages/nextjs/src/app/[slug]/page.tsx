@@ -31,13 +31,13 @@ export default function VideoDetail() {
         <Image
           src={`http://localhost:4003/api/proxy?url=${encodeUrl2}&responseType=arraybuffer`}
           alt={data?.title || ''}
-          className="col-span-5 w-full"
+          className="col-span-6 w-full"
           height={554}
           width={824}
         />
-        <div className="col-span-3 text-blue-500">
+        <div className="col-span-2 text-blue-500">
           <p>識別碼: {data?.code}</p>
-          <p>發行日期: {data?.releaseDate?.toLocaleDateString()}</p>
+          <p>發行日期: {data?.date}</p>
           <p>{data?.tags}</p>
           <p>
             演員:{' '}
@@ -46,6 +46,7 @@ export default function VideoDetail() {
                 <Link
                   href={`/actress/${actress}`}
                   key={actress}
+                  className="px-1"
                 >
                   {actress}
                 </Link>

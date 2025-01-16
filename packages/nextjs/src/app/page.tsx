@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export default function Home() {
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(500)
+  const [pageSize, setPageSize] = useState(10)
   const { data, isLoading } = useSearchList(page, pageSize)
   const onPageChange = useCallback((page: number, pageSize: number) => {
     setPage(page)
@@ -35,10 +35,10 @@ export default function Home() {
       </LoadingContainer>
 
       <Pagination
-        totalPages={Math.ceil(data?.pagination.total || 0 / pageSize)}
+        total={data?.pagination.total || 0}
         currentPage={page}
         onPageChange={onPageChange}
-        pageSize={pageSize}
+        pageSize={data?.pagination.pageSize || 10}
       />
     </>
   )

@@ -15,7 +15,7 @@ export default function VideoDetail() {
   const params = useParams()
   const actress = decodeURIComponent(params?.slug as string)
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(500)
+  const [pageSize, setPageSize] = useState(30)
 
   const { data, isLoading } = useSearchList(page, pageSize, actress)
   const onPageChange = useCallback((page: number, pageSize: number) => {
@@ -41,7 +41,7 @@ export default function VideoDetail() {
         ))}
       </div>
       <Pagination
-        totalPages={Math.ceil((data?.pagination.total || 0) / pageSize)}
+        total={data?.pagination.total || 0}
         currentPage={page}
         onPageChange={onPageChange}
         pageSize={pageSize}

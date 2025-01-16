@@ -2,7 +2,7 @@ import { Video } from '@/app/type'
 import Image from 'next/image'
 import { map } from '@/utils/contant'
 
-export const Card = ({ title, tags, code }: Video) => {
+export const Card = ({ title, tags, code, previews }: Video) => {
   const [ser, no] = code.toLowerCase().split('-')
   // @ts-expect-error: xx
   const prefix = map[ser]
@@ -16,18 +16,18 @@ export const Card = ({ title, tags, code }: Video) => {
   //   console.log(code, fileUrl, encodeUrl)
   return (
     <div className="p-4 bg-gray-100 text-emerald-300 w-[160px] rounded-md flex flex-col items-center justify-center gap-2 hover:shadow-lg">
-      {/* {previews?.map((preview) => {
+      {previews?.map((preview) => {
         const previewUrl = `http://localhost:4003/api/proxy?url=${encodeURIComponent(preview)}&responseType=arraybuffer`
         return (
           <Image
             key={preview}
             src={previewUrl}
             alt={title}
-            width={147}
-            height={200}
+            width={50}
+            height={70}
           />
         )
-      })} */}
+      })}
       <Image
         src={`http://localhost:4003/api/proxy?url=${encodeUrl}&responseType=arraybuffer`}
         alt={title}

@@ -2,21 +2,21 @@ import { useCallback, useState } from 'react'
 import './pagination.css'
 
 interface PaginationProps {
-  totalPages: number
+  total: number
   currentPage: number
   pageSize: number
   onPageChange: (page: number, pageSize: number) => void
 }
-export const Pagination = ({ totalPages, currentPage, onPageChange, pageSize }: PaginationProps) => {
+export const Pagination = ({ total, currentPage, onPageChange, pageSize }: PaginationProps) => {
   const [page, setPage] = useState(currentPage)
-  console.log('totalPages', totalPages)
+  console.log('totalPages', total)
   const handlePrevPage = useCallback(() => {
     if (page > 1) {
       setPage(page - 1)
       onPageChange(page - 1, pageSize)
     }
   }, [page, onPageChange])
-
+  const totalPages = Math.ceil((total || 0) / pageSize)
   const handleNextPage = useCallback(() => {
     if (page < totalPages) {
       setPage(page + 1)
@@ -95,7 +95,9 @@ export const Pagination = ({ totalPages, currentPage, onPageChange, pageSize }: 
 
   return (
     <div className="pagination">
-      <span className="mr-1">共{totalPages}条</span>
+      <span className="mr-1">
+        共{total}条/第{currentPage}页
+      </span>
       <button
         onClick={handlePrevPage}
         disabled={page === 1}
