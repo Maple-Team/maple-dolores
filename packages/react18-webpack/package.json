@@ -95,6 +95,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.3",
     "css-modules-typescript-loader": "^4.0.1",
+    "eslint": "8",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
     "html-webpack-plugin": "^5.5.0",
     "i18next-resources-for-ts": "1.4.0",

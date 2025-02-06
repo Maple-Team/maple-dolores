@@ -11,6 +11,6 @@ WORKDIR /app
 
 COPY default.conf /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY ./dist /app/
+COPY ./dist /app
 
 EXPOSE 80

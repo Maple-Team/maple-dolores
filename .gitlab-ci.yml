@@ -1,5 +1,7 @@
 include: ".common.gitlab-ci.yml"
-
+variables:
+  COREPACK_NPM_REGISTRY: "https://registry.npmmirror.com"
+  
 stages:
     - install
     # - test
@@ -61,6 +63,7 @@ build-react18-webpack-job:
             - .pnpm-store
         policy: pull
 
+# sub package 构建nginx镜像
 build-react18-webpack-image-job:
     dependencies:
         - build-react18-webpack-job
@@ -70,7 +73,7 @@ build-react18-webpack-image-job:
     rules:
         - changes:
               - packages/react18-webpack/**/*
-
+# sub package 部署docker服务
 deploy-react18-webpack-job:
     stage: deploy
     tags:
@@ -89,6 +92,7 @@ deploy-react18-webpack-job:
         - docker rm $container_name || true
         - docker run --name $container_name --network maple-network -d -p $port:80 $image
 
+# 部署成功的通知
 notify-success:
     stage: notify
     needs:
