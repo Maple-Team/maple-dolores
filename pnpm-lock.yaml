@@ -393,6 +393,9 @@ importers:
       '@heroicons/react':
         specifier: '1'
         version: 1.0.6(react@18.2.0)
+      '@liutsing/config':
+        specifier: workspace:*
+        version: link:../config
       '@liutsing/enums':
         specifier: ^1.0.3
         version: 1.0.3(@types/babel__core@7.20.2)(ts-node@10.9.1(@types/node@20.3.3)(typescript@5.4.2))
@@ -496,9 +499,6 @@ importers:
       '@liutsing/babel-plugin-extract-used-chinese':
         specifier: ^0.0.3
         version: 0.0.3
-      '@liutsing/config':
-        specifier: workspace:*
-        version: link:../config
       '@liutsing/eslint-config':
         specifier: ^0.0.10
         version: 0.0.10(eslint@8.57.1)(prettier@2.8.8)

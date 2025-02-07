@@ -1,6 +1,5 @@
 FROM nginx:1.27.1
 
-# 设置时区， 接口请求默认返回的是GMT时间，也就是UTC时间
 RUN rm -f /etc/localtime && ln -sv /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" >/etc/timezone
 
 RUN mkdir -p /app
@@ -11,6 +10,6 @@ WORKDIR /app
 
 COPY default.conf /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY ./dist /app
+COPY dist /app
 
 EXPOSE 80

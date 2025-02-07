@@ -1,0 +1,153 @@
+# 配置复用
+.pnpm-config:
+    before_script:
+        - corepack enable
+        # corepack prepare pnpm@latest-9 --activate
+        - corepack prepare --activate
+        - pnpm config set store-dir .pnpm-store
+    # 私有仓库配置
+    # - pnpm config set @scope:registry https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
+    # - pnpm config set -- //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken ${CI_JOB_TOKEN}
+
+# 公用的构建镜像配置
+.docker-build-stage:
+    tags:
+        - docker
+    stage: image
+    image: docker:27.3-dind
+    services:
+        - docker:27.3-dind
+    retry:
+        max: 2
+        when:
+            - runner_system_failure
+            - unknown_failure
+            - script_failure
+    script:
+        # tag标记1：产物类型
+        - |
+            if [ "$CI_COMMIT_BRANCH" == "main" ]; then
+            export IMAGE_NAME=production
+            else
+            export IMAGE_NAME=staging
+            fi
+        - if [ -d "dist" ]; then echo "dist directory exists"; else echo "dist directory does not exist"; fi
+        - version=$(cat version.txt)
+        - echo $version
+        # 构建镜像
+        - docker build -t $USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA -f ./packages/$SUB_PACKAGE/Dockerfile ./packages/$SUB_PACKAGE
+        # docker login
+        # - docker login -u $USER_DOCKER_REGISTRY_USER -p $USER_DOCKER_REGISTRY_PASSWORD $USER_DOCKER_REGISTRY
+        # 镜像推送
+        # - docker push $USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA
+        - image_name=$USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA
+        - echo "$image_name" > image.txt
+    artifacts:
+        paths:
+            - image.txt
+
+.install-job:
+    extends: .pnpm-config
+    stage: install
+    tags:
+        - nodejs
+    image: mapleimage123/node:20-alpine3.19
+    script:
+        - time pnpm install
+    rules:
+        - changes:
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - packages/**/*
+    cache:
+        key:
+            files:
+                - pnpm-lock.yaml
+        paths:
+            - .pnpm-store
+        policy: pull-push
+
+.build-job:
+    stage: build
+    tags:
+        - nodejs
+    image: mapleimage123/node:20-alpine3.19
+
+    rules:
+        - changes:
+              - package.json
+              - pnpm-lock.yaml
+              - pnpm-workspace.yaml
+              - packages/**/*
+    cache:
+        key:
+            files:
+                - pnpm-lock.yaml
+        paths:
+            - .pnpm-store
+        policy: pull-push
+    script:
+        - time pnpm install
+        - cd packages/$SUB_PACKAGE
+        - time pnpm run build
+        - APP_VERSION=$(node -p -e "require('./package.json').version")
+        - echo "$APP_VERSION" > ./version.txt
+    artifacts:
+        paths:
+            - dist
+            - version.txt
+
+.build-image-job:
+    stage: image
+    extends: .docker-build-stage
+    variables:
+        SUB_PACKAGE: $SUB_PACKAGE
+    rules:
+        - changes:
+              - packages/$SUB_PACKAGE/**/*
+
+.deploy-job:
+    stage: deploy
+    tags:
+        - docker
+    image: docker:27.3-dind
+    variables:
+        port: 6043
+        container_name: $SUB_PACKAGE
+    # needs:
+    #     - job: "build-image-job-$SUB_PACKAGE"
+    #       optional: false
+    script:
+        - image=$(cat image.txt)
+        - echo $image
+        - docker stop $container_name || true
+        - docker rm $container_name || true
+        - docker run --name $container_name --network maple-network -d -p $port:80 $image
+
+.notify-success:
+    stage: notify
+    # needs:
+    #     - job: "deploy-job-$SUB_PACKAGE"
+    #       optional: false
+    # 多个job
+    rules:
+        - when: on_success
+    script:
+        - >
+            curl -X POST -H "Content-Type: application/json"
+            -d '{"msg_type":"text","content":{"text":"Web APP - $SUB_PACKAGE 部署成功"}}'
+            https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
+
+.notify-failure:
+    stage: notify
+    # needs:
+    #     - job: "deploy-job-$SUB_PACKAGE"
+    #       optional: false
+    rules:
+        - when: on_failure
+    script:
+        - >
+            curl -X POST -H "Content-Type: application/json"
+            -d '{"msg_type":"text","content":{"text":"Web APP - $SUB_PACKAGE 部署失败"}}'
+            https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce

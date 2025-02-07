@@ -42,6 +42,7 @@
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "1",
     "@liutsing/enums": "^1.0.3",
+    "@liutsing/config": "workspace:*",
     "@liutsing/react-amap": "1.0.1",
     "@liutsing/react-render": "1.0.0",
     "@mui/material": "^5.16.4",

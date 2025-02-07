@@ -1,6 +1,6 @@
 services:
   dolores-react18:
-    image: maple/react-18:latest
+    context: ./packages/react18-webpack
     container_name: dolores-react18
     ports:
       - 9080:80

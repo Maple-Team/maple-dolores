@@ -1,0 +1,31 @@
+variables:
+    COREPACK_NPM_REGISTRY: "https://registry.npmmirror.com"
+    TZ: "Asia/Shanghai"
+    SUB_PACKAGE: react18-webpack
+
+include:
+    - local: ".gitlab-ci-common.yml"
+
+install-job-react18-webpack:
+    extends: .install-job
+
+build-job-react18-webpack:
+    extends: .build-job
+
+build-image-job-react18-webpack:
+    variables:
+        SUB_PACKAGE: react18-webpack
+    extends: .build-image-job
+
+deploy-job-react18-webpack:
+    variables:
+        SUB_PACKAGE: react18-webpack
+    extends: .deploy-job
+
+# 部署成功的通知
+notify-success-react18-webpack:
+    extends: .notify-success
+
+# 部署失败的通知
+notify-failure-react18-webpack:
+    extends: .notify-failure

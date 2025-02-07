@@ -35,6 +35,7 @@
   "403 无权限": "403 無許可權",
   "您无权限访问该路由地址": "您無權限存取該路由位址",
   "current-year-progress": "{{year}}進度",
+  "current-week-number": "當前周：{{week}}",
   "keyWithCount_one": "{{count}} 個",
   "keyWithCount_other": "{{count}} 個"
 }
