@@ -1,8 +1,11 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import type { BaseResponse } from '@liutsing/types-utils'
+import { getPublicPath } from '@liutsing/config'
 import { API_TIMEOUT } from '@/utils/constant'
 import emitter from '@/utils/emitter'
+
+console.log(getPublicPath)
 
 declare module 'axios' {
   interface AxiosRequestConfig {
@@ -19,6 +22,8 @@ declare module 'axios' {
 const api = axios.create({
   timeout: API_TIMEOUT,
   validateStatus: (status) => status >= 200 && status < 300,
+  // TODO 动态下发？
+  baseURL: getPublicPath('vue3'),
 })
 
 api.interceptors.request.use(

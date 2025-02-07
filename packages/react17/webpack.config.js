@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 const path = require('path')
 
-const { getPort, getPublicPath } = require('../../build/util')
+import { getPort, getPublicPath } from '@liutsing/config'
 const appName = 'react17'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'

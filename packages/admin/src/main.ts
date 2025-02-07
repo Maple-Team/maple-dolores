@@ -38,22 +38,33 @@ const vueQueryPluginOptions: VueQueryPluginOptions = {
   },
 }
 
+type VueInstance = ReturnType<typeof createApp>
+
+const handleInit = (vueInstance: VueInstance, basename: string) => {
+  vueInstance.use(newRouter(basename)).use(Antd).use(VueQueryPlugin, vueQueryPluginOptions).use(directives)
+  vueInstance.config.globalProperties.$message = message
+}
+
 export const provider = vueBridge({
   rootComponent: App,
   handleInstance: (vueInstance, { basename }) => {
-    vueInstance.use(newRouter(basename)).use(Antd).use(VueQueryPlugin, vueQueryPluginOptions).use(directives)
-    vueInstance.config.globalProperties.$message = message
+    handleInit(vueInstance, basename)
   },
-  appOptions: () => ({
-    el: '#app',
-    render: () => h(App),
-  }),
+
+  appOptions: ({ basename, dom, appName, props }) => {
+    console.log(dom, appName, props)
+
+    return {
+      el: '#app',
+      render: () => h(App),
+      router: newRouter(basename),
+    }
+  },
 })
 
 if (!window.__GARFISH__) {
   // 非微前端环境直接运行
   const vueInstance = createApp(App)
-  vueInstance.config.globalProperties.$message = message
-  vueInstance.use(newRouter('/')).use(Antd).use(VueQueryPlugin).use(directives)
+  handleInit(vueInstance, '/')
   vueInstance.mount(document.querySelector('#app')!)
 }

@@ -1,6 +1,7 @@
 import type { BaseResponse } from '@liutsing/types-utils'
 import type { AxiosError, AxiosResponse, CancelTokenSource, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { getPublicPath } from '@liutsing/config'
 import { emitter } from '@/events'
 import { useNotificationStore } from '@/stores/notifications'
 
@@ -36,6 +37,8 @@ declare module 'axios' {
 let cancelTokenSource: CancelTokenSource
 const instance = axios.create({
   timeout: API_TIMEOUT,
+  // TODO 动态下发？
+  baseURL: getPublicPath('react18-webpack'),
   validateStatus: (status) => (status >= 200 && status < 500) || status === 403,
   headers: {
     Authorization: `Bearer ${getAccessToken()}`,

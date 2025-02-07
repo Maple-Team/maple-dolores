@@ -1,5 +1,5 @@
 import React from 'react'
-import apps from '../../../build/config.json'
+import { configs as apps } from '@liutsing/config'
 import './index.css'
 
 const App = () => {
@@ -20,7 +20,8 @@ const App = () => {
       </aside>
       <main className="flex-1 ml-4 h-screen">
         <h1>Main APP</h1>
-        <div id="container"></div>
+        <div id="react18-webpack"></div>
+        <div id="vue3"></div>
       </main>
     </div>
   )

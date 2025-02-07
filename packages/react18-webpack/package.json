@@ -80,6 +80,7 @@
     "@liutsing/eslint-config": "^0.0.10",
     "@liutsing/html-webpack-inject-plugin": "~0.3.0-beta.2",
     "@liutsing/prettier-config": "^0.0.6",
+    "@liutsing/config": "workspace:*",
     "@liutsing/types-utils": "^1.0.2",
     "@liutsing/webpack-config": "0.3.0-beta.5",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",

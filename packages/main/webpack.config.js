@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { getPort } = require('../../build/util')
+const { getPort } = require('@liutsing/config')
+
 const appName = 'main'
 
 /**

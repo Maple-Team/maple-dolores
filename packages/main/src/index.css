@@ -23,3 +23,7 @@ h1 {
 li {
   list-style-type: none;
 }
+
+* {
+  /* outline: red 1px dashed; */
+}

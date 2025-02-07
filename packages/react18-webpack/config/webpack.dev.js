@@ -1,7 +1,9 @@
+const { getPort, getPublicPath } = require('@liutsing/config')
+
 const path = require('path')
 const { dev } = require('@liutsing/webpack-config')
 const { merge } = require('webpack-merge')
-const { getPublicPath, getPort } = require('../../../build/util')
+
 const webpack = require('webpack')
 const base = require('./webpack.base')
 
