@@ -1,5 +1,6 @@
 {
   "current-year-progress": "{{year}}进度",
+  "current-week-number": "当前周：{{week}}",
   "keyWithCount_one": "{{count}} 个",
   "keyWithCount_other": "{{count}} 个"
 }

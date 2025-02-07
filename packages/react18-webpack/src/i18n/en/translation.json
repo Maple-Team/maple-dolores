@@ -36,5 +36,6 @@
   "您无权限访问该路由地址": "You do not have access to the routing address",
   "current-year-progress": "{{year}} progress",
   "keyWithCount_one": "{{count}} pcs",
-  "keyWithCount_other": "{{count}} pcs"
+  "keyWithCount_other": "{{count}} pcs",
+  "current-week-number": "current week: {{week}}"
 }
