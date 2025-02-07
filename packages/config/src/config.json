@@ -3,11 +3,7 @@
     "pkgName": "@liutsing/main",
     "port": 5040
   },
-  "react17": {
-    "pkgName": "@liutsing/react17",
-    "port": 5041
-  },
-  "Vue3": {
+  "vue3": {
     "pkgName": "@liutsing/admin",
     "port": 5042
   },

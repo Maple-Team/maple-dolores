@@ -37,6 +37,7 @@
     "@liutsing/tsconfig": "^0.0.6",
     "@liutsing/types-utils": "^1.0.2",
     "@nrwl/nx-cloud": "latest",
+    "@liutsing/config": "workspace:*",
     "@tanstack/react-query-devtools": "^5.64.0",
     "@types/jest": "^29.5.2",
     "@types/lodash-es": "^4.17.7",
