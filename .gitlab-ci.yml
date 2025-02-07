@@ -1,6 +1,7 @@
 include: ".common.gitlab-ci.yml"
 variables:
   COREPACK_NPM_REGISTRY: "https://registry.npmmirror.com"
+  TZ: "Asia/Shanghai"
   
 stages:
     - install
