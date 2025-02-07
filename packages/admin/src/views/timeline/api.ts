@@ -15,22 +15,15 @@ export const useListQuery = (params: {
   pageSize: Ref<number>
   type: Ref<Timeline['type'] | undefined>
 }) => {
-  return useQuery<BaseList<Timeline>>(
-    [
-      searchKey,
-      {
-        ...params,
-      },
-    ],
-    () =>
+  return useQuery<BaseList<Timeline>>({
+    queryKey: [searchKey, { ...params }],
+    queryFn: () =>
       fetchList({
         current: unref(params.current),
         pageSize: unref(params.pageSize),
         type: unref(params.type),
       }),
-    {
-      refetchOnWindowFocus: true,
-      networkMode: 'offlineFirst',
-    }
-  )
+    refetchOnWindowFocus: true,
+    networkMode: 'offlineFirst',
+  })
 }

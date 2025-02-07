@@ -10,7 +10,9 @@ export const fetchList = async () => {
 }
 
 export const useListQuery = () => {
-  return useQuery(['lzz-list-key'], fetchList, {
+  return useQuery({
+    queryKey: ['lzz-list-key'],
+    queryFn: fetchList,
     refetchOnWindowFocus: true,
     networkMode: 'offlineFirst',
     select(data) {
@@ -24,10 +26,9 @@ export const fetchListWithPagination = async (params: BaseParams<LzzModel>) => {
 type NewParams = Omit<BaseParams<LzzModel>, 'current'> & { current: Ref<number> }
 export const usePaginationQuery = (params: NewParams) => {
   const { current, ...rest } = params
-  return useQuery(['lzz-pagination-key', params], () => fetchListWithPagination({ current: current.value, ...rest }), {
-    refetchOnWindowFocus: true,
-    networkMode: 'offlineFirst',
-    keepPreviousData: true,
+  return useQuery({
+    queryKey: ['lzz-list-key'],
+    queryFn: () => fetchListWithPagination({ current: current.value, ...rest }),
   })
 }
 export const fetchById = async (id: string) => {
@@ -35,11 +36,11 @@ export const fetchById = async (id: string) => {
 }
 
 export const useDetailByIdQuery = (id: string) => {
-  return useQuery(['lzz-list-key'], () => fetchById(id), {
-    refetchOnWindowFocus: true,
-    networkMode: 'offlineFirst',
+  return useQuery({
+    queryKey: ['lzz-detail-key', id],
+    queryFn: () => fetchById(id),
     select(data) {
-      return values(data) as unknown as [LzzModel[]]
+      return values(data) as unknown as [LzzModel]
     },
   })
 }

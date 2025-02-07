@@ -34,6 +34,7 @@ const links = ref<string[]>(_links)
     <RouterView class="content overflow-auto" />
     <footer>powered by Vue + Typescript + Vite + Antd</footer>
   </main>
+  <VueQueryDevtools />
 </template>
 
 <style scoped lang="less">

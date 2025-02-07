@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import * as fs from 'fs'
 import { createServer } from 'https'
 import type { Socket } from 'socket.io'

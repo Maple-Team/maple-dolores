@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { ref, toRaw, unref } from 'vue'
+import { ref, toRaw } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import type { Meitu } from './type'
 import { fetchDetail, fetchPrevAndNext } from './api'
@@ -14,19 +14,17 @@ const id = ref<string>()
 
 id.value = params.id as string
 // key值关键
-const { isLoading, data: record } = useQuery<Meitu>(['xiuren-detail', toRaw(id)], () => fetchDetail(unref(id)), {
-  enabled: !!unref(id),
-  networkMode: 'offlineFirst',
+const { isLoading, data: record } = useQuery<Meitu>({
+  queryKey: ['xiuren-detail', toRaw(id)],
+  queryFn: () => fetchDetail(id.value),
+  enabled: !!id.value,
 })
 // key值关键
-const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Meitu; next?: Meitu }>(
-  ['xiuren-nav', toRaw(id)],
-  () => fetchPrevAndNext(unref(id)),
-  {
-    enabled: !!unref(id),
-    networkMode: 'offlineFirst',
-  }
-)
+const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: Meitu; next?: Meitu }>({
+  queryKey: ['xiuren-nav', toRaw(id)],
+  queryFn: () => fetchPrevAndNext(id.value),
+  enabled: !!id.value,
+})
 
 const onPrev = (pid?: string) => {
   router

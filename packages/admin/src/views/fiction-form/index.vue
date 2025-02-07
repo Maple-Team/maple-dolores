@@ -4,7 +4,7 @@ import { Form, message } from 'ant-design-vue'
 import { UploadOutlined } from '@ant-design/icons-vue'
 import type { UploadProps } from 'ant-design-vue'
 import type { RuleObject } from 'ant-design-vue/lib/form'
-// import type { RcFile } from 'antd/lib/upload'
+import type { RcFile } from 'antd/lib/upload'
 import { save, upload } from './api'
 import type { Fiction } from './type'
 
@@ -15,7 +15,7 @@ const fileList = ref<UploadProps['fileList']>([])
 const activeKey = ref<'input' | 'upload'>('input')
 // const uploading = ref<boolean>(false)
 
-const handleRemove = (file: File) => {
+const handleRemove = (file: RcFile) => {
   const index = fileList.value?.indexOf(file) || -1
   const newFileList = fileList.value?.slice()
   index > -1 && newFileList?.splice(index, 1)
@@ -67,8 +67,8 @@ const onSubmit = () => {
         const formData = new FormData()
         // fileList.value?.forEach((file) => {
         //   formData.append('fictions', file as RcFile, encodeURIComponent(file.name))
-        fileList.value.forEach((file) => {
-          formData.append('fictions', file as File, encodeURIComponent(file.name))
+        fileList.value?.forEach((file) => {
+          formData.append('fictions', file as RcFile, encodeURIComponent(file.name))
         })
         formData.append('bookName', data.bookName)
         upload(formData).then(() => {

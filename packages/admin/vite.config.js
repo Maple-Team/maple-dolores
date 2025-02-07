@@ -1,9 +1,9 @@
 import path from 'path'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import legacy from '@vitejs/plugin-legacy'
-import Inspect from 'vite-plugin-inspect'
-import eslintPlugin from 'vite-plugin-eslint'
+// import legacy from '@vitejs/plugin-legacy'
+// import Inspect from 'vite-plugin-inspect'
+// import eslintPlugin from 'vite-plugin-eslint'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import { getPort } from '../../build/util'
 import { name } from './package.json'
@@ -17,14 +17,13 @@ export default ({ mode }) => {
   return defineConfig({
     plugins: [
       VueDevTools(),
-      Inspect(),
-      vue({
-        reactivityTransform: true, // ->  支持属性默认值选项
-      }),
-      legacy({
-        targets: ['defaults', 'not IE 11'],
-      }),
-      isProd ? null : eslintPlugin(),
+      //   Inspect(),
+      vue(),
+      // reactivityTransform: true, // ->  支持属性默认值选项
+      //   legacy({
+      //     targets: ['defaults', 'not IE 11'],
+      //   }),
+      //   isProd ? null : eslintPlugin(),
       HtmlPluginInjectScript(),
     ].filter(Boolean),
     resolve: {

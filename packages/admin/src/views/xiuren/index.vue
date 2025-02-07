@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, reactive, ref, toRaw, unref, watch } from 'vue'
+import { h, reactive, ref, toRaw, watch } from 'vue'
 import { Tag } from 'ant-design-vue'
 import type { TableColumnProps } from 'ant-design-vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
@@ -31,8 +31,8 @@ const modelName = ref<string>()
 const tagName = ref<string>()
 const orgName = ref<string>()
 
-const { isLoading, data, error } = useQuery<BaseList<Meitu>>(
-  [
+const { isLoading, data, error } = useQuery<BaseList<Meitu>>({
+  queryKey: [
     searchKey,
     {
       current: toRaw(current),
@@ -43,25 +43,22 @@ const { isLoading, data, error } = useQuery<BaseList<Meitu>>(
       orgName: toRaw(orgName),
     },
   ],
-  () =>
+  queryFn: () =>
     fetchList({
-      page: unref(current),
-      pageSize: unref(pageSize),
-      title: unref(title),
-      modelName: unref(modelName),
-      tagName: unref(tagName),
-      orgName: unref(orgName),
+      page: current.value,
+      pageSize: pageSize.value,
+      title: title.value,
+      modelName: modelName.value,
+      tagName: tagName.value,
+      orgName: orgName.value,
     }),
-  {
-    refetchOnWindowFocus: true,
-    networkMode: 'offlineFirst',
-  }
-)
+})
 
 const onSubmit = () => {
   const data = toRaw(modelRef)
   title.value = data.title
   modelName.value = data.modelName as string
+  // @ts-expect-error: xx
   tagName.value = data.tagName as string
   orgName.value = data.orgName
   current.value = 1

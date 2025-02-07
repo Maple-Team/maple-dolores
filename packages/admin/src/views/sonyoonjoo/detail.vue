@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { ref, toRaw, unref } from 'vue'
+import { ref, toRaw } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import { fetchDetail, fetchPrevAndNext } from '../sonyoonjoo/api'
 import type { SonYoonJoo } from './type'
@@ -14,42 +14,39 @@ const id = ref<string>()
 
 id.value = params.id as string
 // key值关键
-const { isLoading, data: record } = useQuery<SonYoonJoo>(
-  ['sonyoonjoo-detail', toRaw(id)],
-  () => fetchDetail(unref(id)),
-  {
-    enabled: !!unref(id),
-    select: (data) => {
-      return { ...data, title: data.path.split('/').pop() }
-    },
-    networkMode: 'offlineFirst',
-  }
-)
+const { isLoading, data: record } = useQuery<SonYoonJoo>({
+  queryKey: ['sonyoonjoo-detail', toRaw(id)],
+  queryFn: () => fetchDetail(id.value),
+  enabled: !!id.value,
+  select: (data) => {
+    return {
+      ...data,
+      title: data.path.split('/').pop(),
+    }
+  },
+})
 // key值关键
-const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: SonYoonJoo; next?: SonYoonJoo }>(
-  ['sonyoonjoo-nav', toRaw(id)],
-  () => fetchPrevAndNext(unref(id)),
-  {
-    enabled: !!unref(id),
-    select: (data) => {
-      return {
-        prev: data.prev
-          ? {
-              ...data.prev,
-              title: data.prev.path.split('/').pop(),
-            }
-          : undefined,
-        next: data.next
-          ? {
-              ...data.next,
-              title: data.next.path.split('/').pop(),
-            }
-          : undefined,
-      }
-    },
-    networkMode: 'offlineFirst',
-  }
-)
+const { isLoading: navLoading, data: navRecord } = useQuery<{ prev?: SonYoonJoo; next?: SonYoonJoo }>({
+  queryKey: ['sonyoonjoo-nav', toRaw(id)],
+  queryFn: () => fetchPrevAndNext(id.value),
+  enabled: !!id.value,
+  select: (data) => {
+    return {
+      prev: data.prev
+        ? {
+            ...data.prev,
+            title: data.prev.path.split('/').pop(),
+          }
+        : undefined,
+      next: data.next
+        ? {
+            ...data.next,
+            title: data.next.path.split('/').pop(),
+          }
+        : undefined,
+    }
+  },
+})
 
 const onPrev = (pid?: string) => {
   router

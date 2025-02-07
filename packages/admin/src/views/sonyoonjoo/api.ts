@@ -3,7 +3,6 @@ import type { SonYoonJoo } from './type'
 import { request } from '@/utils'
 
 export const fetchList = async ({ pageParam }: AnyToFix) => {
-  console.log(pageParam, 'queryKey')
   return request<BaseList<SonYoonJoo>>({ url: '/sonyoonjoo', params: pageParam })
 }
 

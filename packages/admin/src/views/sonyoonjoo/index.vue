@@ -25,9 +25,7 @@ const { data, isFetching, error, fetchNextPage, hasNextPage, isFetchingNextPage,
         pageSize: pageSize.value,
       }
     },
-    // refetchOnWindowFocus: true,
-    networkMode: 'offlineFirst',
-    staleTime: 30 * 1000,
+    initialPageParam: 1,
   })
 const handler = () => {
   // console.log(e.target)
@@ -50,9 +48,9 @@ const handleReset = () => {
   path.value = undefined
 }
 
-const { data: years } = useQuery<number[]>(['sonyoonjoo-year-category'], fetchYearCategory, {
-  refetchOnWindowFocus: true,
-  networkMode: 'offlineFirst',
+const { data: years } = useQuery<number[]>({
+  queryKey: ['years'],
+  queryFn: fetchYearCategory,
 })
 // const realRecords = computed(() => {
 //   console.log(data.value?.pages)
