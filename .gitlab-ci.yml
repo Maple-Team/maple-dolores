@@ -2,6 +2,10 @@ include:
     - local: "packages/react18-webpack/.gitlab-ci.yml"
 
     # 添加更多子目录的.gitlab-ci.yml文件
+variables:
+    PNPM_HOME: "$CI_PROJECT_DIR/.pnpm"
+    PNPM_STORE_DIR: "$CI_PROJECT_DIR/.pnpm-store"
+    NODE_IMAGE: "mapleimage123/node:20-alpine3.19"
 
 stages:
     - install
@@ -9,3 +13,8 @@ stages:
     - image
     - deploy
     - notify
+# 公共的步骤，可以在其他.gitlab-ci.yml文件中引用
+# 如果pnpm-lock.yaml没有变化就不会执行
+
+install-job:
+    extends: .install-job

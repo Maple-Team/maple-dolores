@@ -9,7 +9,8 @@
     "lint": "nx run-many --target=lint --all",
     "dev": "cross-env NODE_ENV=development nx run-many --target=dev --all --parallel=10",
     "script:dev": "cross-env NODE_ENV=development tsx ./scripts/dev.ts",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "postinstall": "cd ./packages/config && pnpm build"
   },
   "prettier": "@liutsing/prettier-config",
   "dependencies": {
@@ -24,6 +25,7 @@
     "lodash-es": "^4.17.21",
     "mitt": "^3.0.1",
     "react": "^18.2.0",
+    "@liutsing/config": "workspace:*",
     "react-dom": "^18.2.0",
     "socket.io": "^4.7.2",
     "video.js": "^8.10.0"
@@ -37,7 +39,6 @@
     "@liutsing/tsconfig": "^0.0.6",
     "@liutsing/types-utils": "^1.0.2",
     "@nrwl/nx-cloud": "latest",
-    "@liutsing/config": "workspace:*",
     "@tanstack/react-query-devtools": "^5.64.0",
     "@types/jest": "^29.5.2",
     "@types/lodash-es": "^4.17.7",
