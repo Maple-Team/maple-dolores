@@ -48,6 +48,10 @@ export const provider = (props) => {
 }
 ```
 
+## build
+```sh
+pnpm --filter <packageName> run build 
+```
 ## Terminology
 
 - sandbox

@@ -5,20 +5,18 @@ import vue from '@vitejs/plugin-vue'
 // import Inspect from 'vite-plugin-inspect'
 // import eslintPlugin from 'vite-plugin-eslint'
 // import VueDevTools from 'vite-plugin-vue-devtools'
-import commonjs from '@rollup/plugin-commonjs'
 import { getPort } from '@liutsing/config'
 import { name } from './package.json'
 import { HtmlPluginInjectScript } from './plugin'
 
 const port = getPort(name)
 
-export default ({ mode }) => {
+export default ({ mode }: { mode: string }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
   const isProd = process.env.NODE_ENV === 'production'
   return defineConfig({
     plugins: [
       //   VueDevTools(),
-      commonjs(),
       //   Inspect(),
       vue(),
       // reactivityTransform: true, // ->  支持属性默认值选项

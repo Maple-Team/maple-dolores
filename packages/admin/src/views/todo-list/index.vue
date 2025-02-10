@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Directive, Ref } from 'vue'
-import { computed, ref, unref, watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { uuid } from '@liutsing/utils'
 import { message } from 'ant-design-vue'
 import MdiSync from './MdiSync.vue'
@@ -24,7 +24,9 @@ const visibility = ref<FilterType>('all')
 
 const filteredTodos = computed<Todo[]>(() =>
   // eslint-disable-next-line prettier/prettier
-  visibility.value === 'all' ? todos.value : todos.value.filter(({ completed }) => (visibility.value === 'active' ? !completed : completed))
+  visibility.value === 'all'
+    ? todos.value
+    : todos.value.filter(({ completed }) => (visibility.value === 'active' ? !completed : completed))
 )
 const remaining = computed(() => todos.value.filter(({ completed }) => !completed).length)
 
@@ -52,7 +54,7 @@ const removeTodo = (todo: Todo) => {
 const addTodo = () => {
   todos.value.push({
     title: newTodo.value,
-    id: uuid(10),
+    id: uuid(),
   })
   newTodo.value = ''
 }
@@ -60,10 +62,10 @@ const addTodo = () => {
 const pluralize = (word: string, count: number) => {
   return word + (count === 1 ? '' : 's')
 }
-const { mutate, isLoading } = useTodoMutation()
+const { mutate, isPending } = useTodoMutation()
 const sync = () => {
-  if (isLoading.value) return
-  mutate(unref(todos.value), {
+  if (isPending.value) return
+  mutate(todos.value, {
     onSuccess: () => {
       message.success('同步成功')
     },
@@ -92,7 +94,7 @@ watchEffect(() => {
           />
           <MdiSync
             @click="sync"
-            :isLoading="isLoading"
+            :isLoading="isPending"
           />
         </div>
       </header>

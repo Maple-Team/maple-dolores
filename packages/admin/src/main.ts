@@ -1,7 +1,7 @@
 import { createApp, h } from 'vue'
 import './style.css'
 import Antd, { message } from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css'
+import 'ant-design-vue/dist/reset.css'
 import { vueBridge } from '@garfish/bridge-vue-v3'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { VueQueryPluginOptions } from '@tanstack/vue-query'

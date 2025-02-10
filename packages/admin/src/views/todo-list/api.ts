@@ -11,9 +11,15 @@ const fetchTodos = async (params: AnyToFix) => {
 }
 
 export const useTodosQuery = (params: AnyToFix) => {
-  return useQuery(['todo-search-list', ...params], () => fetchTodos(params), {})
+  return useQuery({
+    queryKey: ['todo-search-list', params],
+    queryFn: () => fetchTodos(params),
+  })
 }
 
 export const useTodoMutation = () => {
-  return useMutation(['todo-sync'], (data: Todo[]) => syncTodos(data))
+  return useMutation({
+    mutationFn: syncTodos,
+    onSuccess: () => syncTodos([]),
+  })
 }
