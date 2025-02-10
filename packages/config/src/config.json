@@ -4,7 +4,7 @@
     "port": 5040
   },
   "vue3": {
-    "pkgName": "@liutsing/admin",
+    "pkgName": "@liutsing/vue3",
     "port": 5042
   },
   "react18-webpack": {

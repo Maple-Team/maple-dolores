@@ -1,5 +1,6 @@
 include:
     - local: "packages/react18-webpack/.gitlab-ci.yml"
+    - local: "packages/vue3/.gitlab-ci.yml"
 
     # 添加更多子目录的.gitlab-ci.yml文件
 variables:

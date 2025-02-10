@@ -1,12 +1,24 @@
-import * as ChildProcess from 'node:child_process'
+import * as child from 'node:child_process'
 import { writeFileSync } from 'node:fs'
 import type { Plugin } from 'vite'
 import dayjs from 'dayjs'
 import { version } from '../../package.json'
 
-// TODO 适配CICD环境
-const hash = ChildProcess.execSync('git rev-parse HEAD').toString().trim().substring(0, 8)
-const currentGitBranch = ChildProcess.execSync('git rev-parse --abbrev-ref HEAD').toString().trim()
+// 获取app版本信息
+let currentGitBranch = 'N/A'
+let hash = 'N/A'
+
+if (process.env.CI) {
+  currentGitBranch = process.env.CI_COMMIT_BRANCH!
+  hash = process.env.CI_COMMIT_SHORT_SHA!
+} else {
+  try {
+    // 只在生产环境下输出
+    currentGitBranch = child.execSync('git rev-parse --abbrev-ref HEAD').toString().trim()
+    hash = child.execSync('git rev-parse HEAD').toString().trim().substring(0, 8)
+  } catch (error) {}
+}
+
 writeFileSync('./public/version.json', JSON.stringify({ hash, branch: currentGitBranch }))
 
 function consoleFn(opts: { key: string; value: string; valueBgColor: string; keyBgColor: string; textColor: string }) {

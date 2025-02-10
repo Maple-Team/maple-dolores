@@ -1,0 +1,47 @@
+variables:
+  COREPACK_NPM_REGISTRY: "https://registry.npmmirror.com"
+  TZ: "Asia/Shanghai"
+  SUB_PACKAGE: "vue3"
+  SUB_PACKAGE_PORT: "6042"
+
+include:
+  - local: ".gitlab-ci-common.yml"
+
+build-job-vue3:
+  extends: .build-job
+  rules:
+    - changes:
+        - packages/$SUB_PACKAGE/**/*
+
+build-image-job-vue3:
+  extends: .build-image-job
+  dependencies:
+    - build-job-vue3
+  needs:
+    - job: build-job-vue3
+      optional: false
+  rules:
+    - changes:
+        - packages/$SUB_PACKAGE/**/*
+deploy-job-vue3:
+  extends: .deploy-job
+  needs:
+    - job: build-image-job-vue3
+      optional: false
+  rules:
+    - changes:
+        - packages/$SUB_PACKAGE/**/*
+
+# 部署成功的通知
+notify-success-vue3:
+  extends: .notify-success
+  needs:
+    - job: deploy-job-vue3
+      optional: false
+
+# 部署失败的通知
+notify-failure-vue3:
+  extends: .notify-failure
+  needs:
+    - job: deploy-job-vue3
+      optional: false
