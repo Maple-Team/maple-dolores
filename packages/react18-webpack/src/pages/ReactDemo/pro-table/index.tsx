@@ -1,13 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { ProTable, ProColumns } from '@ant-design/pro-table'
-import { DatePicker, Input } from 'antd'
+import type { ProColumns } from '@ant-design/pro-table'
+import { ProTable } from '@ant-design/pro-table'
 import React, { memo, useCallback, useReducer, useRef } from 'react'
-import { queryKey, useFetchTimeLineList } from './hook'
-import { BaseParams, OptionalPick } from '@liutsing/types-utils'
-import { Timeline } from './type'
-import { ProFormInstance } from '@ant-design/pro-form'
-import locale from 'antd/es/date-picker/locale/zh_CN'
+import type { BaseParams, OptionalPick } from '@liutsing/types-utils'
+import type { ProFormInstance } from '@ant-design/pro-form'
 import dayjs from 'dayjs'
+import type { Timeline } from './type'
+import { queryKey, useFetchTimeLineList } from './hook'
 
 type PartialFormModel = OptionalPick<Timeline, 'content' | 'type'>
 
@@ -125,7 +124,7 @@ export const Component = memo(() => {
         },
         collapsed: false,
       }}
-      rowKey="_id"
+      rowKey="id"
       // 可以获取到查询表单的 form 实例，用于一些灵活的配置
       formRef={formRef}
       // 工具栏： 全屏，刷新，紧凑度，列设置(要显示的列，以及顺序)，支持传入function
@@ -133,7 +132,7 @@ export const Component = memo(() => {
       // antd form 的配置
       form={{
         syncToUrl: (values, type) => {
-          const { current, pageNo, ...rest } = values
+          const { current, ...rest } = values
           // get: 从url到表单
           // set: 从表单到url
           console.log('syncToUrl', values, type)

@@ -1,4 +1,4 @@
-const { getPort, getPublicPath } = require('@liutsing/config')
+const { getPort } = require('@liutsing/config')
 
 const path = require('path')
 const { dev } = require('@liutsing/webpack-config')
@@ -7,9 +7,11 @@ const { merge } = require('webpack-merge')
 const webpack = require('webpack')
 const base = require('./webpack.base')
 
-const isDevelopment = process.env.NODE_ENV !== 'production'
-const appName = 'react18-webpack'
+const appName = require('../package.json').name
 
+/**
+ * @type {import('webpack').Configuration}
+ */
 const config = merge(base, dev, {
   entry: path.resolve(__dirname, '../src/main.tsx'),
   devtool: 'cheap-module-source-map',
@@ -67,18 +69,7 @@ const config = merge(base, dev, {
     //   },
     // },
   },
-  output: {
-    // 开发环境设置 true 将会导致热更新失效
-    clean: isDevelopment ? false : true,
-    filename: '[name].[contenthash].js',
-    chunkFilename: '[name].[contenthash].js',
-    // 需要配置成 umd 规范
-    libraryTarget: 'umd',
-    // 修改不规范的代码格式，避免逃逸沙箱
-    globalObject: 'window',
-    // 保证子应用的资源路径变为绝对路径
-    publicPath: getPublicPath(appName),
-  },
+
   devServer: {
     ...dev.devServer,
     historyApiFallback: true,

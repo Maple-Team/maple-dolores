@@ -123,6 +123,7 @@ export const RootComponent = ({ basename }: { basename: string }) => {
             id: 'react-amap',
             path: '/react-amap',
             loader: () => menuLoader('/react-amap'),
+            // 微前端环境下：报错
             element: (
               <Suspense fallback={<Spin spinning />}>
                 <ReactAmap />
@@ -142,6 +143,7 @@ export const RootComponent = ({ basename }: { basename: string }) => {
             element: <Outlet />,
             handle: { crumb: (data: HandleData) => data.id },
             children: [
+              // 微前端环境下：报错, 懒加载的url的baseurl不对
               {
                 index: true,
                 // NOTE 懒加载-> 拆包
@@ -228,7 +230,7 @@ export const RootComponent = ({ basename }: { basename: string }) => {
     ],
     { basename: newBaseName }
   )
-  console.log({ newBaseName }, router)
+  console.log('newBaseName', newBaseName)
 
   return (
     <StrictMode>

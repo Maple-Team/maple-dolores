@@ -6,6 +6,7 @@ import { AxiosError } from 'axios'
 
 export default function ErrorPage() {
   const error = useRouteError() as ErrorResponse
+  console.error(error)
 
   if (error instanceof AxiosError) {
     if (error.config?.url === '/api/auth/profile') {

@@ -7,16 +7,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 /**
  * @type {import('webpack').Configuration}
  */
-module.exports = merge(base, prod, {
+const config = merge(base, prod, {
   entry: path.resolve(__dirname, '../src/main.tsx'),
-  output: {
-    clean: {
-      dry: true,
-    },
-    chunkFilename: '[id].[contenthash].js',
-    filename: '[name].[contenthash].js',
-    path: path.resolve(__dirname, '../dist'),
-  },
   optimization: {
     usedExports: true,
     sideEffects: true,
@@ -42,4 +34,7 @@ module.exports = merge(base, prod, {
     },
   },
   plugins: [new CleanWebpackPlugin({})],
+  output: base.output,
 })
+
+module.exports = config
