@@ -20,7 +20,7 @@ const apps = Object.keys(configs)
         `/${k}`, // NOTE 根据路由激活
       entry: `${protocol}//${hostname}:${configs[k].port}`,
       sandbox: !escapedApps.includes(k), // vite下关闭沙箱
-      domGetter: `#${k}`,
+      domGetter: '#container',
     }
   })
 

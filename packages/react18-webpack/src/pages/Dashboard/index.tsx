@@ -34,6 +34,8 @@ export default () => {
   const { t } = useTranslation()
   const current = dayjs(dayjs().format('YYYY-MM-DD'))
 
+  console.log('test')
+
   return (
     <div>
       <h1 className="py-4 text-[24px]"> {t('current-year-progress', { year: current.format('YYYY') })}</h1>

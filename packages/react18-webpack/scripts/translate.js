@@ -33,6 +33,12 @@ const translates = (key) => {
       en: res[0]?.translation,
       tw: res[1]?.translation,
     }
+  }).catch((err) => {
+   console.error(err)
+   return {
+    en: {},
+    tw: {}, 
+   } 
   })
 }
 

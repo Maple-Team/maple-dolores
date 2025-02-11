@@ -2,6 +2,7 @@
 
 我的项目结构如下：
 
+```tree
 project-name/
 │
 ├──packages/
@@ -26,6 +27,7 @@ project-name/
 ├── .gitlab-ci.yml
 └── .gitlab-ci-common.yml
  
+```
 
 `.gitlab-ci.yml`文件内容如下：
 ```yaml

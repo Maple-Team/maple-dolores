@@ -1,0 +1,52 @@
+include:
+  - local: ".gitlab-ci-common.yml"
+
+build-job-main:
+  extends: .build-job
+  variables:
+    SUB_PACKAGE: "main"  
+  rules:
+    - changes:
+        - packages/main/**/*  
+
+build-image-job-main:
+  extends: .build-image-job
+  variables:
+    SUB_PACKAGE: "main"    
+  dependencies:
+    - build-job-main
+  needs:
+    - job: build-job-main
+      optional: false
+  rules:
+    - changes:
+        - packages/main/**/*      
+
+deploy-job-main:
+  extends: .deploy-job
+  variables:
+    SUB_PACKAGE: "main"  
+    SUB_PACKAGE_PORT: "6040"  
+  needs:
+    - job: build-image-job-main
+      optional: false
+  rules:
+    - changes:
+        - packages/main/**/*  
+
+# 部署成功的通知
+notify-success-main:
+  extends: .notify-success
+  variables:
+    SUB_PACKAGE: "main"   
+  needs:
+    - job: deploy-job-main
+      optional: false
+# 部署失败的通知
+notify-failure-main:
+  extends: .notify-failure
+  variables:
+    SUB_PACKAGE: "main"   
+  needs:
+    - job: deploy-job-main
+      optional: false    
