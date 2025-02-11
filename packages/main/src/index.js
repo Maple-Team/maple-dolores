@@ -9,6 +9,7 @@ ReactDOM.render(<App />, document.getElementById('root'))
 const escapedApps = ['vue3']
 const protocol = window.location.protocol
 const hostname = window.location.hostname
+const isDev = process.env.NODE_ENV === 'development'
 
 const apps = Object.keys(configs)
   .filter((k) => k !== 'main')
@@ -18,7 +19,7 @@ const apps = Object.keys(configs)
       activeWhen:
         //   () => true, // NOTE 同时挂载多个子应用
         `/${k}`, // NOTE 根据路由激活
-      entry: `${protocol}//${hostname}:${configs[k].port}`,
+      entry: `${protocol}//${hostname}:${isDev ? configs[k].port : configs[k].port + 1000}`,
       sandbox: !escapedApps.includes(k), // vite下关闭沙箱
       domGetter: '#container',
     }
