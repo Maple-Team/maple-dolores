@@ -1,12 +1,13 @@
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { ProColumns } from '@ant-design/pro-table'
 import { ProTable } from '@ant-design/pro-table'
 import React, { memo, useCallback, useReducer, useRef } from 'react'
-import type { BaseParams, OptionalPick } from '@liutsing/types-utils'
+import type { BaseList, BaseParams, OptionalPick } from '@liutsing/types-utils'
 import type { ProFormInstance } from '@ant-design/pro-form'
 import dayjs from 'dayjs'
+import { Popconfirm, Space } from 'antd'
 import type { Timeline } from './type'
-import { queryKey, useFetchTimeLineList } from './hook'
+import { deleteById, queryKey, useFetchTimeLineList } from './hook'
 
 type PartialFormModel = OptionalPick<Timeline, 'content' | 'type'>
 
@@ -37,7 +38,6 @@ export const Component = memo(() => {
         case 'PageSizeChange':
           return { ...state, pageSize: action.payload, current: 1 }
         case 'SearchFormChange':
-          console.log('SearchFormChange', action.payload)
           return { ...state, ...action.payload }
         default:
           return { ...state }
@@ -48,8 +48,71 @@ export const Component = memo(() => {
       current: 1,
     }
   )
-  //   console.log('params', params)
+  console.log('params', params)
   const formRef = useRef<ProFormInstance>()
+  const { data, isFetching, isLoading } = useFetchTimeLineList(params)
+  const removePreviousQueries = useCallback(() => {
+    queryClient.removeQueries({ queryKey: [queryKey, params] })
+  }, [params, queryClient])
+
+  const { mutate: mutateDelete } = useMutation({
+    mutationKey: ['postBcuDeviceDeleteKey'],
+    mutationFn: deleteById,
+    onMutate: async (id: string) => {
+      console.log('query onMutate', id)
+      await queryClient.cancelQueries({
+        queryKey: [queryKey, params],
+      })
+      const previousData = queryClient.getQueryData<BaseList<Timeline>>([queryKey, params])
+
+      queryClient.setQueryData([queryKey, params], (oldData: BaseList<Timeline> | undefined) => {
+        // 1. 总记录数减一
+        // 2. 从当前页的数据中删除这一条数据
+        const newData: BaseList<Timeline> = {
+          ...oldData,
+          pagination: {
+            ...oldData?.pagination,
+            total: oldData?.pagination?.total ? oldData?.pagination?.total - 1 : 0,
+            current: oldData?.pagination?.current || 0,
+            pageSize: oldData?.pagination?.pageSize || 0,
+          },
+          records: oldData?.records?.filter((item) => item.id !== id) || [],
+        }
+        return newData
+      })
+      return { previousData }
+    },
+    onSuccess: (data, variables, ctx) => {
+      console.log('query success', data, variables, ctx)
+    },
+    onError: (_error, _variables, ctx) => {
+      console.log('query onError', _error, _variables, ctx)
+      // NOTE 直接使用原来的整个数据替代
+      queryClient.setQueryData([queryKey, params], () => {
+        return ctx?.previousData
+      })
+    },
+    onSettled(data, error, variables, ctx) {
+      // 如果当前页只有一条数据，删除后跳转到第一页
+      console.log('query onSettled', data, error, variables, ctx)
+      const length = ctx?.previousData?.records.length || 0
+      if (length === 1) {
+        // 如果就是一页，删除后，跳转到第一页(或其他的策略)，这样就不会发起请求，因为queryKey没有变化
+        dispatch({
+          type: 'PageChange',
+          payload: 1,
+        })
+        // queryClient.fetchQuery: 重新请求数据, NOT WORKING
+        // queryClient.fetchQuery({
+        //   queryKey: [queryKey, { ...params, current: 1 }],
+        // })
+      }
+      queryClient.invalidateQueries({
+        queryKey: [queryKey, params],
+      })
+    },
+  })
+
   const columns: ProColumns<Timeline>[] = [
     {
       title: '内容',
@@ -100,11 +163,25 @@ export const Component = memo(() => {
       //   },
       //   initialValue: dayjs(),
     },
+    {
+      title: '操作',
+      valueType: 'option',
+      render: (_, record, _index, _action) => {
+        return [
+          <Space key={record.id}>
+            <Popconfirm
+              title="确定删除吗？"
+              onConfirm={() => {
+                mutateDelete(record.id)
+              }}
+            >
+              <a>删除</a>
+            </Popconfirm>
+          </Space>,
+        ]
+      },
+    },
   ]
-  const { data, isFetching, isLoading } = useFetchTimeLineList(params)
-  const removePreviousQueries = useCallback(() => {
-    queryClient.removeQueries({ queryKey: [queryKey, params] })
-  }, [params, queryClient])
 
   return (
     <ProTable
@@ -118,6 +195,7 @@ export const Component = memo(() => {
       debounceTime={500}
       dataSource={data?.records}
       dateFormatter="number"
+      options={false}
       search={{
         onCollapse(collapsed) {
           console.log('onCollapse', collapsed)
@@ -154,6 +232,8 @@ export const Component = memo(() => {
         onValuesChange: (changedValues: PartialFormModel) => {
           console.log('onValuesChange', changedValues)
         },
+        // TODO test
+        // dateFormatter: 'number',
       }}
       pagination={{
         pageSize: params.pageSize,

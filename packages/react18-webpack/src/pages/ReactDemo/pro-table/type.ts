@@ -4,4 +4,5 @@ export interface Timeline {
   time: string
   type: 'timeline' | 'treehole'
   ts: number
+  id: string
 }
