@@ -1,8 +1,8 @@
 export interface Timeline {
   content: string
-  date: string
-  time: string
   type: 'timeline' | 'treehole'
-  ts: number
+  createdAt: string
+  updatedAt: string
   id: string
+  ts?: number
 }
