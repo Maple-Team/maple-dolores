@@ -102,9 +102,8 @@
         - echo $image
         - docker stop $CI_PROJECT_NAME-$SUB_PACKAGE || true
         - docker rm $CI_PROJECT_NAME-$SUB_PACKAGE || true
-        - docker run --name $CI_PROJECT_NAME-$SUB_PACKAGE --network maple-network -d -p $SUB_PACKAGE_PORT:80 $image
+        - docker run --restart=always --name $CI_PROJECT_NAME-$SUB_PACKAGE --network maple-network -d -p $SUB_PACKAGE_PORT:80 $image
 
-              
 .notify-success:
     stage: notify
     script:
