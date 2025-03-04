@@ -1,18 +1,18 @@
 include:
-  - local: ".gitlab-ci-common.yml"
+  - local: '.gitlab-ci-common.yml'
 
 build-job-react18-webpack:
   extends: .build-job
   variables:
-    SUB_PACKAGE: "react18-webpack"  
+    SUB_PACKAGE: 'react18-webpack'
   rules:
     - changes:
-        - packages/react18-webpack/**/*  
+        - packages/react18-webpack/**/*
 
 build-image-job-react18-webpack:
   extends: .build-image-job
   variables:
-    SUB_PACKAGE: "react18-webpack"    
+    SUB_PACKAGE: 'react18-webpack'
   dependencies:
     - build-job-react18-webpack
   needs:
@@ -20,33 +20,34 @@ build-image-job-react18-webpack:
       optional: false
   rules:
     - changes:
-        - packages/react18-webpack/**/*      
+        - packages/react18-webpack/**/*
 
 deploy-job-react18-webpack:
   extends: .deploy-job
   variables:
-    SUB_PACKAGE: "react18-webpack"  
-    SUB_PACKAGE_PORT: "6043"  
+    SUB_PACKAGE: 'react18-webpack'
+    SUB_PACKAGE_PORT: '6043'
   needs:
     - job: build-image-job-react18-webpack
       optional: false
   rules:
     - changes:
-        - packages/react18-webpack/**/*  
+        - packages/react18-webpack/**/*
 
 # 部署成功的通知
 notify-success-react18-webpack:
   extends: .notify-success
   variables:
-    SUB_PACKAGE: "react18-webpack"   
+    SUB_PACKAGE: 'react18-webpack'
   needs:
     - job: deploy-job-react18-webpack
       optional: false
+
 # 部署失败的通知
 notify-failure-react18-webpack:
   extends: .notify-failure
   variables:
-    SUB_PACKAGE: "react18-webpack"   
+    SUB_PACKAGE: 'react18-webpack'
   needs:
     - job: deploy-job-react18-webpack
-      optional: false    
+      optional: false

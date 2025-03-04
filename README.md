@@ -1,4 +1,4 @@
-# 基于 garfish 微前端的个人前端应用集合
+# 基于 garfish 微前端的应用集合
 
 ## Apps
 
@@ -49,10 +49,16 @@ export const provider = (props) => {
 ```
 
 ## build
+
 ```sh
-pnpm --filter <packageName> run build 
+pnpm --filter <packageName> run build
 ```
+
 ## Terminology
 
 - sandbox
 - 框架原理
+
+## CICD
+
+[Readme](./gitlab-cicd.md)
