@@ -16,6 +16,7 @@
     - nodejs
   image: $NODE_IMAGE
   script:
+    - export
     - time pnpm install --frozen-lockfile
   rules:
     - changes:
@@ -47,6 +48,7 @@
     paths:
       - 'packages/$SUB_PACKAGE/dist'
       - 'packages/$SUB_PACKAGE/version.txt'
+    expire_in: 1 hr
   cache:
     key:
       files:
@@ -91,6 +93,7 @@
   artifacts:
     paths:
       - image.txt
+    expire_in: 1 hr
 
 .deploy-job:
   stage: deploy

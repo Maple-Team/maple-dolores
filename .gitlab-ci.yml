@@ -23,7 +23,8 @@ variables:
   TZ: 'Asia/Shanghai'
 
 workflow:
-  name: 'workflow name'
+  # 覆盖默认的工作流名称：默认的是当前的最新提交信息
+  # name: 'workflow name'
 
 stages:
   - install
@@ -33,18 +34,6 @@ stages:
   - notify
 # 公共的步骤，可以在其他.gitlab-ci.yml文件中引用
 # 如果pnpm-lock.yaml没有变化就不会执行
-
-before_script:
-  - echo "before_script"
-  - echo "CI_PIPELINE_SOURCE $CI_PIPELINE_SOURCE"
-  - echo "CI_MERGE_REQUEST_SOURCE_BRANCH_NAME $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
-  - echo "CI_MERGE_REQUEST_TARGET_BRANCH_NAME $CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
-  - echo "CI_MERGE_REQUEST_TITLE $CI_MERGE_REQUEST_TITLE"
-  - echo "CI_COMMIT_REF_NAME $CI_COMMIT_REF_NAME"
-  - echo "CI_COMMIT_REF_PROTECTED $CI_COMMIT_REF_PROTECTED"
-  - echo "CI_COMMIT_REF_SLUG $CI_COMMIT_REF_SLUG"
-  - echo "CI_MERGE_REQUEST_ID $CI_MERGE_REQUEST_ID"
-  - export
 
 install-job:
   extends: .install-job
