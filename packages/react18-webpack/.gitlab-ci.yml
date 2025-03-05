@@ -61,4 +61,5 @@ eslint-job-react18-webpack:
   script:
     - echo "eslint-job-react18-webpack"
     - cd "packages/react18-webpack"
+    - time pnpm install --frozen-lockfile
     - pnpm run lint
