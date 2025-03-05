@@ -19,7 +19,5 @@ if (!window.__GARFISH__) {
     },
   })
 
-  //   const rootElement = React.createElement(RootComponent)
-
   root.render(<RootComponent basename="/" />)
 }

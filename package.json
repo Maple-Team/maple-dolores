@@ -1,6 +1,6 @@
 {
-  "name": "@maple/colorful",
-  "version": "0.0.1",
+  "name": "@maple/dolores",
+  "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@9.9.0",
   "scripts": {
