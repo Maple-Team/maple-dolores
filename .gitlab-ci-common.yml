@@ -144,3 +144,22 @@
       when: never
     - if: $CI_COMMIT_BRANCH == "main"
       when: always
+
+.eslint:
+  image: $NODE_IMAGE
+  before_script:
+    - pnpm config set store-dir $PNPM_STORE_DIR
+  stage: eslint
+  tags:
+    - nodejs
+  script:
+    - cd "packages/$SUB_PACKAGE"
+    - time pnpm install --frozen-lockfile
+    - pnpm run lint
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - $PNPM_STORE_DIR
+    policy: pull
