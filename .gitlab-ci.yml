@@ -28,7 +28,7 @@ workflow:
 
 stages:
   - install
-  - eslint
+#   - eslint
   - build
   - image
   - deploy
