@@ -25,7 +25,6 @@ const apps = Object.keys(configs)
     }
   })
 
-console.log(apps)
 
 Garfish.run({
   basename: '/',

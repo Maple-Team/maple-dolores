@@ -52,6 +52,7 @@ notify-failure-react18-webpack:
 
 # eslint
 eslint-job-react18-webpack:
-  stage: eslint
-  script:
-    - echo 'eslint-job-react18-webpack'
+  extends:
+    - .eslint
+  variables:
+    SUB_PACKAGE: 'react18-webpack'

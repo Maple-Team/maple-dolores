@@ -2,15 +2,16 @@ include:
   - local: '.gitlab-ci-common.yml'
 
 build-job-main:
-  extends: .build-job
+  extends:
+    - .build-job
+    - .merge-request
   variables:
     SUB_PACKAGE: 'main'
-  rules:
-    - changes:
-        - packages/main/**/*
 
 build-image-job-main:
-  extends: .build-image-job
+  extends:
+    - .build-image-job
+    - .merge-request
   variables:
     SUB_PACKAGE: 'main'
   dependencies:
@@ -19,7 +20,9 @@ build-image-job-main:
     - job: build-job-main
 
 deploy-job-main:
-  extends: .deploy-job
+  extends:
+    - .deploy-job
+    - .merge-request
   variables:
     SUB_PACKAGE: 'main'
     SUB_PACKAGE_PORT: '6040'
@@ -28,7 +31,9 @@ deploy-job-main:
 
 # 部署成功的通知
 notify-success-main:
-  extends: .notify-success
+  extends:
+    - .notify-success
+    - .merge-request
   variables:
     SUB_PACKAGE: 'main'
   needs:
@@ -36,8 +41,17 @@ notify-success-main:
 
 # 部署失败的通知
 notify-failure-main:
-  extends: .notify-failure
+  extends:
+    - .notify-failure
+    - .merge-request
   variables:
     SUB_PACKAGE: 'main'
   needs:
     - job: deploy-job-main
+
+# eslint
+eslint-job-main:
+  extends:
+    - .eslint
+  variables:
+    SUB_PACKAGE: 'main'

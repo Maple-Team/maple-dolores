@@ -1,15 +1,18 @@
 include:
   # 引入公共配置（定义通用变量、作业模板等）
   - local: '.gitlab-ci-common.yml'
+
   # 动态引入子目录的 CI 配置（关键：仅在目录变更时引入）
   - local: 'packages/react18-webpack/.gitlab-ci.yml'
     rules:
       - changes:
           - packages/react18-webpack/**/*
+
   - local: 'packages/vue3/.gitlab-ci.yml'
     rules:
       - changes:
           - packages/vue3/**/*
+
   - local: 'packages/main/.gitlab-ci.yml'
     rules:
       - changes:
@@ -21,6 +24,10 @@ variables:
   NODE_IMAGE: 'mapleimage123/node:20-alpine3.19'
   COREPACK_NPM_REGISTRY: 'https://registry.npmmirror.com'
   TZ: 'Asia/Shanghai'
+
+default:
+  image:
+    name: $NODE_IMAGE
 
 workflow:
   # 覆盖默认的工作流名称：默认的是当前的最新提交信息

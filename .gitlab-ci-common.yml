@@ -14,20 +14,9 @@
   stage: install
   tags:
     - nodejs
-  image: $NODE_IMAGE
   script:
     - export
     - time pnpm install --frozen-lockfile
-    - echo "before_script"
-    - echo "CI_PIPELINE_SOURCE $CI_PIPELINE_SOURCE"
-    - echo "CI_MERGE_REQUEST_SOURCE_BRANCH_NAME $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
-    - echo "CI_MERGE_REQUEST_TARGET_BRANCH_NAME $CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
-    - echo "CI_MERGE_REQUEST_TITLE $CI_MERGE_REQUEST_TITLE"
-    - echo "CI_COMMIT_REF_NAME $CI_COMMIT_REF_NAME"
-    - echo "CI_COMMIT_REF_PROTECTED $CI_COMMIT_REF_PROTECTED"
-    - echo "CI_COMMIT_REF_SLUG $CI_COMMIT_REF_SLUG"
-    - echo "CI_MERGE_REQUEST_ID $CI_MERGE_REQUEST_ID"
-    - export
   rules:
     - changes:
         - pnpm-lock.yaml
@@ -46,7 +35,6 @@
   stage: build
   tags:
     - nodejs
-  image: $NODE_IMAGE
   script:
     - echo "building $SUB_PACKAGE"
     - cd "packages/$SUB_PACKAGE"
@@ -156,7 +144,6 @@
       when: always
 
 .eslint:
-  image: $NODE_IMAGE
   before_script:
     - pnpm config set store-dir $PNPM_STORE_DIR
   stage: eslint
@@ -173,3 +160,4 @@
     paths:
       - $PNPM_STORE_DIR
     policy: pull
+  allow_failure: true
