@@ -52,6 +52,7 @@ notify-failure-react18-webpack:
 
 # eslint
 eslint-job-react18-webpack:
+  image: $NODE_IMAGE
   before_script:
     - pnpm config set store-dir $PNPM_STORE_DIR
   stage: eslint
