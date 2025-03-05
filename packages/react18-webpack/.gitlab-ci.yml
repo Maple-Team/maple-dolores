@@ -6,8 +6,10 @@ build-job-react18-webpack:
   variables:
     SUB_PACKAGE: 'react18-webpack'
   rules:
-    - changes:
-        - packages/react18-webpack/**/*
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main" 
+      when: always
 
 build-image-job-react18-webpack:
   extends: .build-image-job
@@ -41,3 +43,12 @@ notify-failure-react18-webpack:
     SUB_PACKAGE: 'react18-webpack'
   needs:
     - job: deploy-job-react18-webpack
+
+lint-job-react18-webpack:
+  stage: eslint
+  tags:
+    - nodejs
+  script:
+    - echo "lint-job-react18-webpack"
+    - cd "packages/react18-webpack"
+    - pnpm run lint
