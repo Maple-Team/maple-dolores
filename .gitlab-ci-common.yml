@@ -16,6 +16,7 @@
     - nodejs
   image: $NODE_IMAGE
   script:
+    - export
     - time pnpm install --frozen-lockfile
     - echo "before_script"
     - echo "CI_PIPELINE_SOURCE $CI_PIPELINE_SOURCE"
@@ -57,6 +58,7 @@
     paths:
       - 'packages/$SUB_PACKAGE/dist'
       - 'packages/$SUB_PACKAGE/version.txt'
+    expire_in: 1 hr
   cache:
     key:
       files:
@@ -101,6 +103,7 @@
   artifacts:
     paths:
       - image.txt
+    expire_in: 1 hr
 
 .deploy-job:
   stage: deploy
@@ -127,12 +130,12 @@
           }
       }' https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
   rules:
-    - if: $CI_JOB_STATUS  == "success"
+    - when: on_success
 
 .notify-failure:
   stage: notify
   rules:
-    - if: $CI_JOB_STATUS  == "failed"
+    - when: on_failure
 
   script:
     - >
@@ -144,3 +147,29 @@
               "text":"Web APP - '$SUB_PACKAGE' 部署失败"
           }
       }' https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
+
+.merge-request:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+
+.eslint:
+  image: $NODE_IMAGE
+  before_script:
+    - pnpm config set store-dir $PNPM_STORE_DIR
+  stage: eslint
+  tags:
+    - nodejs
+  script:
+    - cd "packages/$SUB_PACKAGE"
+    - time pnpm install --frozen-lockfile
+    - pnpm run lint
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - $PNPM_STORE_DIR
+    policy: pull

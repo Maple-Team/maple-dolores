@@ -10,6 +10,7 @@ export const provider = reactBridge({
   errorBoundary: () => <ErrorPage />,
 })
 
+// 非Garfish环境下
 if (!window.__GARFISH__) {
   const container = document.getElementById('root')
   const root = createRoot(container!, {
