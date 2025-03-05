@@ -42,6 +42,7 @@ notify-success-main:
   needs:
     - job: deploy-job-main
       optional: false
+      
 # 部署失败的通知
 notify-failure-main:
   extends: .notify-failure

@@ -116,18 +116,14 @@
               "text":"Web APP - '$SUB_PACKAGE' 部署成功"
           }
       }' https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
-  # 多个job
   rules:
-    - when: on_success
-    - changes:
-        - packages/$SUB_PACKAGE/**/*
+    - if: $CI_JOB_STATUS  == "success"
 
 .notify-failure:
   stage: notify
   rules:
-    - when: on_failure
-    - changes:
-        - packages/$SUB_PACKAGE/**/*
+    - if: $CI_JOB_STATUS  == "failed"
+
   script:
     - >
       curl -X POST -H "Content-Type: application/json"

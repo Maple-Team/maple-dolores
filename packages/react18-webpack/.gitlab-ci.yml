@@ -17,10 +17,6 @@ build-image-job-react18-webpack:
     - build-job-react18-webpack
   needs:
     - job: build-job-react18-webpack
-      optional: false
-  rules:
-    - changes:
-        - packages/react18-webpack/**/*
 
 deploy-job-react18-webpack:
   extends: .deploy-job
@@ -29,10 +25,6 @@ deploy-job-react18-webpack:
     SUB_PACKAGE_PORT: '6043'
   needs:
     - job: build-image-job-react18-webpack
-      optional: false
-  rules:
-    - changes:
-        - packages/react18-webpack/**/*
 
 # 部署成功的通知
 notify-success-react18-webpack:
@@ -41,7 +33,6 @@ notify-success-react18-webpack:
     SUB_PACKAGE: 'react18-webpack'
   needs:
     - job: deploy-job-react18-webpack
-      optional: false
 
 # 部署失败的通知
 notify-failure-react18-webpack:
@@ -50,4 +41,3 @@ notify-failure-react18-webpack:
     SUB_PACKAGE: 'react18-webpack'
   needs:
     - job: deploy-job-react18-webpack
-      optional: false

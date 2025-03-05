@@ -33,6 +33,7 @@ deploy-job-vue3:
   variables:
     SUB_PACKAGE: "vue3"  
     SUB_PACKAGE_PORT: "6042"
+
 # 部署成功的通知
 notify-success-vue3:
   extends: .notify-success
@@ -41,6 +42,7 @@ notify-success-vue3:
   needs:
     - job: deploy-job-vue3
       optional: false
+      
 # 部署失败的通知
 notify-failure-vue3:
   extends: .notify-failure
