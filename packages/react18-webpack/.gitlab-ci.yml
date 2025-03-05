@@ -2,17 +2,16 @@ include:
   - local: '.gitlab-ci-common.yml'
 
 build-job-react18-webpack:
-  extends: .build-job
+  extends:
+    - .build-job
+    - .merge-request
   variables:
     SUB_PACKAGE: 'react18-webpack'
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-      when: never
-    - if: $CI_COMMIT_BRANCH == "main" 
-      when: always
 
 build-image-job-react18-webpack:
-  extends: .build-image-job
+  extends:
+    - .build-image-job
+    - .merge-request
   variables:
     SUB_PACKAGE: 'react18-webpack'
   dependencies:
@@ -21,7 +20,10 @@ build-image-job-react18-webpack:
     - job: build-job-react18-webpack
 
 deploy-job-react18-webpack:
-  extends: .deploy-job
+  extends:
+    - .deploy-job
+    - .merge-request
+
   variables:
     SUB_PACKAGE: 'react18-webpack'
     SUB_PACKAGE_PORT: '6043'
@@ -30,7 +32,9 @@ deploy-job-react18-webpack:
 
 # 部署成功的通知
 notify-success-react18-webpack:
-  extends: .notify-success
+  extends:
+    - .notify-success
+    - .merge-request
   variables:
     SUB_PACKAGE: 'react18-webpack'
   needs:
@@ -38,7 +42,9 @@ notify-success-react18-webpack:
 
 # 部署失败的通知
 notify-failure-react18-webpack:
-  extends: .notify-failure
+  extends:
+    - .notify-failure
+    - .merge-request
   variables:
     SUB_PACKAGE: 'react18-webpack'
   needs:

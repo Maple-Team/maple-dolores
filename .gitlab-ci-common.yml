@@ -137,3 +137,10 @@
               "text":"Web APP - '$SUB_PACKAGE' 部署失败"
           }
       }' https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
+
+.merge-request:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      when: never
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
