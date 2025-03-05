@@ -1,7 +1,19 @@
 include:
+  # 引入公共配置（定义通用变量、作业模板等）
+  - local: '.gitlab-ci-common.yml'
+  # 动态引入子目录的 CI 配置（关键：仅在目录变更时引入）
   - local: 'packages/react18-webpack/.gitlab-ci.yml'
+    rules:
+      - changes:
+          - packages/react18-webpack/**/*
   - local: 'packages/vue3/.gitlab-ci.yml'
+    rules:
+      - changes:
+          - packages/vue3/**/*
   - local: 'packages/main/.gitlab-ci.yml'
+    rules:
+      - changes:
+          - packages/main/**/*
 
   # 添加更多子目录的.gitlab-ci.yml文件
 variables:
