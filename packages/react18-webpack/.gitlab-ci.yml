@@ -63,3 +63,10 @@ eslint-job-react18-webpack:
     - cd "packages/react18-webpack"
     - time pnpm install --frozen-lockfile
     - pnpm run lint
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - $PNPM_STORE_DIR
+    policy: pull
