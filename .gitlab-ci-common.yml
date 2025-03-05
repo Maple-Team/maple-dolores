@@ -120,12 +120,12 @@
           }
       }' https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
   rules:
-    - if: $CI_JOB_STATUS  == "success"
+    - when: on_success
 
 .notify-failure:
   stage: notify
   rules:
-    - if: $CI_JOB_STATUS  == "failed"
+    - when: on_failure
 
   script:
     - >
