@@ -153,13 +153,11 @@ install-job:
       }' https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
   rules:
     - when: on_success
-  allow_failure: true
 
 .notify-failure:
   stage: notify
   rules:
     - when: on_failure
-
   script:
     - apk add --no-cache curl
     - >
@@ -171,7 +169,6 @@ install-job:
               "text":"Web APP - '$SUB_PACKAGE' 部署失败"
           }
       }' https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
-  allow_failure: true
 
 .merge-request:
   rules:
