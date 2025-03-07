@@ -40,14 +40,14 @@ notify-success-main:
     - job: deploy-job-main
 
 # 部署失败的通知
-notify-failure-main:
-  extends:
-    - .notify-failure
-    - .merge-request
-  variables:
-    SUB_PACKAGE: 'main'
-  needs:
-    - job: deploy-job-main
+# notify-failure-main:
+#   extends:
+#     - .notify-failure
+#     - .merge-request
+#   variables:
+#     SUB_PACKAGE: 'main'
+#   needs:
+#     - job: deploy-job-main
 
 # eslint
 eslint-job-main:
