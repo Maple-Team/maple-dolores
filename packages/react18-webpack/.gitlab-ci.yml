@@ -27,14 +27,14 @@ deploy-job-react18-webpack:
   needs:
     - job: build-image-job-react18-webpack
 
-# 部署成功的通知 -> TODO 移动到after_script
-notify-success-react18-webpack:
-  extends:
-    - .notify-success
-  variables:
-    SUB_PACKAGE: 'react18-webpack'
-  needs:
-    - job: deploy-job-react18-webpack
+# # 部署成功的通知 -> TODO 移动到webhook
+# notify-success-react18-webpack:
+#   extends:
+#     - .notify-success
+#   variables:
+#     SUB_PACKAGE: 'react18-webpack'
+#   needs:
+#     - job: deploy-job-react18-webpack
 
 # eslint
 eslint-job-react18-webpack:

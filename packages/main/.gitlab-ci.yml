@@ -27,14 +27,14 @@ deploy-job-main:
   needs:
     - job: build-image-job-main
 
-# 部署成功的通知
-notify-success-main:
-  extends:
-    - .notify-success
-  variables:
-    SUB_PACKAGE: 'main'
-  needs:
-    - job: deploy-job-main
+# # 部署成功的通知
+# notify-success-main:
+#   extends:
+#     - .notify-success
+#   variables:
+#     SUB_PACKAGE: 'main'
+#   needs:
+#     - job: deploy-job-main
 
 # eslint
 eslint-job-main:

@@ -19,7 +19,7 @@ stages:
   - build
   - image
   - deploy
-  - notify
+#   - notify
 # 公共的步骤，可以在其他.gitlab-ci.yml文件中引用
 # 如果pnpm-lock.yaml没有变化就不会执行
 
