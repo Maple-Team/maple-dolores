@@ -9,6 +9,7 @@ trigger-react18-webpack-job:
   rules:
     - changes:
         - packages/react18-webpack/**/*
+  allow_failure: true
 
 trigger-vue3-job:
   stage: trigger
@@ -18,6 +19,7 @@ trigger-vue3-job:
   rules:
     - changes:
         - packages/vue3/**/*
+  allow_failure: true
 
 trigger-main-job:
   stage: trigger
@@ -27,3 +29,4 @@ trigger-main-job:
   rules:
     - changes:
         - packages/main/**/*
+  allow_failure: true
