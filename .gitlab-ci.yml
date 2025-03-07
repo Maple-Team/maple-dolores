@@ -1,51 +1,29 @@
 stages:
-  - prepare
   - trigger
-
-prepare-react18-webpack-job:
-  stage: prepare
-  script:
-    - echo "react18-webpack prepare"
-  rules:
-    - changes:
-        - packages/react18-webpack/**/*
-
-prepare-vue3-job:
-  stage: prepare
-  script:
-    - echo "vue3 prepare"
-  rules:
-    - changes:
-        - packages/vue3/**/*
-
-prepare-main-job:
-  stage: prepare
-  script:
-    - echo "main prepare"
-  rules:
-    - changes:
-        - packages/main/**/*
 
 trigger-react18-webpack-job:
   stage: trigger
   trigger:
     include:
       - local: 'packages/react18-webpack/.gitlab-ci.yml'
-  needs:
-    - job: prepare-react18-webpack-job
+  rules:
+    - changes:
+        - packages/react18-webpack/**/*
 
 trigger-vue3-job:
   stage: trigger
   trigger:
     include:
       - local: 'packages/vue3/.gitlab-ci.yml'
-  needs:
-    - job: prepare-vue3-job
+  rules:
+    - changes:
+        - packages/vue3/**/*
 
 trigger-main-job:
   stage: trigger
   trigger:
     include:
       - local: 'packages/main/.gitlab-ci.yml'
-  needs:
-    - job: prepare-main-job
+  rules:
+    - changes:
+        - packages/main/**/*
