@@ -219,6 +219,7 @@ install-job:
       when: never
     - if: $CI_COMMIT_BRANCH == "main"
       when: always
+    - when: never  
 
 # 合并前执行
 # TODO

@@ -11,7 +11,6 @@ build-job-main:
 build-image-job-main:
   extends:
     - .build-image-job
-    - .merge-request
   variables:
     SUB_PACKAGE: 'main'
   dependencies:
@@ -22,7 +21,6 @@ build-image-job-main:
 deploy-job-main:
   extends:
     - .deploy-job
-    - .merge-request
   variables:
     SUB_PACKAGE: 'main'
     SUB_PACKAGE_PORT: '6040'
@@ -33,21 +31,10 @@ deploy-job-main:
 notify-success-main:
   extends:
     - .notify-success
-    - .merge-request
   variables:
     SUB_PACKAGE: 'main'
   needs:
     - job: deploy-job-main
-
-# 部署失败的通知
-# notify-failure-main:
-#   extends:
-#     - .notify-failure
-#     - .merge-request
-#   variables:
-#     SUB_PACKAGE: 'main'
-#   needs:
-#     - job: deploy-job-main
 
 # eslint
 eslint-job-main:
