@@ -9,6 +9,7 @@ trigger-react18-webpack-job:
   rules:
     - changes:
         - packages/react18-webpack/**/*
+    # 允许触发的子流水线中无任务导致的失败
   allow_failure: true
 
 trigger-vue3-job:
@@ -19,6 +20,7 @@ trigger-vue3-job:
   rules:
     - changes:
         - packages/vue3/**/*
+  # 允许触发的子流水线中无任务导致的失败
   allow_failure: true
 
 trigger-main-job:
@@ -29,4 +31,5 @@ trigger-main-job:
   rules:
     - changes:
         - packages/main/**/*
+  # 允许触发的子流水线中无任务导致的失败
   allow_failure: true
