@@ -49,6 +49,7 @@ install-job:
     - changes:
         - package.json
         - pnpm-lock.yaml
+    - when: never
   cache:
     key:
       files:
