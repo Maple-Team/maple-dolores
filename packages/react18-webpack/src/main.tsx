@@ -10,7 +10,7 @@ export const provider = reactBridge({
   errorBoundary: () => <ErrorPage />,
 })
 
-// 非Garfish环境下
+// NOTE 非Garfish环境下
 if (!window.__GARFISH__) {
   const container = document.getElementById('root')
   const root = createRoot(container!, {
@@ -22,3 +22,4 @@ if (!window.__GARFISH__) {
 
   root.render(<RootComponent basename="/" />)
 }
+// 测试父子流水线

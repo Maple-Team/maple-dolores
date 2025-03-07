@@ -62,9 +62,10 @@ export const provider = vueBridge({
   },
 })
 
+// NOTE 非Garfish环境下
 if (!window.__GARFISH__) {
-  // 非微前端环境直接运行
   const vueInstance = createApp(App)
   handleInit(vueInstance, '/')
   vueInstance.mount(document.querySelector('#app')!)
 }
+// 测试父子流水线

@@ -2,15 +2,16 @@ include:
   - local: '.gitlab-ci-common.yml'
 
 build-job-vue3:
-  extends: .build-job
-  rules:
-    - changes:
-        - packages/vue3/**/*
+  extends:
+    - .build-job
+    - .merge-request
   variables:
     SUB_PACKAGE: 'vue3'
 
 build-image-job-vue3:
-  extends: .build-image-job
+  extends:
+    - .build-image-job
+    - .merge-request
   dependencies:
     - build-job-vue3
   needs:
@@ -19,7 +20,9 @@ build-image-job-vue3:
     SUB_PACKAGE: 'vue3'
 
 deploy-job-vue3:
-  extends: .deploy-job
+  extends:
+    - .deploy-job
+    - .merge-request
   needs:
     - job: build-image-job-vue3
   variables:
@@ -28,7 +31,9 @@ deploy-job-vue3:
 
 # 部署成功的通知
 notify-success-vue3:
-  extends: .notify-success
+  extends:
+    - .notify-success
+    - .merge-request
   variables:
     SUB_PACKAGE: 'vue3'
   needs:
@@ -36,8 +41,17 @@ notify-success-vue3:
 
 # 部署失败的通知
 notify-failure-vue3:
-  extends: .notify-failure
+  extends:
+    - .notify-failure
+    - .merge-request
   variables:
     SUB_PACKAGE: 'vue3'
   needs:
     - job: deploy-job-vue3
+
+# eslint
+eslint-job-vue3:
+  extends:
+    - .eslint
+  variables:
+    SUB_PACKAGE: 'vue3'

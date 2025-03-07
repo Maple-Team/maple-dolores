@@ -1,3 +1,31 @@
+variables:
+  PNPM_HOME: '$CI_PROJECT_DIR/.pnpm'
+  PNPM_STORE_DIR: '$CI_PROJECT_DIR/.pnpm-store'
+  NODE_IMAGE: 'mapleimage123/node:20-alpine3.19'
+  COREPACK_NPM_REGISTRY: 'https://registry.npmmirror.com'
+  TZ: 'Asia/Shanghai'
+
+default:
+  image:
+    name: $NODE_IMAGE
+
+workflow:
+  # 覆盖默认的工作流名称：默认的是当前的最新提交信息
+  # name: 'workflow name'
+
+stages:
+  - install
+  - eslint
+  - build
+  - image
+  - deploy
+  - notify
+# 公共的步骤，可以在其他.gitlab-ci.yml文件中引用
+# 如果pnpm-lock.yaml没有变化就不会执行
+
+install-job:
+  extends: .install-job
+
 # 配置复用
 .pnpm-config:
   before_script:
@@ -14,20 +42,9 @@
   stage: install
   tags:
     - nodejs
-  image: $NODE_IMAGE
   script:
     - export
     - time pnpm install --frozen-lockfile
-    - echo "before_script"
-    - echo "CI_PIPELINE_SOURCE $CI_PIPELINE_SOURCE"
-    - echo "CI_MERGE_REQUEST_SOURCE_BRANCH_NAME $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME"
-    - echo "CI_MERGE_REQUEST_TARGET_BRANCH_NAME $CI_MERGE_REQUEST_TARGET_BRANCH_NAME"
-    - echo "CI_MERGE_REQUEST_TITLE $CI_MERGE_REQUEST_TITLE"
-    - echo "CI_COMMIT_REF_NAME $CI_COMMIT_REF_NAME"
-    - echo "CI_COMMIT_REF_PROTECTED $CI_COMMIT_REF_PROTECTED"
-    - echo "CI_COMMIT_REF_SLUG $CI_COMMIT_REF_SLUG"
-    - echo "CI_MERGE_REQUEST_ID $CI_MERGE_REQUEST_ID"
-    - export
   rules:
     - changes:
         - pnpm-lock.yaml
@@ -46,18 +63,19 @@
   stage: build
   tags:
     - nodejs
-  image: $NODE_IMAGE
   script:
     - echo "building $SUB_PACKAGE"
     - cd "packages/$SUB_PACKAGE"
     - time pnpm install --frozen-lockfile
     - time pnpm run build
     - APP_VERSION=$(node -p -e "require('./package.json').version")
-    - echo "$APP_VERSION" > ./version.txt
+    - echo "APP_VERSION=$APP_VERSION" >> version.env
   artifacts:
     paths:
       - 'packages/$SUB_PACKAGE/dist'
-      - 'packages/$SUB_PACKAGE/version.txt'
+    reports:
+      dotenv:
+        - 'packages/$SUB_PACKAGE/version.env'
     expire_in: 1 hr
   cache:
     key:
@@ -90,20 +108,20 @@
       export IMAGE_NAME=staging
       fi
     - if [ -d "dist" ]; then echo "dist directory exists"; else echo "dist directory does not exist"; fi
-    - version=$(cat "packages/$SUB_PACKAGE/version.txt")
-    - echo $version
+    - echo $APP_VERSION
     # 构建镜像
-    - docker build -t $USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA -f ./packages/$SUB_PACKAGE/Dockerfile ./packages/$SUB_PACKAGE
+    - docker build -t $USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$APP_VERSION$CI_COMMIT_SHORT_SHA -f ./packages/$SUB_PACKAGE/Dockerfile ./packages/$SUB_PACKAGE
     # docker login
     # - docker login -u $USER_DOCKER_REGISTRY_USER -p $USER_DOCKER_REGISTRY_PASSWORD $USER_DOCKER_REGISTRY
     # 镜像推送
-    # - docker push $USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA
-    - image_name=$USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$version-$CI_COMMIT_SHORT_SHA
-    - echo "$image_name" > image.txt
+    # - docker push $USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$APP_VERSION$CI_COMMIT_SHORT_SHA
+    - image_name=$USER_DOCKER_NS/$CI_PROJECT_NAME-$SUB_PACKAGE-$IMAGE_NAME:$APP_VERSION$CI_COMMIT_SHORT_SHA
+    - echo "BUILD_IMAGE=$image_name" >> image.env
   artifacts:
-    paths:
-      - image.txt
-    expire_in: 1 hr
+    reports:
+      dotenv:
+        - 'packages/$SUB_PACKAGE/image.env'
+    expire_in: 2 hr
 
 .deploy-job:
   stage: deploy
@@ -111,11 +129,10 @@
     - docker
   image: docker:27.3-dind
   script:
-    - image=$(cat image.txt)
-    - echo $image
+    - echo $BUILD_IMAGE
     - docker stop $CI_PROJECT_NAME-$SUB_PACKAGE || true
     - docker rm $CI_PROJECT_NAME-$SUB_PACKAGE || true
-    - docker run --restart=always --name $CI_PROJECT_NAME-$SUB_PACKAGE --network maple-network -d -p $SUB_PACKAGE_PORT:80 $image
+    - docker run --restart=always --name $CI_PROJECT_NAME-$SUB_PACKAGE --network maple-network -d -p $SUB_PACKAGE_PORT:80 $BUILD_IMAGE
 
 .notify-success:
   stage: notify
@@ -156,7 +173,6 @@
       when: always
 
 .eslint:
-  image: $NODE_IMAGE
   before_script:
     - pnpm config set store-dir $PNPM_STORE_DIR
   stage: eslint
@@ -173,3 +189,4 @@
     paths:
       - $PNPM_STORE_DIR
     policy: pull
+  allow_failure: true
