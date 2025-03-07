@@ -84,6 +84,9 @@ install-job:
     paths:
       - $PNPM_STORE_DIR
     policy: pull
+  needs:
+    - job: install-job
+      optional: true
 
 # 构建docker image-workspace下的各个子项目共享
 .build-image-job:
@@ -120,7 +123,7 @@ install-job:
   artifacts:
     reports:
       dotenv:
-        - 'packages/$SUB_PACKAGE/image.env'
+        - 'image.env'
     expire_in: 2 hr
 
 .deploy-job:
@@ -190,3 +193,6 @@ install-job:
       - $PNPM_STORE_DIR
     policy: pull
   allow_failure: true
+  needs:
+    - job: install-job
+      optional: true
