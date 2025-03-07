@@ -22,4 +22,4 @@ if (!window.__GARFISH__) {
 
   root.render(<RootComponent basename="/" />)
 }
-// 测试父子流水线
+// 测试父子流水线2

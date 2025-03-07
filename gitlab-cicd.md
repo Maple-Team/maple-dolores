@@ -5,11 +5,24 @@
 ```
 project-name/
 │
-├── react18-webpack/
-│   └── .gitlab-ci.yml
-│
-├── vue3/
-│   └── .gitlab-ci.yml
+├──packages/
+│   ├──react18-webpack/
+│   │   ├──package.json
+│   │   ├──pnpm-lock.yaml
+│   │   ├──Dockerfile
+│   │   ├──src/
+│   │   ├──dist/
+│   │   ├──version.txt
+│   │   └──.gitlab-ci.yml
+│   │
+│   ├──vue3/
+│   │   ├──package.json
+│   │   ├──pnpm-lock.yaml
+│   │   ├──Dockerfile
+│   │   ├──src/
+│   │   ├──dist/
+│   │   ├──version.txt
+│   │   └──.gitlab-ci.yml
 │
 ├── .gitlab-ci.yml
 └── .gitlab-ci-common.yml
@@ -19,12 +32,10 @@ project-name/
 
 ## 通用 jobs
 
-- lint
-- test
-- format
+-   lint
+-   test
+-   format
 
-## jobs 触发条件/依赖
+## 父子流水线
 
-```
-
-```
+## 合并请求结果流水线
