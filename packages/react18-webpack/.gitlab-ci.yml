@@ -4,7 +4,6 @@ include:
 build-job-react18-webpack:
   extends:
     - .build-job
-    # - .file-change
     - .merge-request
   variables:
     SUB_PACKAGE: 'react18-webpack'
@@ -12,8 +11,6 @@ build-job-react18-webpack:
 build-image-job-react18-webpack:
   extends:
     - .build-image-job
-    # - .file-change    
-    - .merge-request
   variables:
     SUB_PACKAGE: 'react18-webpack'
   dependencies:
@@ -24,40 +21,25 @@ build-image-job-react18-webpack:
 deploy-job-react18-webpack:
   extends:
     - .deploy-job
-    # - .file-change
-    - .merge-request
   variables:
     SUB_PACKAGE: 'react18-webpack'
     SUB_PACKAGE_PORT: '6043'
   needs:
     - job: build-image-job-react18-webpack
 
-# 部署成功的通知
+# 部署成功的通知 -> TODO 移动到after_script
 notify-success-react18-webpack:
   extends:
     - .notify-success
-    # - .file-change    
-    - .merge-request
   variables:
     SUB_PACKAGE: 'react18-webpack'
   needs:
     - job: deploy-job-react18-webpack
 
-# 部署失败的通知
-# notify-failure-react18-webpack:
-#   extends:
-#     - .notify-failure
-#     - .merge-request
-#     - .file-change    
-#   variables:
-#     SUB_PACKAGE: 'react18-webpack'
-#   needs:
-#     - job: deploy-job-react18-webpack
-
 # eslint
 eslint-job-react18-webpack:
   extends:
     - .eslint
-    - .file-change    
+    - .file-change
   variables:
     SUB_PACKAGE: 'react18-webpack'

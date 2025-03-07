@@ -38,7 +38,9 @@ install-job:
 
 # 安装依赖-workspace级别
 .install-job:
-  extends: .pnpm-config
+  extends:
+    - .pnpm-config
+    - .retry
   stage: install
   tags:
     - nodejs
@@ -60,6 +62,8 @@ install-job:
 
 # 构建dist-workspace下的各个子项目共享
 .build-job:
+  extends:
+    - .retry
   before_script:
     - pnpm config set store-dir $PNPM_STORE_DIR
   stage: build
@@ -92,18 +96,15 @@ install-job:
 
 # 构建docker image-workspace下的各个子项目共享
 .build-image-job:
+  extends:
+    - .retry
+    - .merge-request
   stage: image
   tags:
     - docker
   image: docker:27.3-dind
   services:
     - docker:27.3-dind
-  retry:
-    max: 2
-    when:
-      - runner_system_failure
-      - unknown_failure
-      - script_failure
   script:
     # tag标记1：产物类型
     - |
@@ -129,6 +130,9 @@ install-job:
     expire_in: 2 hr
 
 .deploy-job:
+  extends:
+    - .retry
+    - .merge-request
   stage: deploy
   tags:
     - docker
@@ -140,6 +144,9 @@ install-job:
     - docker run --restart=always --name $CI_PROJECT_NAME-$SUB_PACKAGE --network maple-network -d -p $SUB_PACKAGE_PORT:80 $BUILD_IMAGE
 
 .notify-success:
+  extends:
+    - .retry
+    - .merge-request
   stage: notify
   script:
     - apk add --no-cache curl
@@ -156,6 +163,8 @@ install-job:
     - when: on_success
 
 .notify-failure:
+  extends:
+    - .retry
   stage: notify
   rules:
     - when: on_failure
@@ -170,7 +179,10 @@ install-job:
               "text":"Web APP - '$SUB_PACKAGE' 部署失败"
           }
       }' https://open.feishu.cn/open-apis/bot/v2/hook/f44c17ad-06b0-4957-a5be-2b066fcef6ce
+
 .eslint:
+  extends:
+    - .retry
   before_script:
     - pnpm config set store-dir $PNPM_STORE_DIR
   stage: eslint
@@ -191,6 +203,14 @@ install-job:
   needs:
     - job: install-job
       optional: true
+
+.retry:
+  retry:
+    max: 2
+    when:
+      - runner_system_failure # 如果 runner 系统出现故障（例如，作业设置失败）
+      - unknown_failure # 包含 TLS 等网络错误
+      - script_failure
 
 # NOTE 仅被合并后执行
 .merge-request:
