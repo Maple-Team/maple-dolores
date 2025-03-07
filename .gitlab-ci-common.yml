@@ -177,6 +177,11 @@ install-job:
     - if: $CI_COMMIT_BRANCH == "main"
       when: always
 
+.file-change:
+  rules:
+    - changes:
+        - packages/$SUB_PACKAGE/**/*
+
 .eslint:
   before_script:
     - pnpm config set store-dir $PNPM_STORE_DIR
