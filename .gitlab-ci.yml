@@ -6,24 +6,24 @@ trigger-react18-webpack-job:
   trigger:
     include:
       - local: 'packages/react18-webpack/.gitlab-ci.yml'
-  rules:
-    - changes:
-        - packages/react18-webpack/**/*
+#   rules:
+#     - changes:
+#         - packages/react18-webpack/**/*
 
 trigger-vue3-job:
   stage: trigger
   trigger:
     include:
       - local: 'packages/vue3/.gitlab-ci.yml'
-  rules:
-    - changes:
-        - packages/vue3/**/*
+#   rules:
+#     - changes:
+#         - packages/vue3/**/*
 
 trigger-main-job:
   stage: trigger
   trigger:
     include:
       - local: 'packages/main/.gitlab-ci.yml'
-  rules:
-    - changes:
-        - packages/main/**/*
+#   rules:
+#     - changes:
+#         - packages/main/**/*
