@@ -68,4 +68,4 @@ if (!window.__GARFISH__) {
   handleInit(vueInstance, '/')
   vueInstance.mount(document.querySelector('#app')!)
 }
-// 测试动态父子流水线
+// 测试动态父子流水线2
