@@ -4,7 +4,7 @@ include:
 build-job-react18-webpack:
   extends:
     - .build-job
-    - .merge-request
+    - .deploy-rule
   variables:
     SUB_PACKAGE: 'react18-webpack'
 
@@ -40,6 +40,6 @@ deploy-job-react18-webpack:
 eslint-job-react18-webpack:
   extends:
     - .eslint
-    - .file-change
+    - .file-change-rule
   variables:
     SUB_PACKAGE: 'react18-webpack'

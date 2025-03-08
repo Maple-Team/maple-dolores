@@ -4,7 +4,7 @@ include:
 build-job-main:
   extends:
     - .build-job
-    - .merge-request
+    - .deploy-rule
   variables:
     SUB_PACKAGE: 'main'
 

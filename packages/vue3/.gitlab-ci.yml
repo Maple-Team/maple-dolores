@@ -4,7 +4,7 @@ include:
 build-job-vue3:
   extends:
     - .build-job
-    - .merge-request
+    - .deploy-rule
   variables:
     SUB_PACKAGE: 'vue3'
 
