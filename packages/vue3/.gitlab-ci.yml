@@ -4,7 +4,7 @@ include:
 build-job-vue3:
   extends:
     - .build-job
-    - .deploy-rule
+    # - .deploy-rule
   variables:
     SUB_PACKAGE: 'vue3'
 
@@ -26,15 +26,6 @@ deploy-job-vue3:
   variables:
     SUB_PACKAGE: 'vue3'
     SUB_PACKAGE_PORT: '6042'
-
-# # 部署成功的通知
-# notify-success-vue3:
-#   extends:
-#     - .notify-success
-#   variables:
-#     SUB_PACKAGE: 'vue3'
-#   needs:
-#     - job: deploy-job-vue3
 
 # eslint
 eslint-job-vue3:

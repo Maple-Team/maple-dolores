@@ -4,7 +4,7 @@ include:
 build-job-main:
   extends:
     - .build-job
-    - .deploy-rule
+    # - .deploy-rule
   variables:
     SUB_PACKAGE: 'main'
 
@@ -26,15 +26,6 @@ deploy-job-main:
     SUB_PACKAGE_PORT: '6040'
   needs:
     - job: build-image-job-main
-
-# # 部署成功的通知
-# notify-success-main:
-#   extends:
-#     - .notify-success
-#   variables:
-#     SUB_PACKAGE: 'main'
-#   needs:
-#     - job: deploy-job-main
 
 # eslint
 eslint-job-main:
