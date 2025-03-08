@@ -4,14 +4,13 @@ include:
 build-job-main:
   extends:
     - .build-job
-    - .merge-request
+    - .deploy-rule
   variables:
     SUB_PACKAGE: 'main'
 
 build-image-job-main:
   extends:
     - .build-image-job
-    - .merge-request
   variables:
     SUB_PACKAGE: 'main'
   dependencies:
@@ -22,28 +21,16 @@ build-image-job-main:
 deploy-job-main:
   extends:
     - .deploy-job
-    - .merge-request
   variables:
     SUB_PACKAGE: 'main'
     SUB_PACKAGE_PORT: '6040'
   needs:
     - job: build-image-job-main
 
-# 部署成功的通知
-notify-success-main:
-  extends:
-    - .notify-success
-    - .merge-request
-  variables:
-    SUB_PACKAGE: 'main'
-  needs:
-    - job: deploy-job-main
-
-# 部署失败的通知
-# notify-failure-main:
+# # 部署成功的通知
+# notify-success-main:
 #   extends:
-#     - .notify-failure
-#     - .merge-request
+#     - .notify-success
 #   variables:
 #     SUB_PACKAGE: 'main'
 #   needs:

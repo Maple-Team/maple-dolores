@@ -4,14 +4,13 @@ include:
 build-job-vue3:
   extends:
     - .build-job
-    - .merge-request
+    - .deploy-rule
   variables:
     SUB_PACKAGE: 'vue3'
 
 build-image-job-vue3:
   extends:
     - .build-image-job
-    - .merge-request
   dependencies:
     - build-job-vue3
   needs:
@@ -22,28 +21,16 @@ build-image-job-vue3:
 deploy-job-vue3:
   extends:
     - .deploy-job
-    - .merge-request
   needs:
     - job: build-image-job-vue3
   variables:
     SUB_PACKAGE: 'vue3'
     SUB_PACKAGE_PORT: '6042'
 
-# 部署成功的通知
-notify-success-vue3:
-  extends:
-    - .notify-success
-    - .merge-request
-  variables:
-    SUB_PACKAGE: 'vue3'
-  needs:
-    - job: deploy-job-vue3
-
-# 部署失败的通知
-# notify-failure-vue3:
+# # 部署成功的通知
+# notify-success-vue3:
 #   extends:
-#     - .notify-failure
-#     - .merge-request
+#     - .notify-success
 #   variables:
 #     SUB_PACKAGE: 'vue3'
 #   needs:

@@ -10,6 +10,7 @@ trigger-react18-webpack-job:
     - changes:
         - packages/react18-webpack/**/*
     # 允许触发的子流水线中无任务导致的失败
+    # 1. 合并前会有无流水线任务
   allow_failure: true
 
 trigger-vue3-job:
