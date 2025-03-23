@@ -151,6 +151,9 @@ install-job:
       --network maple-network 
       -d -p $SUB_PACKAGE_PORT:80 
       $BUILD_IMAGE
+  environment:
+    name: staging
+    url: http://localhost:$SUB_PACKAGE_PORT
 
 .notify-success:
   extends:

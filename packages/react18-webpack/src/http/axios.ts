@@ -1,6 +1,6 @@
 import type { BaseResponse } from '@liutsing/types-utils'
 import type { AxiosError, AxiosResponse, CancelTokenSource, InternalAxiosRequestConfig } from 'axios'
-import axios from 'axios'
+import axios, { HttpStatusCode } from 'axios'
 import { getPublicPath } from '@liutsing/config'
 import { name } from '../../package.json'
 import { emitter } from '@/events'
@@ -106,7 +106,7 @@ instance.interceptors.response.use(
       return response.status
     }
     switch (status) {
-      case 0:
+      case HttpStatusCode.Ok:
         return data
       // 其他的业务码
       default:
